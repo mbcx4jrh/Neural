@@ -15,7 +15,7 @@ public class TestNeuralParserFactory {
 	}
 	
 	@Test public void testNetworkExpression() {
-		NetworkExpression net = npf.networkExpression().parse("network joe");
+		assertEquals( npf.networkExpression().parse("network joe"), new NetworkExpression("joe"));
 		
 	}
 	

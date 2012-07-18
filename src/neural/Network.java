@@ -2,6 +2,10 @@ package neural;
 
 public interface Network {
 
-	NetworkInfo getInfo();
+	public String getName();
+	
+	public String getType();
+	
+	public int getSize();
 
 }

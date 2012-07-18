@@ -9,9 +9,9 @@ import org.junit.Test;
 
 
 
-public class US1_Basics {
+public class US01_Basics {
 	
-	private String GIBBERISH = "sadfasdfsdf";
+	private String GIBBERISH = "network joe is hopfield { size 2}";
 
 	@Test public void simpleInstantiation() {
 		ScriptParser parser = new ScriptParser();

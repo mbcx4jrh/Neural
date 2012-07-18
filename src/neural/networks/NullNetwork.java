@@ -1,22 +1,28 @@
 package neural.networks;
 
 import neural.Network;
-import neural.NetworkInfo;
 
 public class NullNetwork implements Network {
 
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
+	@Override
+	public String getName() {
 		// TODO Auto-generated method stub
-
+		return null;
 	}
 
 	@Override
-	public NetworkInfo getInfo() {
+	public String getType() {
 		// TODO Auto-generated method stub
-		return new NetworkInfo(this);
+		return null;
 	}
+
+	@Override
+	public int getSize() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+
+	
 
 }

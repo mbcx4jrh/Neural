@@ -7,6 +7,7 @@ import org.codehaus.jparsec.Terminals;
 import org.codehaus.jparsec.Tokens.Fragment;
 import org.codehaus.jparsec.functors.Map;
 import org.codehaus.jparsec.functors.Map3;
+import org.codehaus.jparsec.functors.Pair;
 
 
 public class NeuralParserFactory {
@@ -57,7 +58,7 @@ public class NeuralParserFactory {
 
 
 	protected Parser<AsExpression> asExpression() {
-		return Scanners.string("as").next(Scanners.WHITESPACES)
+		return Scanners.string("is").next(Scanners.WHITESPACES)
 									.next(Terminals.Identifier.TOKENIZER)
 									.map(new Map<Fragment, AsExpression>(){
 
@@ -100,5 +101,42 @@ public class NeuralParserFactory {
 
 	public Parser<NetworkDef> getNeuralParser() {
 		return Scanners.WHITESPACES.skipMany().next(networkDef());
+	}
+
+
+	protected Parser<IntegerParameter> integerParameter() {
+		return Parsers.tuple(Terminals.Identifier.TOKENIZER, whitespaceInteger())
+				.map(new Map<Pair<Fragment, Integer>, IntegerParameter>() {
+
+			@Override
+			public IntegerParameter map(Pair<Fragment, Integer> from) {
+				return new IntegerParameter(from.a.toString(), from.b);
+			}
+			
+		});
+	}
+
+
+	protected Parser<DoubleParameter> doubleParameter() {
+		return Parsers.tuple(Terminals.Identifier.TOKENIZER, whitespaceDouble())
+				.map(new Map<Pair<Fragment, Double>, DoubleParameter>() {
+
+			@Override
+			public DoubleParameter map(Pair<Fragment, Double> from) {
+				return new DoubleParameter(from.a.toString(), from.b);
+			}
+			
+		});
+	}
+
+
+	protected Parser<Double> whitespaceDouble() {
+		return Scanners.WHITESPACES.next(Scanners.DECIMAL).map(new Map<String, Double>() {
+
+			public Double map(String arg0) {
+				return Double.parseDouble(arg0);
+			}
+				
+		});
 	}
 }

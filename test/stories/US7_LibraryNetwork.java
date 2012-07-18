@@ -1,12 +1,11 @@
 package stories;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import neural.Network;
 import neural.NetworkInfo;
 import neural.ScriptParser;
 
 import org.junit.Before;
-import org.junit.Test;
 
 public class US7_LibraryNetwork {
 	

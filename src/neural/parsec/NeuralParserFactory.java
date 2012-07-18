@@ -6,6 +6,7 @@ import org.codehaus.jparsec.Scanners;
 import org.codehaus.jparsec.Terminals;
 import org.codehaus.jparsec.Tokens.Fragment;
 import org.codehaus.jparsec.functors.Map;
+import org.codehaus.jparsec.functors.Map3;
 
 
 public class NeuralParserFactory {
@@ -21,7 +22,7 @@ public class NeuralParserFactory {
 	
 
 	
-	protected Parser<SizeExpression> sizeExpression() {
+	public Parser<SizeExpression> sizeExpression() {
 		return Scanners.string("size").next(whitespaceInteger()).map(new Map<Integer,SizeExpression>(){
 
 			public SizeExpression map(Integer arg0) {
@@ -32,7 +33,7 @@ public class NeuralParserFactory {
 	}
 
 
-	protected Parser<Integer> whitespaceInteger() {
+	public Parser<Integer> whitespaceInteger() {
 		return Scanners.WHITESPACES.next(Scanners.INTEGER).map(new Map<String, Integer>() {
 
 			public Integer map(String arg0) {
@@ -43,8 +44,8 @@ public class NeuralParserFactory {
 	}
 
 
-	protected Parser<SizeExpression> expression() {
-		return Parsers.or(sizeExpression());
+	public Parser<SizeExpression> expression() {
+		return sizeExpression();
 	}
 
 
@@ -77,6 +78,22 @@ public class NeuralParserFactory {
 						return new NetworkExpression(from.toString());
 					}
 
+				});
+	}
+
+
+	public Parser<NetworkDef> networkDef() {
+		return Parsers.sequence(networkExpression(), 
+							    Scanners.WHITESPACES.skipMany().next(asExpression()), 
+							    Scanners.WHITESPACES.skipMany().next(block()),
+				new Map3<NetworkExpression, AsExpression, SizeExpression, NetworkDef>() {
+
+					@Override
+					public NetworkDef map(NetworkExpression a, AsExpression b,
+							SizeExpression d) {
+						return new NetworkDef(a.getName(), b.getType(), d.getSize());
+					}
+					
 				});
 	}
 }

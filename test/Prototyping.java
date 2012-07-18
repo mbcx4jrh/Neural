@@ -1,10 +1,8 @@
 import static org.junit.Assert.assertEquals;
 
 import org.codehaus.jparsec.Parser;
-import org.codehaus.jparsec.Parsers;
-import org.codehaus.jparsec.Scanners;
+
 import org.codehaus.jparsec.Terminals;
-import org.codehaus.jparsec.Tokens;
 import org.codehaus.jparsec.Tokens.Fragment;
 import org.junit.Test;
 
@@ -25,7 +23,7 @@ public class Prototyping {
 	}
 
 	private Parser<Fragment> parseString() {
-		return Parsers.or(Terminals.Identifier.TOKENIZER);
+		return Terminals.Identifier.TOKENIZER;
 	}
 	
 	

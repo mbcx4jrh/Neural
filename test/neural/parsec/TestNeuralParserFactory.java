@@ -14,8 +14,13 @@ public class TestNeuralParserFactory {
 		npf = new NeuralParserFactory();
 	}
 	
+	@Test public void testFactoryMethod() {
+		assertEquals(npf.getNeuralParser().parse(" network jim as tiger { size 45}").toString(), 
+				"Network: jim, type: tiger, size: 45");
+	}
+	
 	@Test public void testNetworkDef() {
-		//teset with methods
+		//test with methods
 		NetworkDef net = npf.networkDef().parse("network joe as hopfield { size 5 }");
 		assertEquals(net.getName(), "joe");
 		assertEquals(net.getType(), "hopfield");

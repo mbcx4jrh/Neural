@@ -22,7 +22,7 @@ public class NeuralParserFactory {
 	
 
 	
-	public Parser<SizeExpression> sizeExpression() {
+	protected Parser<SizeExpression> sizeExpression() {
 		return Scanners.string("size").next(whitespaceInteger()).map(new Map<Integer,SizeExpression>(){
 
 			public SizeExpression map(Integer arg0) {
@@ -33,7 +33,7 @@ public class NeuralParserFactory {
 	}
 
 
-	public Parser<Integer> whitespaceInteger() {
+	protected Parser<Integer> whitespaceInteger() {
 		return Scanners.WHITESPACES.next(Scanners.INTEGER).map(new Map<String, Integer>() {
 
 			public Integer map(String arg0) {
@@ -44,19 +44,19 @@ public class NeuralParserFactory {
 	}
 
 
-	public Parser<SizeExpression> expression() {
+	protected Parser<SizeExpression> expression() {
 		return sizeExpression();
 	}
 
 
-	public Parser<SizeExpression> block() {
+	protected Parser<SizeExpression> block() {
 		return Parsers.between(Scanners.string("{"),
 				               Scanners.WHITESPACES.skipMany().next(expression()), 
 				               Scanners.WHITESPACES.skipMany().next(Scanners.string("}")));
 	}
 
 
-	public Parser<AsExpression> asExpression() {
+	protected Parser<AsExpression> asExpression() {
 		return Scanners.string("as").next(Scanners.WHITESPACES)
 									.next(Terminals.Identifier.TOKENIZER)
 									.map(new Map<Fragment, AsExpression>(){
@@ -69,7 +69,7 @@ public class NeuralParserFactory {
 	}
 
 
-	public Parser<NetworkExpression> networkExpression() {
+	protected Parser<NetworkExpression> networkExpression() {
 		return Scanners.string("network").next(Scanners.WHITESPACES)
 				.next(Terminals.Identifier.TOKENIZER)
 				.map(new Map<Fragment, NetworkExpression>(){
@@ -82,7 +82,7 @@ public class NeuralParserFactory {
 	}
 
 
-	public Parser<NetworkDef> networkDef() {
+	protected Parser<NetworkDef> networkDef() {
 		return Parsers.sequence(networkExpression(), 
 							    Scanners.WHITESPACES.skipMany().next(asExpression()), 
 							    Scanners.WHITESPACES.skipMany().next(block()),
@@ -95,5 +95,10 @@ public class NeuralParserFactory {
 					}
 					
 				});
+	}
+
+
+	public Parser<NetworkDef> getNeuralParser() {
+		return Scanners.WHITESPACES.skipMany().next(networkDef());
 	}
 }

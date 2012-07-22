@@ -1,15 +1,17 @@
 package neural.parsec;
 
+import java.util.List;
+
 public class NetworkDef {
 	
 	private String name;
 	private String type;
-	private int size;
+	private List<Parameter> params;
 
-	public NetworkDef(String name, String type, int size) {
+	public NetworkDef(String name, String type, List<Parameter> params) {
 		this.name = name;
 		this.type = type;
-		this.size = size;
+		this.params = params;
 	}
 
 	public String getName() {
@@ -20,12 +22,10 @@ public class NetworkDef {
 		return type;
 	}
 
-	public int getSize() {
-		return size;
-	}
+
 	
 	public String toString() {
-		return "Network: "+name+", type: "+type+", size: "+size; 
+		return "Network: "+name+", type: "+type+", params: "+params; 
 	}
 
 }

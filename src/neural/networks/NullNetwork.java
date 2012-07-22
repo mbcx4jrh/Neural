@@ -16,13 +16,6 @@ public class NullNetwork implements Network {
 		return null;
 	}
 
-	@Override
-	public int getSize() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
 
-
-	
 
 }

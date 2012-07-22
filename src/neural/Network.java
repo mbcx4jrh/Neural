@@ -6,6 +6,5 @@ public interface Network {
 	
 	public String getType();
 	
-	public int getSize();
-
+	
 }

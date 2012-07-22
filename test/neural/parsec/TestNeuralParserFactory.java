@@ -16,7 +16,26 @@ public class TestNeuralParserFactory {
 	
 	@Test public void testFactoryMethod() {
 		assertEquals(npf.getNeuralParser().parse(" network jim is tiger { size 45}").toString(), 
-				"Network: jim, type: tiger, size: 45");
+				"Network: jim, type: tiger, params: [size 45]");
+	}
+	
+
+	
+	@Test public void testParameterList() {
+		assertEquals(npf.parameterList().parse("p1 23 p2 3.4").toString(), 
+				"[p1 23, p2 3.4]");
+		assertEquals(npf.parameterList().parse("p1 23").toString(), 
+				"[p1 23]");
+		assertEquals(npf.parameterList().parse("").toString(), 
+				"[]");
+	}
+	
+	
+	@Test public void testParameter() {
+		assertEquals(npf.parameter().parse("p1 23").getClass(), IntegerParameter.class);
+		assertEquals(npf.parameter().parse("p1 23"), new IntegerParameter("p1", 23));
+		assertEquals(npf.parameter().parse("p1 2.3"), new DoubleParameter("p1", 2.3));
+		assertEquals(npf.parameter().parse("p1 2.3").getClass(), DoubleParameter.class);
 	}
 	
 	@Test public void testWhitespaceDouble() {
@@ -28,6 +47,7 @@ public class TestNeuralParserFactory {
 	@Test public void testDoubleParam() {
 		assertEquals(npf.doubleParameter().parse("df4 0.1"), new DoubleParameter("df4", new Double(0.1)));
 		assertEquals(npf.doubleParameter().parse("df4     0.1"), new DoubleParameter("df4", new Double(0.1)));
+		assertEquals(npf.doubleParameter().parse("p1 2.3"), new DoubleParameter("p1", 2.3));
 	}
 	
 	
@@ -41,11 +61,11 @@ public class TestNeuralParserFactory {
 		NetworkDef net = npf.networkDef().parse("network joe is hopfield { size 5 }");
 		assertEquals(net.getName(), "joe");
 		assertEquals(net.getType(), "hopfield");
-		assertEquals(net.getSize(), 5);
+
 		
 		//use toString for rest of tests..
 		assertEquals(npf.networkDef().parse("network joe  is kramer{size 90}").toString(), 
-				"Network: joe, type: kramer, size: 90");
+				"Network: joe, type: kramer, params: [size 90]");
 	}
 	
 	@Test public void testNetworkExpression() {
@@ -57,19 +77,18 @@ public class TestNeuralParserFactory {
 	}
 	
 	@Test public void testBlock() {
-		assertEquals(npf.block().parse("{ size 2 }"), new SizeExpression(2));
-		assertEquals(npf.block().parse("{size 2 }"), new SizeExpression(2));
-		assertEquals(npf.block().parse("{size 2}"), new SizeExpression(2));
+		assertEquals(npf.block().parse("{ size 2 }").toString(), "[size 2]");
+		assertEquals(npf.block().parse("{size 2 }").toString(), "[size 2]");
+		assertEquals(npf.block().parse("{size 2}").toString(), "[size 2]");
+		assertEquals(npf.block().parse("{ p1 20.2 p2 0 }").toString(),
+				"[p1 20.2, p2 0]");
+		assertEquals(npf.block().parse("{ \n\tp1 20.2\n p2 0\n }").toString(),
+				"[p1 20.2, p2 0]");
+
 	}
 	
-	@Test public void testExpression() {
-		assertEquals(npf.expression().parse("size 23"), new SizeExpression(23));
-	}
+
 	
-	@Test public void testSizeExpression() {
-		assertEquals(npf.sizeExpression().parse("size 5"), new SizeExpression(5));
-		assertEquals(npf.sizeExpression().parse("size     2"), new SizeExpression(2));
-	}
 	
 	@Test public void testWhitespaceInteger() {
 		assertEquals(npf.whitespaceInteger().parse("   4"), new Integer(4));
@@ -78,7 +97,7 @@ public class TestNeuralParserFactory {
 	
 	@Test(expected=ParserException.class)
 	public void testCrappyGrammar() {
-		npf.block().parse("{ blah 234}");
+		npf.block().parse("{ -blah 234}");
 	}
 
 }

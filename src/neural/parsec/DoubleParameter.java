@@ -14,6 +14,6 @@ public class DoubleParameter extends Parameter{
 	}
 	
 	public String toString() {
-		return "Name: "+getName()+", Value: "+value;
+		return getName()+" "+value.toString();
 	}
 }

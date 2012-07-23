@@ -143,7 +143,11 @@ public class NeuralParserFactory {
 
 
 	protected Parser<Double> whitespaceDouble() {
-		return Scanners.WHITESPACES.next(Scanners.DECIMAL).map(new Map<String, Double>() {
+		return Scanners.WHITESPACES.next(decimal());
+	}
+	
+	protected Parser<Double> decimal() {
+		return Scanners.DECIMAL.map(new Map<String, Double>() {
 
 			public Double map(String arg0) {
 				return Double.parseDouble(arg0);
@@ -218,5 +222,15 @@ public class NeuralParserFactory {
 							}
 					    	   
 				       });
+	}
+	
+	protected Parser<List<Double>> dataRow() {
+		return decimal().sepBy(Scanners.WHITESPACES);
+	}
+	
+	protected Parser<List<List<Double>>> dataBlock() {
+		return Parsers.between(Scanners.string("{").next(Scanners.WHITESPACES.optional()), 
+				               dataRow().sepBy(Scanners.string(",").next(Scanners.WHITESPACES.optional())),
+				               Scanners.WHITESPACES.optional().next(Scanners.string("}")));
 	}
 }

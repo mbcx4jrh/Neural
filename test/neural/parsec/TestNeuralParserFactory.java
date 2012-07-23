@@ -39,6 +39,24 @@ public class TestNeuralParserFactory {
 				npf.networkBlock().parse("parameters { size 45 } layer { activation sigmoid size 3 }").toString());
 	}
 	
+	@Test public void testDataBlock() {
+		assertEquals("[[0.0, 0.1, 1.0], [1.2, 20.0, 0.0010]]", 
+				npf.dataBlock().parse("{ 0.0 0.1 1.0, 1.2 20 0.001 }").toString());
+		assertEquals("[[0.0], [1.2]]", 
+				npf.dataBlock().parse("{ 0.0, 1.2 }").toString());
+		assertEquals("[[0.0, 0.1, 1.0]]", 
+				npf.dataBlock().parse("{ 0.0 0.1 1.0}").toString());
+	
+	}
+	
+	@Test public void testDataRow() {
+		assertEquals("[0.0, 0.1, 1.0]", npf.dataRow().parse("0.0 0.1 1.0").toString());
+	}
+	
+	@Test public void testDecimal() {
+		assertEquals(new Double(0.1), npf.decimal().parse("0.1"));
+	}
+	
 	@Test public void testType() {
 		assertEquals("doodaa", npf.type().parse("type doodaa"));
 	}

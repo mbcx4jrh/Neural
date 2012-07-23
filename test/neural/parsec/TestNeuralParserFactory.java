@@ -39,6 +39,10 @@ public class TestNeuralParserFactory {
 				npf.networkBlock().parse("parameters { size 45 } layer { activation sigmoid size 3 }").toString());
 	}
 	
+	@Test public void testType() {
+		assertEquals("doodaa", npf.type().parse("type doodaa"));
+	}
+	
 	@Test public void testError() {
 		assertEquals(new ErrorCondition(0.01), npf.error().parse(" error 1%"));
 	}

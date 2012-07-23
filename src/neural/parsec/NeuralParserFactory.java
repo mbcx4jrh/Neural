@@ -152,6 +152,12 @@ public class NeuralParserFactory {
 		});
 	}
 	
+	protected Parser<String> type() {
+		return Scanners.string("type")
+				       .next(Scanners.WHITESPACES)
+				       .next(identifier());
+	}
+	
 	protected Parser<Parameter> parameter() {
 		//return Parsers.or(doubleParameter(), integerParameter());
 		return Parsers.longer(integerParameter(), doubleParameter());
@@ -206,11 +212,11 @@ public class NeuralParserFactory {
 				       .next(percentage())
 				       .map(new Map<Double, ErrorCondition>() {
 
-						@Override
-						public ErrorCondition map(Double from) {
-							return new ErrorCondition(from);
-						}
-				    	   
+							@Override
+							public ErrorCondition map(Double from) {
+								return new ErrorCondition(from);
+							}
+					    	   
 				       });
 	}
 }

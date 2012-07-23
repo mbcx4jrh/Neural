@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import neural.parsec.ast.AsExpression;
+import neural.parsec.ast.Data;
 import neural.parsec.ast.DoubleParameter;
 import neural.parsec.ast.ErrorCondition;
 import neural.parsec.ast.IntegerParameter;
@@ -232,5 +233,18 @@ public class NeuralParserFactory {
 		return Parsers.between(Scanners.string("{").next(Scanners.WHITESPACES.optional()), 
 				               dataRow().sepBy(Scanners.string(",").next(Scanners.WHITESPACES.optional())),
 				               Scanners.WHITESPACES.optional().next(Scanners.string("}")));
+	}
+	
+	protected Parser<Data> inputBlock() {
+		return Scanners.string("input")
+				       .next(Scanners.WHITESPACES)
+				       .next(dataBlock().map(new Map<List<List<Double>>, Data>() {
+
+						@Override
+						public Data map(List<List<Double>> from) {
+							return new Data(from);
+						}
+				    	   
+				       }));
 	}
 }

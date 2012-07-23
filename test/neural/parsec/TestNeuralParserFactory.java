@@ -54,6 +54,12 @@ public class TestNeuralParserFactory {
 				npf.inputBlock().parse("input { 0.0 0.1 1.0, 1.2 20 0.001 }").toString());
 	}
 	
+	@Test public void testOutputBlock() {
+		assertEquals("[[0.0, 0.1, 1.0], [1.2, 20.0, 0.0010]]", 
+				npf.outputBlock().parse("output { 0.0 0.1 1.0, 1.2 20 0.001 }").toString());
+		
+	}
+	
 	@Test public void testDataRow() {
 		assertEquals("[0.0, 0.1, 1.0]", npf.dataRow().parse("0.0 0.1 1.0").toString());
 	}

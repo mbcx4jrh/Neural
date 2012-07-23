@@ -236,7 +236,14 @@ public class NeuralParserFactory {
 	}
 	
 	protected Parser<Data> inputBlock() {
-		return Scanners.string("input")
+		return namedDataBlock("input");
+	}
+	
+	protected Parser<Data> outputBlock() {
+		return namedDataBlock("output");
+	}
+	protected Parser<Data> namedDataBlock(String name) {
+		return Scanners.string(name)
 				       .next(Scanners.WHITESPACES)
 				       .next(dataBlock().map(new Map<List<List<Double>>, Data>() {
 

@@ -1,4 +1,5 @@
-package neural.parsec;
+package neural.parsec.ast;
+
 
 public class SizeExpression extends Expression{
 	

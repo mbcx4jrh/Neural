@@ -1,7 +1,7 @@
 package neural;
 
-import neural.parsec.NetworkDef;
 import neural.parsec.NeuralParserFactory;
+import neural.parsec.ast.NetworkDef;
 
 public class ScriptParser {
 

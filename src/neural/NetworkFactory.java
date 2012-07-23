@@ -1,7 +1,7 @@
 package neural;
 
 import neural.networks.HopfieldNetwork;
-import neural.parsec.NetworkDef;
+import neural.parsec.ast.NetworkDef;
 
 public class NetworkFactory {
 

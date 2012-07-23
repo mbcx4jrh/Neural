@@ -1,7 +1,7 @@
 package neural.networks;
 
 import neural.Network;
-import neural.parsec.NetworkDef;
+import neural.parsec.ast.NetworkDef;
 
 public abstract class AbstractNetwork implements Network {
 	

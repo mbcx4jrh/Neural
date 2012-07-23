@@ -3,6 +3,15 @@ package neural.parsec;
 import java.util.ArrayList;
 import java.util.List;
 
+import neural.parsec.ast.AsExpression;
+import neural.parsec.ast.DoubleParameter;
+import neural.parsec.ast.IntegerParameter;
+import neural.parsec.ast.Layer;
+import neural.parsec.ast.NetworkBlock;
+import neural.parsec.ast.NetworkDef;
+import neural.parsec.ast.NetworkExpression;
+import neural.parsec.ast.Parameter;
+
 import org.codehaus.jparsec.Parser;
 import org.codehaus.jparsec.Parsers;
 import org.codehaus.jparsec.Scanners;

@@ -33,7 +33,7 @@ public class TestLanguage {
 	
 	@Test public void testBasicNet() {
 		Network network = parser.parseScript(basic);
-	//assertNotNull(network);
+	    //assertNotNull(network);
 	}
 
 }

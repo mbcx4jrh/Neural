@@ -1,6 +1,6 @@
 package neural.networks;
 
-import neural.parsec.NetworkDef;
+import neural.parsec.ast.NetworkDef;
 
 
 public class HopfieldNetwork extends AbstractNetwork {

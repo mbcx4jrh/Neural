@@ -1,4 +1,4 @@
-package neural.parsec;
+package neural.parsec.ast;
 
 public class DoubleParameter extends Parameter{
 

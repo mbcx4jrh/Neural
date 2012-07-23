@@ -2,6 +2,13 @@ package neural.parsec;
 
 import static org.junit.Assert.*;
 
+import neural.parsec.ast.AsExpression;
+import neural.parsec.ast.DoubleParameter;
+import neural.parsec.ast.IntegerParameter;
+import neural.parsec.ast.Layer;
+import neural.parsec.ast.NetworkDef;
+import neural.parsec.ast.NetworkExpression;
+
 import org.codehaus.jparsec.error.ParserException;
 import org.junit.Before;
 import org.junit.Test;

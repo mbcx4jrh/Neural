@@ -13,6 +13,7 @@ import neural.parsec.ast.NetworkBlock;
 import neural.parsec.ast.NetworkDef;
 import neural.parsec.ast.NetworkExpression;
 import neural.parsec.ast.Parameter;
+import neural.parsec.ast.TrainingDef;
 
 import org.codehaus.jparsec.Parser;
 import org.codehaus.jparsec.Parsers;
@@ -22,6 +23,7 @@ import org.codehaus.jparsec.Tokens.Fragment;
 import org.codehaus.jparsec.functors.Map;
 import org.codehaus.jparsec.functors.Map2;
 import org.codehaus.jparsec.functors.Map3;
+import org.codehaus.jparsec.functors.Map4;
 
 
 public class NeuralParserFactory {
@@ -213,7 +215,7 @@ public class NeuralParserFactory {
 	}
 	
 	protected Parser<ErrorCondition> error() {
-		return Scanners.WHITESPACES.next(Scanners.string("error"))
+		return Scanners.string("error")
 				       .next(percentage())
 				       .map(new Map<Double, ErrorCondition>() {
 
@@ -242,6 +244,7 @@ public class NeuralParserFactory {
 	protected Parser<Data> outputBlock() {
 		return namedDataBlock("output");
 	}
+	
 	protected Parser<Data> namedDataBlock(String name) {
 		return Scanners.string(name)
 				       .next(Scanners.WHITESPACES)
@@ -253,5 +256,28 @@ public class NeuralParserFactory {
 						}
 				    	   
 				       }));
+	}
+	
+	protected Parser<TrainingDef> training() {
+		return Scanners.string("training")
+				       .next(Scanners.WHITESPACES)
+				       .next(Parsers.between(Scanners.string("{"),
+				    	             Parsers.sequence(Scanners.WHITESPACES.next(type()),
+				    	            		          Scanners.WHITESPACES.next(error()),
+				    	            		          Scanners.WHITESPACES.next(inputBlock()),
+				    	            		          Scanners.WHITESPACES.next(outputBlock()),
+				    	            		          new Map4<String, ErrorCondition, Data, Data, TrainingDef>() {
+
+														@Override
+														public TrainingDef map(
+																String a,
+																ErrorCondition b,
+																Data c, 
+																Data d) {
+															return new TrainingDef(a, b, c, d);
+														}
+				    	   
+				       								  }),
+				    		         Scanners.WHITESPACES.optional().next(Scanners.string("}"))));
 	}
 }

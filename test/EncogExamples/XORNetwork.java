@@ -1,5 +1,9 @@
 package EncogExamples;
 
+import neural.ScriptParser;
+
+import org.junit.Test;
+
 public class XORNetwork {
 	
 	private String network =   "network basic_net is basic {\n" +
@@ -36,5 +40,8 @@ public class XORNetwork {
 							   "}";
 	
 
+	@Test public void trainNetwork() {
+		ScriptParser parser = new ScriptParser();
+	}
 	
 }

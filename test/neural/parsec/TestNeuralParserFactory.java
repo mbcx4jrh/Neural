@@ -27,6 +27,14 @@ public class TestNeuralParserFactory {
 				"Network: jim, type: tiger, params: [size 45], layers: []");
 	}
 	
+	@Test public void testTraining() {
+		assertEquals("type backprop, error 0.01, " +
+					 "input [[0.0, 0.1, 1.0], [1.2, 20.0, 0.0010]], " +
+				     "output [[0.0, 0.1, 1.0], [1.2, 20.0, 0.0010]]",
+				npf.training().parse("training { type backprop error 1%\n input { 0.0 0.1 1.0, 1.2 20 0.001 }\n "+
+		                             "output { 0.0 0.1 1.0, 1.2 20 0.001 } \n}").toString());
+	}
+	
 	@Test public void testLayerdNetwork() {
 		assertEquals("Network: jim, type: tiger, params: [size 45], layers: [(activation sigmoid - size 3)]",
 				npf.networkDef().parse("network jim is tiger { parameters { size 45 } layer { activation sigmoid size 3 } }").toString());
@@ -73,7 +81,7 @@ public class TestNeuralParserFactory {
 	}
 	
 	@Test public void testError() {
-		assertEquals(new ErrorCondition(0.01), npf.error().parse(" error 1%"));
+		assertEquals(new ErrorCondition(0.01), npf.error().parse("error 1%"));
 	}
 	
 	@Test public void testPercentage() {

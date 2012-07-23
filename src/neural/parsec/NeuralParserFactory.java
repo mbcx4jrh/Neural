@@ -196,4 +196,17 @@ public class NeuralParserFactory {
 				                    				                  
 				                    		 Scanners.WHITESPACES.next(Scanners.string("}"))));
 	}
+	
+	protected Parser<Double> percentage() {
+		return Scanners.WHITESPACES.next(Scanners.DECIMAL)
+				                   .followedBy(Scanners.string("%"))
+				                   .map(new Map<String, Double>() {
+
+									@Override
+									public Double map(String from) {
+										return new Double(Double.valueOf(from)*0.01);
+									}
+				                	   
+				                   });
+	}
 }

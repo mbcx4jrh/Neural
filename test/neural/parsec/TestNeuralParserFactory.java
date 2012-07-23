@@ -37,6 +37,13 @@ public class TestNeuralParserFactory {
 		assertEquals("params: [size 45], layers: [(activation sigmoid - size 3)]", 
 				npf.networkBlock().parse("parameters { size 45 } layer { activation sigmoid size 3 }").toString());
 	} 
+	
+	@Test public void testPercentage() {
+		assertEquals(new Double(0.01), npf.percentage().parse(" 1%"));
+		assertEquals(new Double(1.0), npf.percentage().parse(" 100%"));
+		assertEquals(new Double(5.0), npf.percentage().parse(" 500%"));
+		assertEquals(new Double(0.001), npf.percentage().parse(" 0.1%"));
+	}
 
 	
 	@Test public void testLayer() {

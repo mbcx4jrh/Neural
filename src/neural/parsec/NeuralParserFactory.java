@@ -1,5 +1,6 @@
 package neural.parsec;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.codehaus.jparsec.Parser;
@@ -23,11 +24,6 @@ public class NeuralParserFactory {
 	
 
 	
-
-	
-
-
-
 	protected Parser<Integer> whitespaceInteger() {
 		return Scanners.WHITESPACES.next(Scanners.INTEGER).map(new Map<String, Integer>() {
 
@@ -41,11 +37,11 @@ public class NeuralParserFactory {
 
 
 
-	protected Parser<List<Parameter>> block() {
-		return Parsers.between(Scanners.string("{"),
-				               Scanners.WHITESPACES.skipMany().next(parameterList()), 
-				               Scanners.WHITESPACES.skipMany().next(Scanners.string("}")));
-	}
+//	protected Parser<List<Parameter>> block() {
+//		return Parsers.between(Scanners.string("{"),
+//				Scanners.WHITESPACES.skipMany().next(parameterList()), 
+//				Scanners.WHITESPACES.skipMany().next(Scanners.string("}")));
+//}
 
 
 	protected Parser<AsExpression> asExpression() {
@@ -84,17 +80,34 @@ public class NeuralParserFactory {
 
 	protected Parser<NetworkDef> networkDef() {
 		return Parsers.sequence(networkExpression(), 
-							    Scanners.WHITESPACES.skipMany().next(asExpression()), 
-							    Scanners.WHITESPACES.skipMany().next(block()),
-				new Map3<NetworkExpression, AsExpression, List<Parameter>, NetworkDef>() {
+							    Scanners.WHITESPACES.next(asExpression()), 
+							    Parsers.between(Scanners.WHITESPACES.optional().next(Scanners.string("{")), 
+							            		Scanners.WHITESPACES.optional().next(networkBlock()), 
+							            		Scanners.WHITESPACES.optional().next(Scanners.string("}"))),
+				new Map3<NetworkExpression, AsExpression, NetworkBlock, NetworkDef>() {
 
 					@Override
 					public NetworkDef map(NetworkExpression a, AsExpression b,
-							List<Parameter> d) {
+							NetworkBlock d) {
 						return new NetworkDef(a.getName(), b.getType(), d);
 					}
 					
 				});
+	}
+	
+	protected Parser<NetworkBlock> networkBlock() {
+		return Parsers.sequence(parameterList().optional(), 
+				                Scanners.WHITESPACES.optional().next(layer().sepBy(Scanners.WHITESPACES)), 
+				                new Map2<List<Parameter>, List<Layer>, NetworkBlock>() {
+
+					@Override
+					public NetworkBlock map(List<Parameter> a, List<Layer> b) {
+						if (a == null) a = new ArrayList<Parameter>();
+						return new NetworkBlock(a, b);
+					}
+
+			});
+		
 	}
 
 
@@ -145,7 +158,9 @@ public class NeuralParserFactory {
 	}
 	
 	protected Parser<List<Parameter>> parameterList() {
-		return parameter().sepBy(Scanners.WHITESPACES);
+		return Parsers.between(Scanners.string("parameters {").next(Scanners.WHITESPACES.optional()), 
+				                             parameter().sepBy(Scanners.WHITESPACES), 
+				                             Scanners.WHITESPACES.optional().next(Scanners.string("}")));
 	}
 	
 	protected Parser<Integer> size() {

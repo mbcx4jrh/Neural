@@ -11,7 +11,7 @@ import org.junit.Test;
 
 public class US01_Basics {
 	
-	private String GIBBERISH = "network joe is hopfield { size 2}";
+	private String GIBBERISH = "network joe is hopfield { parameters { size 2 } }";
 
 	@Test public void simpleInstantiation() {
 		ScriptParser parser = new ScriptParser();

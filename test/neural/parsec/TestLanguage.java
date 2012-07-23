@@ -1,5 +1,6 @@
 package neural.parsec;
 
+import static org.junit.Assert.*;
 import neural.Network;
 import neural.ScriptParser;
 
@@ -12,7 +13,7 @@ public class TestLanguage {
 				           "    layer {\n" +
 				           "        activation input\n" +
 				           "        size 2\n" +
-				           "    }\n	 +" +
+				           "    }\n	 " +
 				           "    layer {\n" +
 				           "        activation sigmoid\n" +
 				           "        size 3\n" +
@@ -21,7 +22,7 @@ public class TestLanguage {
 				           "        activation sigmoid\n" +
 				           "        size 1\n" +
 				           "    }\n"+
-				           "}\n"; 
+				           "}"; 
 	
 	private ScriptParser parser;
 	
@@ -31,7 +32,8 @@ public class TestLanguage {
 	
 	
 	@Test public void testBasicNet() {
-		//Network network = parser.parseScript(basic);
+		Network network = parser.parseScript(basic);
+	//assertNotNull(network);
 	}
 
 }

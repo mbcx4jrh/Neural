@@ -7,11 +7,13 @@ public class NetworkDef {
 	private String name;
 	private String type;
 	private List<Parameter> params;
+	private List<Layer> layers;
 
-	public NetworkDef(String name, String type, List<Parameter> params) {
+	public NetworkDef(String name, String type, NetworkBlock block) {
 		this.name = name;
 		this.type = type;
-		this.params = params;
+		this.params = block.getParams();
+		this.layers = block.getLayers();
 	}
 
 	public String getName() {
@@ -25,7 +27,9 @@ public class NetworkDef {
 
 	
 	public String toString() {
-		return "Network: "+name+", type: "+type+", params: "+params; 
+		String s = "Network: "+name+", type: "+type;
+		s = s + ", params: "+params +", layers: "+layers;
+		return s;
 	}
 
 }

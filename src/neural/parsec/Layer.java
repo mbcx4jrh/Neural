@@ -17,4 +17,8 @@ public class Layer {
 	public int getSize() {
 		return size;
 	}
+	
+	public String toString() {
+		return "(activation "+activation+" - size "+size+")";
+	}
 }

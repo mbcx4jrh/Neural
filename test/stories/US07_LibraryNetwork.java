@@ -12,7 +12,9 @@ public class US07_LibraryNetwork {
 	private ScriptParser parser;
 	
 	private String hopfield1 = " network joe is hopfield {\n" +
-							   "  size 5\n"+
+	                           "  parameters {\n"+
+							   "    size 5\n"+
+	                           "  }\n" +
 							   "}";
 	
 	@Before public void setUp() {

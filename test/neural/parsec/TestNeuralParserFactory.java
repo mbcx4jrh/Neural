@@ -1,9 +1,10 @@
 package neural.parsec;
 
-import static org.junit.Assert.*;
-
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import neural.parsec.ast.AsExpression;
 import neural.parsec.ast.DoubleParameter;
+import neural.parsec.ast.ErrorCondition;
 import neural.parsec.ast.IntegerParameter;
 import neural.parsec.ast.Layer;
 import neural.parsec.ast.NetworkDef;
@@ -36,7 +37,11 @@ public class TestNeuralParserFactory {
 	@Test public void testNetworkBlock() {
 		assertEquals("params: [size 45], layers: [(activation sigmoid - size 3)]", 
 				npf.networkBlock().parse("parameters { size 45 } layer { activation sigmoid size 3 }").toString());
-	} 
+	}
+	
+	@Test public void testError() {
+		assertEquals(new ErrorCondition(0.01), npf.error().parse(" error 1%"));
+	}
 	
 	@Test public void testPercentage() {
 		assertEquals(new Double(0.01), npf.percentage().parse(" 1%"));

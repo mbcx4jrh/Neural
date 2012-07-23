@@ -5,6 +5,7 @@ import java.util.List;
 
 import neural.parsec.ast.AsExpression;
 import neural.parsec.ast.DoubleParameter;
+import neural.parsec.ast.ErrorCondition;
 import neural.parsec.ast.IntegerParameter;
 import neural.parsec.ast.Layer;
 import neural.parsec.ast.NetworkBlock;
@@ -42,16 +43,6 @@ public class NeuralParserFactory {
 				
 		});
 	}
-
-
-
-
-//	protected Parser<List<Parameter>> block() {
-//		return Parsers.between(Scanners.string("{"),
-//				Scanners.WHITESPACES.skipMany().next(parameterList()), 
-//				Scanners.WHITESPACES.skipMany().next(Scanners.string("}")));
-//}
-
 
 	protected Parser<AsExpression> asExpression() {
 		return Scanners.string("is").next(Scanners.WHITESPACES)
@@ -208,5 +199,18 @@ public class NeuralParserFactory {
 									}
 				                	   
 				                   });
+	}
+	
+	protected Parser<ErrorCondition> error() {
+		return Scanners.WHITESPACES.next(Scanners.string("error"))
+				       .next(percentage())
+				       .map(new Map<Double, ErrorCondition>() {
+
+						@Override
+						public ErrorCondition map(Double from) {
+							return new ErrorCondition(from);
+						}
+				    	   
+				       });
 	}
 }

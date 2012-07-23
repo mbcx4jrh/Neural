@@ -60,6 +60,14 @@ public class NeuralParserFactory {
 									});
 	}
 
+	protected Parser<String> identifier() {
+		return Terminals.Identifier.TOKENIZER.map(new Map<Fragment, String>(){
+
+			public String map(Fragment from) {
+				return from.toString();
+			}
+		});
+	}
 
 	protected Parser<NetworkExpression> networkExpression() {
 		return Scanners.string("network").next(Scanners.WHITESPACES)
@@ -139,6 +147,29 @@ public class NeuralParserFactory {
 	protected Parser<List<Parameter>> parameterList() {
 		return parameter().sepBy(Scanners.WHITESPACES);
 	}
+	
+	protected Parser<Integer> size() {
+		return Scanners.string("size").next(whitespaceInteger());
+	}
 
-
+	protected Parser<String> activation() {
+		return Scanners.string("activation").next(Scanners.WHITESPACES).next(identifier());
+	}
+	
+	protected Parser<Layer> layer() {
+		return Scanners.string("layer")
+				       .next(Scanners.WHITESPACES)
+				       .next(Parsers.between(Scanners.string("{"), 
+				                    		 Scanners.WHITESPACES
+				                    		 .next(Parsers.sequence(activation(), 
+				                    				          Scanners.WHITESPACES 
+				                    				                  .next(size()),
+				                    				                  new Map2<String, Integer, Layer>() {
+				                    				                	  public Layer map(String s, Integer i) {
+				                    				                		  return new Layer(s, i);
+				                    				                	  }
+				                    				                  })), 
+				                    				                  
+				                    		 Scanners.WHITESPACES.next(Scanners.string("}"))));
+	}
 }

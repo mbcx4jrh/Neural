@@ -1,6 +1,6 @@
 package neural.parsec;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 import org.codehaus.jparsec.error.ParserException;
 import org.junit.Before;
@@ -19,7 +19,24 @@ public class TestNeuralParserFactory {
 				"Network: jim, type: tiger, params: [size 45]");
 	}
 	
-
+	@Test public void testLayer() {
+		Layer l = npf.layer().parse("layer { activation sigmoid size 2 }");
+		assertNotNull(l);
+		assertEquals("sigmoid", l.getActivation());
+		assertEquals(2, l.getSize());
+	}
+	
+	@Test public void testIdentifier() {
+		assertEquals("blunder", npf.identifier().parse("blunder"));
+	}
+	
+	@Test public void testActivation() {
+		assertEquals("sigmoid", npf.activation().parse("activation sigmoid"));
+	}
+	
+	@Test public void testSize() {
+		assertEquals(new Integer(2), npf.size().parse("size 2"));
+	}
 	
 	@Test public void testParameterList() {
 		assertEquals(npf.parameterList().parse("p1 23 p2 3.4").toString(), 

@@ -42,10 +42,12 @@ public class XORNetwork {
 									   "}";
 	
 
-	@Test public void trainNetwork() {
-		ScriptParser parser = new ScriptParser();
+	@Test public void createNetwork() {
+		ScriptParser parser = new ScriptParser(); 
 		Network network = parser.parseScript(network_script+training_script);
 		assertNotNull(network);
+		assertEquals("basic", network.getType());
+		assertEquals("basic_net", network.getName());
 	}
-	
+
 }

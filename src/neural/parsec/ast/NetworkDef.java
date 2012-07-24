@@ -12,8 +12,10 @@ public class NetworkDef {
 	public NetworkDef(String name, String type, NetworkBlock block) {
 		this.name = name;
 		this.type = type;
-		this.params = block.getParams();
-		this.layers = block.getLayers();
+		if (block != null) {
+			this.params = block.getParams();
+			this.layers = block.getLayers();
+		}
 	}
 
 	public String getName() {

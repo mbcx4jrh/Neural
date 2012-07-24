@@ -24,7 +24,7 @@ public class US07_LibraryNetwork {
 	@Test public void hopfield() { 
 		Network net = parser.parseScript(hopfield1);
 		assertEquals("Network name", "joe", net.getName());
-		assertEquals("Network type", "hopfield", net.getType());
+		assertEquals("Network type", "hopfield", net.getType()); 
 		//assertEquals("Network size", 5, net.getSize());
 	}
 

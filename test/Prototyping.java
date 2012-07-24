@@ -2,7 +2,6 @@ import static org.junit.Assert.assertEquals;
 
 import org.codehaus.jparsec.Parser;
 import org.codehaus.jparsec.Scanners;
-
 import org.codehaus.jparsec.Terminals;
 import org.codehaus.jparsec.Tokens.Fragment;
 import org.junit.Test;

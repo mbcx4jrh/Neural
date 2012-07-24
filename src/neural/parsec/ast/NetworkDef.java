@@ -26,6 +26,9 @@ public class NetworkDef {
 		return type;
 	}
 
+	public List<Layer> getLayers() {
+		return layers;
+	}
 
 	
 	public String toString() {

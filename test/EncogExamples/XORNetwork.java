@@ -1,7 +1,11 @@
 package EncogExamples;
 
+import static neural.test.Assert.assertEqualWithin;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+
+import java.util.Arrays;
+
 import neural.Network;
 import neural.ScriptParser;
 import neural.networks.encog.EncogBasicNetwork;
@@ -15,10 +19,12 @@ public class XORNetwork {
 							           "    layer {\n" +
 							           "        activation input\n" +
 							           "        size 2\n" +
+							           "        biased\n" +
 							           "    }\n	 " +
 							           "    layer {\n" +
 							           "        activation sigmoid\n" +
 							           "        size 3\n" +
+							           "        biased \n" +
 							           "    }\n" +
 							           "    layer {\n" +
 							           "        activation sigmoid\n" +
@@ -27,8 +33,8 @@ public class XORNetwork {
 							           "}\n"; 
 	
 	private String training_script =   "training {\n" +
-									   "  type resilient_backpropagation\n"+
-									   "  error 1%\n" +
+									   "  type resilient_propagation\n"+
+									   "  error 0.01%\n" +
 									   "  input {\n" +
 									   "    0.0 0.0,\n" +
 									   "    0.0 0.1,\n" +
@@ -54,10 +60,20 @@ public class XORNetwork {
 	}
 	
 	@Test public void trainNetwork() {
+		
+	    double[][] input = new double[][] { { 0.0, 0.0}, {1.0, 0.0}, {0.0, 1.0}, {1.0, 1.0} };
+	    double[][] output = new double[][] { {0.0}, {1.0}, {1.0}, {0.0} };
+		
 		ScriptParser parser = new ScriptParser(); 
 		Network network = parser.parseScript(network_script+training_script);
 		network.train(); 
-	}
+		double[] result = new double[1];
+		for (int i = 0; i< 4; i++) {
+			network.compute(input[i], result);
+			System.out.println("v"+i+" input: "+Arrays.toString(input[i])+" output:"+Arrays.toString(result));
+			assertEqualWithin(0.1, output[i], result);
+		}
+	} 
 	
 	
 	@SuppressWarnings("unused")

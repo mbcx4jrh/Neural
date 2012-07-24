@@ -24,6 +24,10 @@ public abstract class AbstractNetwork implements Network {
 		throw new UnsupportedOperationException("Not implemented in your network");
 	}
 	
+	public void compute(double[] input, double[] output) {
+		throw new UnsupportedOperationException("Not implemented in your network");
+	}
+	
 	public void initNetwork(NetworkDef def) {
 		this.name = def.getName();
 		this.type = def.getType(); 

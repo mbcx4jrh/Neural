@@ -1,7 +1,6 @@
 package stories;
 
 import static org.junit.Assert.assertNotNull;
-
 import neural.Network;
 import neural.ScriptParser;
 

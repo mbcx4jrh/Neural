@@ -203,15 +203,15 @@ public class NeuralParserFactory {
 				       .next(Parsers.between(Scanners.string("{"), 
 				                    		 Scanners.WHITESPACES
 				                    		 .next(Parsers.sequence(activation(), 
-				                    				          Scanners.WHITESPACES 
-				                    				                  .next(size()),
-				                    				                  new Map2<String, Integer, Layer>() {
-				                    				                	  public Layer map(String s, Integer i) {
-				                    				                		  return new Layer(s, i);
+				                    			   Scanners.WHITESPACES.next(size()),
+				                    			   Scanners.WHITESPACES.next(biased()).atomic().optional(),
+				                    				                  new Map3<String, Integer, Boolean, Layer>() {
+				                    				                	  public Layer map(String s, Integer i, Boolean b) {
+				                    				                		  return new Layer(s, i, b);
 				                    				                	  }
 				                    				                  })), 
 				                    				                  
-				                    		 Scanners.WHITESPACES.next(Scanners.string("}"))));
+				                    				Scanners.WHITESPACES.next(Scanners.string("}"))));
 	}
 	
 	protected Parser<Double> percentage() {
@@ -221,7 +221,7 @@ public class NeuralParserFactory {
 
 									@Override
 									public Double map(String from) {
-										return new Double(Double.valueOf(from)*0.01);
+										return new Double(Double.valueOf(from)/100);
 									}
 				                	   
 				                   });
@@ -292,5 +292,17 @@ public class NeuralParserFactory {
 				    	   
 				       								  }),
 				    		         Scanners.WHITESPACES.optional().next(Scanners.string("}"))));
+	}
+	
+	protected Parser<Boolean> biased() {
+		//return Terminals.("biased").map(new Map<String, Boolean>() {
+		return Scanners.string("biased").map(new Map<Void, Boolean>() {
+
+			@Override
+			public Boolean map(Void from) {
+				return Boolean.TRUE;
+			}
+			
+		});
 	}
 }

@@ -1,6 +1,6 @@
 package neural.parsec;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
 import neural.Network;
 import neural.ScriptParser;
 
@@ -33,7 +33,7 @@ public class TestLanguage {
 	
 	@Test public void testBasicNet() {
 		Network network = parser.parseScript(basic);
-	    assertNotNull(network);
+	    assertNotNull(network); 
 	}
 
 }

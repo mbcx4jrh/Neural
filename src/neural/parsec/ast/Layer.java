@@ -4,10 +4,17 @@ public class Layer {
 	
 	private String activation;
 	private int size;
+	private boolean biased;
 	
-	public Layer(String activation, Integer size) {
+	public boolean isBiased() {
+		return biased;
+	}
+
+	public Layer(String activation, Integer size, Boolean biased) {
 		this.activation = activation;
 		this.size = size.intValue();
+		if (biased == null) this.biased = false;
+		else this.biased = biased.booleanValue();
 	}
 
 	public String getActivation() {
@@ -19,6 +26,9 @@ public class Layer {
 	}
 	
 	public String toString() {
-		return "(activation "+activation+" - size "+size+")";
+		String s = "(activation "+activation+" - size "+size;
+		if (biased) s = s+" - biased";
+		s=s+")";
+		return s;
 	}
 }

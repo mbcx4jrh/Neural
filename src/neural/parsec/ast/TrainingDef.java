@@ -4,6 +4,22 @@ import java.util.Arrays;
 
 public class TrainingDef {
 	
+	public String getType() {
+		return type;
+	}
+
+	public double getError() {
+		return error;
+	}
+
+	public double[][] getInputData() {
+		return inputData;
+	}
+
+	public double[][] getOutputData() {
+		return outputData;
+	}
+
 	private String type;
 	private double error;
 	private double[][] inputData;

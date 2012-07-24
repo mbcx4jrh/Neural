@@ -47,6 +47,8 @@ public class TestNeuralParserFactory {
 	@Test public void testNetworkBlock() {
 		assertEquals("params: [size 45], layers: [(activation sigmoid - size 3)]", 
 				npf.networkBlock().parse("parameters { size 45 } layer { activation sigmoid size 3 }").toString());
+		assertEquals("params: [size 45], layers: [(activation sigmoid - size 3 - biased)]", 
+				npf.networkBlock().parse("parameters { size 45 } layer { activation sigmoid size 3 biased }").toString());
 	}
 	
 	@Test public void testDataBlock() {
@@ -74,6 +76,10 @@ public class TestNeuralParserFactory {
 		assertEquals("[0.0, 0.1, 1.0]", npf.dataRow().parse("0.0 0.1 1.0").toString());
 	}
 	
+	@Test public void testBiased() {
+		assertEquals(Boolean.TRUE, npf.biased().parse("biased"));
+	}
+	
 	@Test public void testDecimal() {
 		assertEquals(new Double(0.1), npf.decimal().parse("0.1"));
 	}
@@ -95,10 +101,11 @@ public class TestNeuralParserFactory {
 
 	
 	@Test public void testLayer() {
-		Layer l = npf.layer().parse("layer { activation sigmoid size 2 }");
+		Layer l = npf.layer().parse("layer { activation sigmoid size 2 biased }");
 		assertNotNull(l);
 		assertEquals("sigmoid", l.getActivation());
 		assertEquals(2, l.getSize());
+		assertEquals(true, l.isBiased());
 	}
 	
 	@Test public void testIdentifier() {

@@ -11,5 +11,7 @@ public interface Network {
 	
 	public void train();
 	
+	public void compute(double[] input, double[] output);
+	
 	
 }

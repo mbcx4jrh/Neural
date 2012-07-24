@@ -23,8 +23,10 @@ public class TestNeuralParserFactory {
 	}
 	
 	@Test public void testFactoryMethod() {
-		assertEquals(npf.getNeuralParser().parse(" network jim is tiger { parameters { size 45 } }").toString(), 
-				"Network: jim, type: tiger, params: [size 45], layers: []");
+		Script script = npf.getNeuralParser().parse(" network jim is tiger { parameters { size 45 } }");
+		assertNotNull(script);
+		assertEquals(script.toString(), 
+				"Network: jim, type: tiger, params: [size 45], layers: [] | null");
 	}
 	
 	@Test public void testTraining() {

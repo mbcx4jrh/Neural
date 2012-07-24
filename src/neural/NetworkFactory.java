@@ -1,15 +1,16 @@
 package neural;
 
 import neural.networks.HopfieldNetwork;
-import neural.parsec.ast.NetworkDef;
+import neural.networks.NullNetwork;
+import neural.parsec.Script;
 
 public class NetworkFactory {
 
-	public Network getNetwork(NetworkDef definition) {
-		if (!definition.getType().equals("hopfield")) 
-			return null;
+	public Network getNetwork(Script definition) {
+		if (!definition.getNetworkDef().getType().equals("hopfield")) 
+			return new NullNetwork();
 		
-		return new HopfieldNetwork(definition);
+		return new HopfieldNetwork(definition.getNetworkDef());
 	}
 
 }

@@ -114,8 +114,21 @@ public class NeuralParserFactory {
 	}
 
 
-	public Parser<NetworkDef> getNeuralParser() {
-		return Scanners.WHITESPACES.skipMany().next(networkDef());
+	public Parser<Script> getNeuralParser() {
+
+		return Scanners.WHITESPACES.optional()
+				.next(Parsers.sequence(networkDef(),
+						               Scanners.WHITESPACES.optional().next(training().optional()),
+						               new Map2<NetworkDef, TrainingDef, Script>() {
+
+										@Override
+										public Script map(NetworkDef a,
+												TrainingDef b) {
+											return new Script(a, b);
+										}
+					
+				})).followedBy(Scanners.WHITESPACES.optional());
+	
 	}
 
 

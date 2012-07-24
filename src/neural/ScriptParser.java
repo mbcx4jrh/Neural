@@ -1,7 +1,7 @@
 package neural;
 
 import neural.parsec.NeuralParserFactory;
-import neural.parsec.ast.NetworkDef;
+import neural.parsec.Script;
 
 public class ScriptParser {
 
@@ -15,7 +15,7 @@ public class ScriptParser {
 	
 	public Network parseScript(String script) {
 		
-		NetworkDef definition = parserFactory.getNeuralParser().parse(script);
+		Script definition = parserFactory.getNeuralParser().parse(script);
 		return networkFactory.getNetwork(definition);
 	}
 

@@ -1,9 +1,12 @@
 package EncogExamples;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import neural.Network;
 import neural.ScriptParser;
+import neural.networks.encog.EncogBasicNetwork;
 
+import org.junit.Before;
 import org.junit.Test;
 
 public class XORNetwork {
@@ -48,6 +51,18 @@ public class XORNetwork {
 		assertNotNull(network);
 		assertEquals("basic", network.getType());
 		assertEquals("basic_net", network.getName());
+	}
+	
+	@Test public void trainNetwork() {
+		ScriptParser parser = new ScriptParser(); 
+		Network network = parser.parseScript(network_script+training_script);
+		network.train(); 
+	}
+	
+	
+	@SuppressWarnings("unused")
+	@Before public void inifiTestFix() {
+		EncogBasicNetwork n = new EncogBasicNetwork();
 	}
 
 }

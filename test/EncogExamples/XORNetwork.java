@@ -34,10 +34,10 @@ public class XORNetwork {
 	
 	private String training_script =   "training {\n" +
 									   "  type resilient_propagation\n"+
-									   "  error 0.01%\n" +
+									   "  error 0.1%\n" +
 									   "  input {\n" +
 									   "    0.0 0.0,\n" +
-									   "    0.0 0.1,\n" +
+									   "    0.0 1.0,\n" +
 									   "    1.0 0.0,\n" +
 									   "    1.0 1.0\n" +
 									   "  }\n" +
@@ -72,12 +72,13 @@ public class XORNetwork {
 			network.compute(input[i], result);
 			System.out.println("v"+i+" input: "+Arrays.toString(input[i])+" output:"+Arrays.toString(result));
 			assertEqualWithin(0.1, output[i], result);
+			
 		}
 	} 
 	
 	
 	@SuppressWarnings("unused")
-	@Before public void inifiTestFix() {
+	@Before public void infiniTestFix() {
 		EncogBasicNetwork n = new EncogBasicNetwork();
 	}
 

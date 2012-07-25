@@ -1,5 +1,7 @@
 package neural.networks.encog;
 
+import java.util.Arrays;
+
 import neural.networks.AbstractNetwork;
 import neural.parsec.ast.Layer;
 import neural.parsec.ast.NetworkDef;
@@ -54,6 +56,8 @@ public class EncogBasicNetwork extends AbstractNetwork {
 	}
 
 	public void train() {
+		System.out.println("Input : "+Arrays.deepToString(trainingDef.getInputData()));
+		System.out.println("output: "+Arrays.deepToString(trainingDef.getOutputData()));
 		MLDataSet dataSet = new BasicMLDataSet(trainingDef.getInputData(), trainingDef.getOutputData());		
 		MLTrain trainer;
 		

@@ -2,13 +2,13 @@ package neural.networks.encog;
 
 import java.util.Arrays;
 
+import neural.NeuralPropertyFactory;
 import neural.networks.AbstractNetwork;
 import neural.parsec.ast.Layer;
 import neural.parsec.ast.NetworkDef;
 import neural.parsec.ast.TrainingDef;
 
 import org.encog.engine.network.activation.ActivationFunction;
-import org.encog.engine.network.activation.ActivationSigmoid;
 import org.encog.ml.data.MLDataSet;
 import org.encog.ml.data.basic.BasicMLDataSet;
 import org.encog.ml.train.MLTrain;
@@ -20,11 +20,14 @@ public class EncogBasicNetwork extends AbstractNetwork {
 
 	private BasicNetwork basicNetwork;
 	private TrainingDef trainingDef;
+	
+	private NeuralPropertyFactory<ActivationFunction> activationFactory;
 
 	@Override
 	public void initNetwork(NetworkDef def) {
 		super.initNetwork(def);
 		basicNetwork = new BasicNetwork();
+		activationFactory = new NeuralPropertyFactory<ActivationFunction>(this.getPropertiesFilename(), "activation");
 		createLayers(def);
 		basicNetwork.getStructure().finalizeStructure();
 		basicNetwork.reset(); // reset weights
@@ -37,15 +40,11 @@ public class EncogBasicNetwork extends AbstractNetwork {
 		for (int i = 0; i < numberOfLayers; i++) {
 
 			layer = def.getLayers().get(i);
-			// convert to abstract factory later
-			if (layer.getActivation().equals("input"))
+			if (layer.getActivation().equals("input")) 
 				activationFunction = null;
-			else if (layer.getActivation().equals("sigmoid"))
-				activationFunction = new ActivationSigmoid();
 			else
-				throw new UnsupportedOperationException(
-						"Need to build in more acitvation types");
-
+				activationFunction = activationFactory.getNewInstance(layer.getActivation());
+			
 			basicNetwork.addLayer(new BasicLayer(activationFunction, layer
 					.isBiased(), layer.getSize()));
 			// System.out.println("Adding layer "+i+" "+layer.toString());

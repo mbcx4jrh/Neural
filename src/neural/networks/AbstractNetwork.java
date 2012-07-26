@@ -8,11 +8,23 @@ public abstract class AbstractNetwork implements Network {
 
 	private String name;
 	private String type;
+	private String propertiesFilename;
 
 	@Override
 	public String getName() {
 		return name;
 	}
+	
+
+	public String getPropertiesFilename() {
+		return propertiesFilename;
+	}
+
+
+	public void setPropertiesFilename(String propertiesFilename) {
+		this.propertiesFilename = propertiesFilename;
+	}
+
 
 	@Override
 	public String getType() {

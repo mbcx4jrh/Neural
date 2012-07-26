@@ -1,5 +1,6 @@
 package neural.networks;
 
+
 public class EncogNetworkFactory extends AbstractNetworkFactory { 
 
 	public EncogNetworkFactory() {
@@ -7,4 +8,5 @@ public class EncogNetworkFactory extends AbstractNetworkFactory {
 		super.setPropertiesFile("properties/encog.properties");
 	}
 
+	
 }

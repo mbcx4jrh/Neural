@@ -26,7 +26,7 @@ public class NeuralPropertyFactory<T> {
 	
 	public T getNewInstance(String name) {
 		String clazz = properties.getProperty(prefix+name);
-		if (clazz == null) throw new NeuralException("Unknown property ("+name+")");
+		if (clazz == null) throw new NeuralException("Unknown property ("+prefix+name+")");
 		try {
 			return (T) Class.forName(clazz).newInstance();
 		} catch (InstantiationException e) {

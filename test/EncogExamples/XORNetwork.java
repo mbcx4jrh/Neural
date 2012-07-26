@@ -44,7 +44,7 @@ public class XORNetwork {
 	@Test
 	public void testActivation() {
 		trainNetwork("sigmoid");
-		//trainNetwork("tanh");
+		trainNetwork("tanh");
 	}
 	
 	

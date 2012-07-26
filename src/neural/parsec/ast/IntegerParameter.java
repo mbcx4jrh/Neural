@@ -1,7 +1,7 @@
 package neural.parsec.ast;
 
 public class IntegerParameter extends Parameter {
-	
+
 	private Integer value;
 
 	public IntegerParameter(String name, Integer value) {
@@ -10,6 +10,6 @@ public class IntegerParameter extends Parameter {
 	}
 
 	public String toString() {
-		return getName()+" "+value.toString();
+		return getName() + " " + value.toString();
 	}
 }

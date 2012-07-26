@@ -6,26 +6,20 @@ import org.codehaus.jparsec.Terminals;
 import org.codehaus.jparsec.Tokens.Fragment;
 import org.junit.Test;
 
-
-
-
 public class Prototyping {
-	
-	
-	//private final static Terminals NOUNS = 
-	
-	
-	@Test public void prototype() {
+
+	// private final static Terminals NOUNS =
+
+	@Test
+	public void prototype() {
 		assertEquals(parseString().parse("abc").toString(), "abc");
 		assertEquals(parseString().parse("asDSD2_ff").toString(), "asDSD2_ff");
-		
-		
+
 	}
 
 	private Parser<Fragment> parseString() {
-		return Terminals.Identifier.TOKENIZER.followedBy(Scanners.WHITESPACES.optional());
+		return Terminals.Identifier.TOKENIZER.followedBy(Scanners.WHITESPACES
+				.optional());
 	}
-	
-	
 
 }

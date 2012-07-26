@@ -4,10 +4,10 @@ import neural.parsec.ast.NetworkDef;
 import neural.parsec.ast.TrainingDef;
 
 public class Script {
-	
+
 	private NetworkDef networkDef;
 	private TrainingDef trainingDef;
-	
+
 	protected Script(NetworkDef networkDef, TrainingDef trainingDef) {
 		this.networkDef = networkDef;
 		this.trainingDef = trainingDef;
@@ -28,8 +28,8 @@ public class Script {
 	public void setTrainingDef(TrainingDef trainingDef) {
 		this.trainingDef = trainingDef;
 	}
-	
+
 	public String toString() {
-		return networkDef+" | "+trainingDef;
+		return networkDef + " | " + trainingDef;
 	}
 }

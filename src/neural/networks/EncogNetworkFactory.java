@@ -12,11 +12,11 @@ import neural.NeuralException;
 import neural.parsec.Script;
 
 public class EncogNetworkFactory implements NetworkFactory {
-	
+
 	private Properties classes;
-	
+
 	private static final String FILENAME = "properties/encog.properties";
-	
+
 	public EncogNetworkFactory() throws NetworkFactoryException {
 		loadProperties();
 	}
@@ -26,21 +26,26 @@ public class EncogNetworkFactory implements NetworkFactory {
 		try {
 			classes.load(new FileInputStream(new File(FILENAME)));
 		} catch (FileNotFoundException e) {
-			throw new NetworkFactoryException("Missing properties file ("+FILENAME+")", e);
+			throw new NetworkFactoryException("Missing properties file ("
+					+ FILENAME + ")", e);
 		} catch (IOException e) {
-			throw new NetworkFactoryException("IO issues when reading file ("+FILENAME+")", e);
+			throw new NetworkFactoryException("IO issues when reading file ("
+					+ FILENAME + ")", e);
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see neural.NetworkFactory#getNetwork(neural.parsec.Script)
 	 */
 	@Override
 	public Network getNetwork(Script definition) {
 		String type = definition.getNetworkDef().getType();
 		String netClass = classes.getProperty(type);
-		if (netClass == null) throw new NeuralException("Unknown network type ("+type+")");
-		
+		if (netClass == null)
+			throw new NeuralException("Unknown network type (" + type + ")");
+
 		AbstractNetwork network;
 		try {
 			network = (AbstractNetwork) Class.forName(netClass).newInstance();
@@ -49,12 +54,13 @@ public class EncogNetworkFactory implements NetworkFactory {
 		} catch (IllegalAccessException e) {
 			throw new NeuralException(e);
 		} catch (ClassNotFoundException e) {
-			throw new NeuralException("Missing class for network ("+netClass+")", e);
+			throw new NeuralException("Missing class for network (" + netClass
+					+ ")", e);
 		}
-		
+
 		network.initNetwork(definition.getNetworkDef());
 		network.initTraining(definition.getTrainingDef());
-		
+
 		return network;
 	}
 

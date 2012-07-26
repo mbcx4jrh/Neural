@@ -1,6 +1,6 @@
 package neural.parsec.ast;
 
-public class DoubleParameter extends Parameter{
+public class DoubleParameter extends Parameter {
 
 	private Double value;
 
@@ -8,12 +8,12 @@ public class DoubleParameter extends Parameter{
 		super(name);
 		this.value = value;
 	}
-	
+
 	public Double getValue() {
 		return value;
 	}
-	
+
 	public String toString() {
-		return getName()+" "+value.toString();
+		return getName() + " " + value.toString();
 	}
 }

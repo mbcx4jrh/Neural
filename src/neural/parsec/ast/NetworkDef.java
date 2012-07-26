@@ -3,7 +3,7 @@ package neural.parsec.ast;
 import java.util.List;
 
 public class NetworkDef {
-	
+
 	private String name;
 	private String type;
 	private List<Parameter> params;
@@ -30,10 +30,9 @@ public class NetworkDef {
 		return layers;
 	}
 
-	
 	public String toString() {
-		String s = "Network: "+name+", type: "+type;
-		s = s + ", params: "+params +", layers: "+layers;
+		String s = "Network: " + name + ", type: " + type;
+		s = s + ", params: " + params + ", layers: " + layers;
 		return s;
 	}
 

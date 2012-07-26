@@ -29,11 +29,13 @@ public abstract class AbstractNetwork implements Network {
 				"Not implemented in your network");
 	}
 
+	@Override
 	public void initNetwork(NetworkDef def) {
 		this.name = def.getName();
 		this.type = def.getType();
 	}
 
+	@Override
 	public void initTraining(TrainingDef def) {
 
 	}

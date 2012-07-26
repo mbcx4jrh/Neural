@@ -1,5 +1,6 @@
 package neural;
 
+import neural.networks.NetworkFactoryException;
 import neural.parsec.NeuralParserFactory;
 import neural.parsec.Script;
 
@@ -10,13 +11,16 @@ public class ScriptParser {
 
 	public ScriptParser() {
 		parserFactory = new NeuralParserFactory();
-		setUnderlyingLibrary("neural.networks.EncogNetworkFactory");
+		setUnderlyingLibrary("neural.networks.EncogNetworkFactory"); 
 	}
 
 	public void setUnderlyingLibrary(String className) {
 		try {
+			
 			networkFactory = (NetworkFactory) Class.forName(className)
 					.newInstance();
+			networkFactory.init();
+			
 		} catch (InstantiationException e) {
 			throw new NeuralException(e);
 		} catch (IllegalAccessException e) {
@@ -24,6 +28,8 @@ public class ScriptParser {
 		} catch (ClassNotFoundException e) {
 			throw new NeuralException("Could not find library class ("
 					+ className + ")", e);
+		} catch (NetworkFactoryException e) {
+			throw new NeuralException(e);
 		}
 	}
 

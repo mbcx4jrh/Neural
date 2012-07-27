@@ -21,7 +21,6 @@ public class NetworkBlock {
 	}
 
 	public String toString() {
-		return "params: " + params.toString() + ", layers: "
-				+ layers.toString();
+		return "params: " + params.toString() + ", layers: " + layers.toString();
 	}
 }

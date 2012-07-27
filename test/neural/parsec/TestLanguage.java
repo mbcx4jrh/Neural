@@ -9,12 +9,9 @@ import org.junit.Test;
 
 public class TestLanguage {
 
-	private String basic = "network basic_net is feedforward {\n" + "    layer {\n"
-			+ "        activation input\n" + "        size 2\n" + "    }\n	 "
-			+ "    layer {\n" + "        activation sigmoid\n"
-			+ "        size 3\n" + "    }\n" + "    layer {\n"
-			+ "        activation sigmoid\n" + "        size 1\n" + "    }\n"
-			+ "}";
+	private String basic = "network basic_net is feedforward {\n" + "    layer {\n" + "        activation input\n"
+			+ "        size 2\n" + "    }\n	 " + "    layer {\n" + "        activation sigmoid\n" + "        size 3\n"
+			+ "    }\n" + "    layer {\n" + "        activation sigmoid\n" + "        size 1\n" + "    }\n" + "}";
 
 	private ScriptParser parser;
 

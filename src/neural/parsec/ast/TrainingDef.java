@@ -33,8 +33,7 @@ public class TrainingDef {
 	}
 
 	public String toString() {
-		return "type " + type + ", error " + error + ", input "
-				+ Arrays.deepToString(inputData) + ", output "
+		return "type " + type + ", error " + error + ", input " + Arrays.deepToString(inputData) + ", output "
 				+ Arrays.deepToString(outputData);
 	}
 

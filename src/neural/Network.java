@@ -8,8 +8,9 @@ public interface Network {
 	public String getName();
 
 	public String getType();
-	
+
 	public String getPropertiesFilename();
+
 	public void setPropertiesFilename(String filename);
 
 	public void train();

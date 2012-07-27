@@ -13,8 +13,7 @@ public abstract class Parameter {
 	}
 
 	public String toString() {
-		return "Name: " + name
-				+ ", Value: Fuckup (abstract class is being used)";
+		return "Name: " + name + ", Value: Fuckup (abstract class is being used)";
 	}
 
 	public boolean equals(Object o) {

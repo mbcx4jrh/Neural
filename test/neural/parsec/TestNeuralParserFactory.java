@@ -25,23 +25,18 @@ public class TestNeuralParserFactory {
 
 	@Test
 	public void testFactoryMethod() {
-		Script script = npf.getNeuralParser().parse(
-				" network jim is tiger { parameters { size 45 } }");
+		Script script = npf.getNeuralParser().parse(" network jim is tiger { parameters { size 45 } }");
 		assertNotNull(script);
-		assertEquals(script.toString(),
-				"Network: jim, type: tiger, params: [size 45], layers: [] | null");
+		assertEquals(script.toString(), "Network: jim, type: tiger, params: [size 45], layers: [] | null");
 	}
 
 	@Test
 	public void testTraining() {
-		assertEquals(
-				"type backprop, error 0.01, "
-						+ "input [[0.0, 0.1, 1.0], [1.2, 20.0, 0.0010]], "
-						+ "output [[0.0, 0.1, 1.0], [1.2, 20.0, 0.0010]]",
-				npf.training()
-						.parse("training { type backprop error 1%\n input { 0.0 0.1 1.0, 1.2 20 0.001 }\n "
-								+ "output { 0.0 0.1 1.0, 1.2 20 0.001 } \n}")
-						.toString());
+		assertEquals("type backprop, error 0.01, " + "input [[0.0, 0.1, 1.0], [1.2, 20.0, 0.0010]], "
+				+ "output [[0.0, 0.1, 1.0], [1.2, 20.0, 0.0010]]", npf
+				.training()
+				.parse("training { type backprop error 1%\n input { 0.0 0.1 1.0, 1.2 20 0.001 }\n "
+						+ "output { 0.0 0.1 1.0, 1.2 20 0.001 } \n}").toString());
 	}
 
 	@Test
@@ -51,64 +46,54 @@ public class TestNeuralParserFactory {
 				npf.networkDef()
 						.parse("network jim is tiger { parameters { size 45 } layer { activation sigmoid size 3 } }")
 						.toString());
-		assertEquals(
-				"Network: jim, type: tiger, params: [], layers: [(activation sigmoid - size 3)]",
-				npf.networkDef()
-						.parse("network jim is tiger { layer { activation sigmoid size 3 } }")
-						.toString());
+		assertEquals("Network: jim, type: tiger, params: [], layers: [(activation sigmoid - size 3)]", npf.networkDef()
+				.parse("network jim is tiger { layer { activation sigmoid size 3 } }").toString());
 	}
 
 	@Test
 	public void testNetworkBlock() {
-		assertEquals(
-				"params: [size 45], layers: [(activation sigmoid - size 3)]",
-				npf.networkBlock()
-						.parse("parameters { size 45 } layer { activation sigmoid size 3 }")
-						.toString());
-		assertEquals(
-				"params: [size 45], layers: [(activation sigmoid - size 3 - biased)]",
-				npf.networkBlock()
-						.parse("parameters { size 45 } layer { activation sigmoid size 3 biased }")
+		assertEquals("params: [size 45], layers: [(activation sigmoid - size 3)]",
+				npf.networkBlock().parse("parameters { size 45 } layer { activation sigmoid size 3 }").toString());
+		assertEquals("params: [size 45], layers: [(activation sigmoid - size 3 - biased)]",
+				npf.networkBlock().parse("parameters { size 45 } layer { activation sigmoid size 3 biased }")
 						.toString());
 	}
-	
-	@Test public void testRestart() {
+
+	@Test
+	public void testRestart() {
 		assertEquals(new Integer(25), npf.restart().parse("restart 25"));
 	}
-	
-	@Test public void testMaxEpoch() {
+
+	@Test
+	public void testMaxEpoch() {
 		assertEquals(new Integer(100), npf.maxEpochs().parse("epochs 100"));
 	}
 
 	@Test
 	public void testDataBlock() {
-		assertEquals("[[0.0, 0.1, 1.0], [1.2, 20.0, 0.0010]]", npf.dataBlock()
-				.parse("{ 0.0 0.1 1.0, 1.2 20 0.001 }").toString());
-		assertEquals("[[0.0], [1.2]]", npf.dataBlock().parse("{ 0.0, 1.2 }")
+		assertEquals("[[0.0, 0.1, 1.0], [1.2, 20.0, 0.0010]]", npf.dataBlock().parse("{ 0.0 0.1 1.0, 1.2 20 0.001 }")
 				.toString());
-		assertEquals("[[0.0, 0.1, 1.0]]",
-				npf.dataBlock().parse("{ 0.0 0.1 1.0}").toString());
+		assertEquals("[[0.0], [1.2]]", npf.dataBlock().parse("{ 0.0, 1.2 }").toString());
+		assertEquals("[[0.0, 0.1, 1.0]]", npf.dataBlock().parse("{ 0.0 0.1 1.0}").toString());
 
 	}
 
 	@Test
 	public void testInputBlock() {
-		assertEquals("[[0.0, 0.1, 1.0], [1.2, 20.0, 0.0010]]", npf.inputBlock()
-				.parse("input { 0.0 0.1 1.0, 1.2 20 0.001 }").toString());
+		assertEquals("[[0.0, 0.1, 1.0], [1.2, 20.0, 0.0010]]",
+				npf.inputBlock().parse("input { 0.0 0.1 1.0, 1.2 20 0.001 }").toString());
 	}
 
 	@Test
 	public void testOutputBlock() {
-		assertEquals("[[0.0, 0.1, 1.0], [1.2, 20.0, 0.0010]]", npf
-				.outputBlock().parse("output { 0.0 0.1 1.0, 1.2 20 0.001 }")
-				.toString());
+		assertEquals("[[0.0, 0.1, 1.0], [1.2, 20.0, 0.0010]]",
+				npf.outputBlock().parse("output { 0.0 0.1 1.0, 1.2 20 0.001 }").toString());
 
 	}
 
 	@Test
 	public void testDataRow() {
-		assertEquals("[0.0, 0.1, 1.0]", npf.dataRow().parse("0.0 0.1 1.0")
-				.toString());
+		assertEquals("[0.0, 0.1, 1.0]", npf.dataRow().parse("0.0 0.1 1.0").toString());
 	}
 
 	@Test
@@ -141,8 +126,7 @@ public class TestNeuralParserFactory {
 
 	@Test
 	public void testLayer() {
-		Layer l = npf.layer().parse(
-				"layer { activation sigmoid size 2 biased }");
+		Layer l = npf.layer().parse("layer { activation sigmoid size 2 biased }");
 		assertNotNull(l);
 		assertEquals("sigmoid", l.getActivation());
 		assertEquals(2, l.getSize());
@@ -166,81 +150,60 @@ public class TestNeuralParserFactory {
 
 	@Test
 	public void testParameterList() {
-		assertEquals(npf.parameterList().parse("parameters { p1 23 p2 3.4 }")
-				.toString(), "[p1 23, p2 3.4]");
-		assertEquals(npf.parameterList().parse("parameters {p1 23 }")
-				.toString(), "[p1 23]");
-		assertEquals(
-				npf.parameterList().parse("parameters {p1 23}").toString(),
-				"[p1 23]");
-		assertEquals(npf.parameterList().parse("parameters { }").toString(),
-				"[]");
+		assertEquals(npf.parameterList().parse("parameters { p1 23 p2 3.4 }").toString(), "[p1 23, p2 3.4]");
+		assertEquals(npf.parameterList().parse("parameters {p1 23 }").toString(), "[p1 23]");
+		assertEquals(npf.parameterList().parse("parameters {p1 23}").toString(), "[p1 23]");
+		assertEquals(npf.parameterList().parse("parameters { }").toString(), "[]");
 	}
 
 	@Test
 	public void testParameter() {
-		assertEquals(npf.parameter().parse("p1 23").getClass(),
-				IntegerParameter.class);
-		assertEquals(npf.parameter().parse("p1 23"), new IntegerParameter("p1",
-				23));
-		assertEquals(npf.parameter().parse("p1 2.3"), new DoubleParameter("p1",
-				2.3));
-		assertEquals(npf.parameter().parse("p1 2.3").getClass(),
-				DoubleParameter.class);
+		assertEquals(npf.parameter().parse("p1 23").getClass(), IntegerParameter.class);
+		assertEquals(npf.parameter().parse("p1 23"), new IntegerParameter("p1", 23));
+		assertEquals(npf.parameter().parse("p1 2.3"), new DoubleParameter("p1", 2.3));
+		assertEquals(npf.parameter().parse("p1 2.3").getClass(), DoubleParameter.class);
 	}
 
 	@Test
 	public void testWhitespaceDouble() {
 		assertEquals(npf.whitespaceDouble().parse(" 0.1"), new Double(0.1));
 		assertEquals(npf.whitespaceDouble().parse("     0.1"), new Double(0.1));
-		assertEquals(npf.whitespaceDouble().parse(" 1231.1231231"), new Double(
-				1231.1231231));
+		assertEquals(npf.whitespaceDouble().parse(" 1231.1231231"), new Double(1231.1231231));
 	}
 
 	@Test
 	public void testDoubleParam() {
-		assertEquals(npf.doubleParameter().parse("df4 0.1"),
-				new DoubleParameter("df4", new Double(0.1)));
-		assertEquals(npf.doubleParameter().parse("df4     0.1"),
-				new DoubleParameter("df4", new Double(0.1)));
-		assertEquals(npf.doubleParameter().parse("p1 2.3"),
-				new DoubleParameter("p1", 2.3));
+		assertEquals(npf.doubleParameter().parse("df4 0.1"), new DoubleParameter("df4", new Double(0.1)));
+		assertEquals(npf.doubleParameter().parse("df4     0.1"), new DoubleParameter("df4", new Double(0.1)));
+		assertEquals(npf.doubleParameter().parse("p1 2.3"), new DoubleParameter("p1", 2.3));
 	}
 
 	@Test
 	public void testIntegerParam() {
-		assertEquals(npf.integerParameter().parse("blah 23"),
-				new IntegerParameter("blah", new Integer(23)));
-		assertEquals(npf.integerParameter().parse("blah   23"),
-				new IntegerParameter("blah", new Integer(23)));
+		assertEquals(npf.integerParameter().parse("blah 23"), new IntegerParameter("blah", new Integer(23)));
+		assertEquals(npf.integerParameter().parse("blah   23"), new IntegerParameter("blah", new Integer(23)));
 	}
 
 	@Test
 	public void testHopfieldNetworkDef() {
 		// test with methods
-		NetworkDef net = npf.networkDef().parse(
-				"network joe is hopfield { parameters { size 5 } }");
+		NetworkDef net = npf.networkDef().parse("network joe is hopfield { parameters { size 5 } }");
 		assertEquals(net.getName(), "joe");
 		assertEquals(net.getType(), "hopfield");
 
 		// use toString for rest of tests..
-		assertEquals(
-				npf.networkDef()
-						.parse("network joe  is kramer{parameters {size 90}}")
-						.toString(),
+		assertEquals(npf.networkDef().parse("network joe  is kramer{parameters {size 90}}").toString(),
 				"Network: joe, type: kramer, params: [size 90], layers: []");
 	}
 
 	@Test
 	public void testNetworkExpression() {
-		assertEquals(npf.networkExpression().parse("network joe"),
-				new NetworkExpression("joe"));
+		assertEquals(npf.networkExpression().parse("network joe"), new NetworkExpression("joe"));
 	}
 
 	@Test
 	public void testAsExpression() {
-		assertEquals(npf.asExpression().parse("is type1"), new AsExpression(
-				"type1"));
+		assertEquals(npf.asExpression().parse("is type1"), new AsExpression("type1"));
 	}
 
 	@Test

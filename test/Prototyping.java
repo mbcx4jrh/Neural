@@ -18,8 +18,7 @@ public class Prototyping {
 	}
 
 	private Parser<Fragment> parseString() {
-		return Terminals.Identifier.TOKENIZER.followedBy(Scanners.WHITESPACES
-				.optional());
+		return Terminals.Identifier.TOKENIZER.followedBy(Scanners.WHITESPACES.optional());
 	}
 
 }

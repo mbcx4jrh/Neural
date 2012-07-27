@@ -14,17 +14,14 @@ public abstract class AbstractNetwork implements Network {
 	public String getName() {
 		return name;
 	}
-	
 
 	public String getPropertiesFilename() {
 		return propertiesFilename;
 	}
 
-
 	public void setPropertiesFilename(String propertiesFilename) {
 		this.propertiesFilename = propertiesFilename;
 	}
-
 
 	@Override
 	public String getType() {
@@ -32,13 +29,11 @@ public abstract class AbstractNetwork implements Network {
 	}
 
 	public void train() {
-		throw new UnsupportedOperationException(
-				"Not implemented in your network");
+		throw new UnsupportedOperationException("Not implemented in your network");
 	}
 
 	public void compute(double[] input, double[] output) {
-		throw new UnsupportedOperationException(
-				"Not implemented in your network");
+		throw new UnsupportedOperationException("Not implemented in your network");
 	}
 
 	@Override

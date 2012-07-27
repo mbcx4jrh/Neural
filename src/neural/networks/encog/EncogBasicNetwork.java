@@ -20,7 +20,7 @@ public class EncogBasicNetwork extends AbstractNetwork {
 
 	private BasicNetwork basicNetwork;
 	private TrainingDef trainingDef;
-	
+
 	private NeuralPropertyFactory<ActivationFunction> activationFactory;
 
 	@Override
@@ -40,13 +40,12 @@ public class EncogBasicNetwork extends AbstractNetwork {
 		for (int i = 0; i < numberOfLayers; i++) {
 
 			layer = def.getLayers().get(i);
-			if (layer.getActivation().equals("input")) 
+			if (layer.getActivation().equals("input"))
 				activationFunction = null;
 			else
 				activationFunction = activationFactory.getNewInstance(layer.getActivation());
-			
-			basicNetwork.addLayer(new BasicLayer(activationFunction, layer
-					.isBiased(), layer.getSize()));
+
+			basicNetwork.addLayer(new BasicLayer(activationFunction, layer.isBiased(), layer.getSize()));
 			// System.out.println("Adding layer "+i+" "+layer.toString());
 		}
 	}
@@ -58,27 +57,22 @@ public class EncogBasicNetwork extends AbstractNetwork {
 	}
 
 	public void train() {
-		System.out.println("Input : "
-				+ Arrays.deepToString(trainingDef.getInputData()));
-		System.out.println("output: "
-				+ Arrays.deepToString(trainingDef.getOutputData()));
-		MLDataSet dataSet = new BasicMLDataSet(trainingDef.getInputData(),
-				trainingDef.getOutputData());
+		System.out.println("Input : " + Arrays.deepToString(trainingDef.getInputData()));
+		System.out.println("output: " + Arrays.deepToString(trainingDef.getOutputData()));
+		MLDataSet dataSet = new BasicMLDataSet(trainingDef.getInputData(), trainingDef.getOutputData());
 		MLTrain trainer;
 
 		// replace with factory
 		if (trainingDef.getType().equals("resilient_propagation"))
 			trainer = new ResilientPropagation(basicNetwork, dataSet);
 		else
-			throw new UnsupportedOperationException(
-					"Havent implemented properly yet");
+			throw new UnsupportedOperationException("Havent implemented properly yet");
 
 		int epoch = 0;
 		do {
 			trainer.iteration();
 			epoch++;
-			System.out.println("Epoch " + epoch + ": error = "
-					+ trainer.getError());
+			System.out.println("Epoch " + epoch + ": error = " + trainer.getError());
 		} while (trainer.getError() > trainingDef.getError());
 
 	}

@@ -27,23 +27,20 @@ import org.codehaus.jparsec.functors.Map4;
 
 public class NeuralParserFactory {
 
-	static final String example = "network joe is hopfield {\n" + "  size 8\n"
-			+ "}";
+	static final String example = "network joe is hopfield {\n" + "  size 8\n" + "}";
 
 	protected Parser<Integer> whitespaceInteger() {
-		return Scanners.WHITESPACES.next(Scanners.INTEGER).map(
-				new Map<String, Integer>() {
+		return Scanners.WHITESPACES.next(Scanners.INTEGER).map(new Map<String, Integer>() {
 
-					public Integer map(String arg0) {
-						return Integer.parseInt(arg0);
-					}
+			public Integer map(String arg0) {
+				return Integer.parseInt(arg0);
+			}
 
-				});
+		});
 	}
 
 	protected Parser<AsExpression> asExpression() {
-		return Scanners.string("is").next(Scanners.WHITESPACES)
-				.next(Terminals.Identifier.TOKENIZER)
+		return Scanners.string("is").next(Scanners.WHITESPACES).next(Terminals.Identifier.TOKENIZER)
 				.map(new Map<Fragment, AsExpression>() {
 
 					public AsExpression map(Fragment from) {
@@ -63,8 +60,7 @@ public class NeuralParserFactory {
 	}
 
 	protected Parser<NetworkExpression> networkExpression() {
-		return Scanners.string("network").next(Scanners.WHITESPACES)
-				.next(Terminals.Identifier.TOKENIZER)
+		return Scanners.string("network").next(Scanners.WHITESPACES).next(Terminals.Identifier.TOKENIZER)
 				.map(new Map<Fragment, NetworkExpression>() {
 
 					public NetworkExpression map(Fragment from) {
@@ -75,33 +71,23 @@ public class NeuralParserFactory {
 	}
 
 	protected Parser<NetworkDef> networkDef() {
-		return Parsers
-				.sequence(
-						networkExpression(),
-						Scanners.WHITESPACES.next(asExpression()),
-						Parsers.between(
-								Scanners.WHITESPACES.optional().next(
-										Scanners.string("{")),
-								Scanners.WHITESPACES.optional().next(
-										networkBlock()), Scanners.WHITESPACES
-										.optional().next(Scanners.string("}"))),
-						new Map3<NetworkExpression, AsExpression, NetworkBlock, NetworkDef>() {
+		return Parsers.sequence(networkExpression(), Scanners.WHITESPACES.next(asExpression()), Parsers.between(
+				Scanners.WHITESPACES.optional().next(Scanners.string("{")),
+				Scanners.WHITESPACES.optional().next(networkBlock()),
+				Scanners.WHITESPACES.optional().next(Scanners.string("}"))),
+				new Map3<NetworkExpression, AsExpression, NetworkBlock, NetworkDef>() {
 
-							@Override
-							public NetworkDef map(NetworkExpression a,
-									AsExpression b, NetworkBlock d) {
-								return new NetworkDef(a.getName(), b.getType(),
-										d);
-							}
+					@Override
+					public NetworkDef map(NetworkExpression a, AsExpression b, NetworkBlock d) {
+						return new NetworkDef(a.getName(), b.getType(), d);
+					}
 
-						});
+				});
 	}
 
 	protected Parser<NetworkBlock> networkBlock() {
-		return Parsers.sequence(
-				parameterList().optional(),
-				Scanners.WHITESPACES.optional().next(
-						layer().sepBy(Scanners.WHITESPACES)),
+		return Parsers.sequence(parameterList().optional(),
+				Scanners.WHITESPACES.optional().next(layer().sepBy(Scanners.WHITESPACES)),
 				new Map2<List<Parameter>, List<Layer>, NetworkBlock>() {
 
 					@Override
@@ -119,8 +105,7 @@ public class NeuralParserFactory {
 
 		return Scanners.WHITESPACES
 				.optional()
-				.next(Parsers.sequence(networkDef(), Scanners.WHITESPACES
-						.optional().next(training().optional()),
+				.next(Parsers.sequence(networkDef(), Scanners.WHITESPACES.optional().next(training().optional()),
 						new Map2<NetworkDef, TrainingDef, Script>() {
 
 							@Override
@@ -133,8 +118,7 @@ public class NeuralParserFactory {
 	}
 
 	protected Parser<IntegerParameter> integerParameter() {
-		return Parsers.sequence(Terminals.Identifier.TOKENIZER,
-				whitespaceInteger(),
+		return Parsers.sequence(Terminals.Identifier.TOKENIZER, whitespaceInteger(),
 				new Map2<Fragment, Integer, IntegerParameter>() {
 
 					@Override
@@ -146,8 +130,7 @@ public class NeuralParserFactory {
 	}
 
 	protected Parser<DoubleParameter> doubleParameter() {
-		return Parsers.sequence(Terminals.Identifier.TOKENIZER,
-				whitespaceDouble(),
+		return Parsers.sequence(Terminals.Identifier.TOKENIZER, whitespaceDouble(),
 				new Map2<Fragment, Double, DoubleParameter>() {
 
 					@Override
@@ -173,8 +156,7 @@ public class NeuralParserFactory {
 	}
 
 	protected Parser<String> type() {
-		return Scanners.string("type").next(Scanners.WHITESPACES)
-				.next(identifier());
+		return Scanners.string("type").next(Scanners.WHITESPACES).next(identifier());
 	}
 
 	protected Parser<Parameter> parameter() {
@@ -183,11 +165,8 @@ public class NeuralParserFactory {
 	}
 
 	protected Parser<List<Parameter>> parameterList() {
-		return Parsers.between(
-				Scanners.string("parameters {").next(
-						Scanners.WHITESPACES.optional()),
-				parameter().sepBy(Scanners.WHITESPACES), Scanners.WHITESPACES
-						.optional().next(Scanners.string("}")));
+		return Parsers.between(Scanners.string("parameters {").next(Scanners.WHITESPACES.optional()), parameter()
+				.sepBy(Scanners.WHITESPACES), Scanners.WHITESPACES.optional().next(Scanners.string("}")));
 	}
 
 	protected Parser<Integer> size() {
@@ -195,33 +174,26 @@ public class NeuralParserFactory {
 	}
 
 	protected Parser<String> activation() {
-		return Scanners.string("activation").next(Scanners.WHITESPACES)
-				.next(identifier());
+		return Scanners.string("activation").next(Scanners.WHITESPACES).next(identifier());
 	}
 
 	protected Parser<Layer> layer() {
 		return Scanners
 				.string("layer")
 				.next(Scanners.WHITESPACES)
-				.next(Parsers.between(Scanners.string("{"),
-						Scanners.WHITESPACES.next(Parsers.sequence(
-								activation(),
-								Scanners.WHITESPACES.next(size()),
-								Scanners.WHITESPACES.next(biased()).atomic()
-										.optional(),
-								new Map3<String, Integer, Boolean, Layer>() {
-									public Layer map(String s, Integer i,
-											Boolean b) {
-										return new Layer(s, i, b);
-									}
-								})),
+				.next(Parsers.between(Scanners.string("{"), Scanners.WHITESPACES.next(Parsers.sequence(activation(),
+						Scanners.WHITESPACES.next(size()), Scanners.WHITESPACES.next(biased()).atomic().optional(),
+						new Map3<String, Integer, Boolean, Layer>() {
+							public Layer map(String s, Integer i, Boolean b) {
+								return new Layer(s, i, b);
+							}
+						})),
 
-						Scanners.WHITESPACES.next(Scanners.string("}"))));
+				Scanners.WHITESPACES.next(Scanners.string("}"))));
 	}
 
 	protected Parser<Double> percentage() {
-		return Scanners.WHITESPACES.next(Scanners.DECIMAL)
-				.followedBy(Scanners.string("%"))
+		return Scanners.WHITESPACES.next(Scanners.DECIMAL).followedBy(Scanners.string("%"))
 				.map(new Map<String, Double>() {
 
 					@Override
@@ -233,15 +205,14 @@ public class NeuralParserFactory {
 	}
 
 	protected Parser<ErrorCondition> error() {
-		return Scanners.string("error").next(percentage())
-				.map(new Map<Double, ErrorCondition>() {
+		return Scanners.string("error").next(percentage()).map(new Map<Double, ErrorCondition>() {
 
-					@Override
-					public ErrorCondition map(Double from) {
-						return new ErrorCondition(from);
-					}
+			@Override
+			public ErrorCondition map(Double from) {
+				return new ErrorCondition(from);
+			}
 
-				});
+		});
 	}
 
 	protected Parser<List<Double>> dataRow() {
@@ -249,12 +220,9 @@ public class NeuralParserFactory {
 	}
 
 	protected Parser<List<List<Double>>> dataBlock() {
-		return Parsers.between(
-				Scanners.string("{").next(Scanners.WHITESPACES.optional()),
-				dataRow().sepBy(
-						Scanners.string(",").next(
-								Scanners.WHITESPACES.optional())),
-				Scanners.WHITESPACES.optional().next(Scanners.string("}")));
+		return Parsers.between(Scanners.string("{").next(Scanners.WHITESPACES.optional()),
+				dataRow().sepBy(Scanners.string(",").next(Scanners.WHITESPACES.optional())), Scanners.WHITESPACES
+						.optional().next(Scanners.string("}")));
 	}
 
 	protected Parser<Data> inputBlock() {
@@ -281,24 +249,17 @@ public class NeuralParserFactory {
 		return Scanners
 				.string("training")
 				.next(Scanners.WHITESPACES)
-				.next(Parsers.between(
-						Scanners.string("{"),
-						Parsers.sequence(
-								Scanners.WHITESPACES.next(type()),
-								Scanners.WHITESPACES.next(error()),
-								Scanners.WHITESPACES.next(inputBlock()),
-								Scanners.WHITESPACES.next(outputBlock()),
-								new Map4<String, ErrorCondition, Data, Data, TrainingDef>() {
+				.next(Parsers.between(Scanners.string("{"), Parsers.sequence(Scanners.WHITESPACES.next(type()),
+						Scanners.WHITESPACES.next(error()), Scanners.WHITESPACES.next(inputBlock()),
+						Scanners.WHITESPACES.next(outputBlock()),
+						new Map4<String, ErrorCondition, Data, Data, TrainingDef>() {
 
-									@Override
-									public TrainingDef map(String a,
-											ErrorCondition b, Data c, Data d) {
-										return new TrainingDef(a, b, c, d);
-									}
+							@Override
+							public TrainingDef map(String a, ErrorCondition b, Data c, Data d) {
+								return new TrainingDef(a, b, c, d);
+							}
 
-								}),
-						Scanners.WHITESPACES.optional().next(
-								Scanners.string("}"))));
+						}), Scanners.WHITESPACES.optional().next(Scanners.string("}"))));
 	}
 
 	protected Parser<Boolean> biased() {
@@ -312,11 +273,11 @@ public class NeuralParserFactory {
 
 		});
 	}
-	
+
 	protected Parser<Integer> maxEpochs() {
 		return Scanners.string("epochs").next(whitespaceInteger());
 	}
-	
+
 	protected Parser<Integer> restart() {
 		return Scanners.string("restart").next(whitespaceInteger());
 	}

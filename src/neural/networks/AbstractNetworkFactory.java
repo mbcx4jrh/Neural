@@ -10,20 +10,18 @@ public abstract class AbstractNetworkFactory implements NetworkFactory {
 	private NeuralPropertyFactory<Network> classes;
 
 	private String filename = "properties/encog.properties";
-	
+
 	public void setPropertiesFile(String filename) {
 		this.filename = filename;
 	}
-	
+
 	public String getPropertiesFile() {
 		return filename;
 	}
-	
+
 	public void init() throws NetworkFactoryException {
 		classes = new NeuralPropertyFactory<Network>(filename, "network");
 	}
-
-	
 
 	/*
 	 * (non-Javadoc)
@@ -33,9 +31,9 @@ public abstract class AbstractNetworkFactory implements NetworkFactory {
 	@Override
 	public Network getNetwork(Script definition) {
 		String type = definition.getNetworkDef().getType();
-		
+
 		Network network = classes.getNewInstance(type);
-		
+
 		network.setPropertiesFilename(filename);
 		network.initNetwork(definition.getNetworkDef());
 		network.initTraining(definition.getTrainingDef());

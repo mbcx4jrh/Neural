@@ -312,4 +312,12 @@ public class NeuralParserFactory {
 
 		});
 	}
+	
+	protected Parser<Integer> maxEpochs() {
+		return Scanners.string("epochs").next(whitespaceInteger());
+	}
+	
+	protected Parser<Integer> restart() {
+		return Scanners.string("restart").next(whitespaceInteger());
+	}
 }

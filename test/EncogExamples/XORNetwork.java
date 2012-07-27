@@ -16,7 +16,7 @@ import org.junit.Test;
 public class XORNetwork {
 
 	private String getNetworkScript(String activation) {
-		return  "network basic_net is basic {\n"
+		return  "network basic_net is feedforward {\n"
 			+ "    layer {\n" + "        activation input\n"
 			+ "        size 2\n" + "        biased\n" + "    }\n	 "
 			+ "    layer {\n" + "        activation "+activation+"\n"
@@ -37,12 +37,12 @@ public class XORNetwork {
 		ScriptParser parser = new ScriptParser();
 		Network network = parser.parseScript(getNetworkScript("sigmoid") + training_script);
 		assertNotNull(network);
-		assertEquals("basic", network.getType());
+		assertEquals("feedforward", network.getType());
 		assertEquals("basic_net", network.getName());
 	}
 
 	@Test
-	public void testActivation() {
+	public void testActivation() { 
 		trainNetwork("sigmoid");
 		trainNetwork("tanh");
 	}

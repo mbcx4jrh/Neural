@@ -71,6 +71,14 @@ public class TestNeuralParserFactory {
 						.parse("parameters { size 45 } layer { activation sigmoid size 3 biased }")
 						.toString());
 	}
+	
+	@Test public void testRestart() {
+		assertEquals(new Integer(25), npf.restart().parse("restart 25"));
+	}
+	
+	@Test public void testMaxEpoch() {
+		assertEquals(new Integer(100), npf.maxEpochs().parse("epochs 100"));
+	}
 
 	@Test
 	public void testDataBlock() {

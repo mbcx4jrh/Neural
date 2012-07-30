@@ -15,8 +15,10 @@ import neural.parsec.ast.Parameter;
 import neural.parsec.ast.TrainingDef;
 import neural.parsec.ast.TrainingItem;
 import neural.parsec.ast.training.ErrorTrainingItem;
+import neural.parsec.ast.training.TrainingEpochItem;
 import neural.parsec.ast.training.TrainingInputItem;
 import neural.parsec.ast.training.TrainingOutputItem;
+import neural.parsec.ast.training.TrainingRestartItem;
 import neural.parsec.ast.training.TrainingTypeItem;
 
 import org.codehaus.jparsec.Parser;
@@ -289,7 +291,7 @@ public class NeuralParserFactory {
 	}
 	
 	protected Parser<TrainingItem> trainingParameter() {
-		return Parsers.or(error(), trainingType());
+		return Parsers.or(error(), trainingType(), restart(), maxEpochs());
 		}
 	
 	protected Parser<TrainingItem> data() {
@@ -336,11 +338,27 @@ public class NeuralParserFactory {
 		});
 	}
 
-	protected Parser<Integer> maxEpochs() {
-		return Scanners.string("epochs").next(whitespaceInteger());
+	protected Parser<TrainingEpochItem> maxEpochs() {
+		return Scanners.string("epochs").next(whitespaceInteger())
+				       .map(new Map<Integer, TrainingEpochItem>() {
+
+						@Override
+						public TrainingEpochItem map(Integer from) {
+							return new TrainingEpochItem(from);
+						}
+				    	   
+				       });
 	}
 
-	protected Parser<Integer> restart() {
-		return Scanners.string("restart").next(whitespaceInteger());
+	protected Parser<TrainingRestartItem> restart() {
+		return Scanners.string("restart").next(whitespaceInteger())
+				       .map(new Map<Integer, TrainingRestartItem>() {
+
+						@Override
+						public TrainingRestartItem map(Integer from) {
+							return new TrainingRestartItem(from);
+						}
+				    	   
+				       });
 	}
 }

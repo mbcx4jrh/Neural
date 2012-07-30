@@ -31,10 +31,15 @@ public class TestNeuralParserFactory {
 
 	@Test
 	public void testTraining() {
-		assertEquals("type backprop, error 0.01, " + "input [[0.0, 0.1, 1.0], [1.2, 20.0, 0.0010]], "
+		assertEquals("type backprop, error 0.01, restart 0, epochs 0, " + "input [[0.0, 0.1, 1.0], [1.2, 20.0, 0.0010]], "
 				+ "output [[0.0, 0.1, 1.0], [1.2, 20.0, 0.0010]]", npf
 				.training()
 				.parse("training { type backprop error 1%\n input { 0.0 0.1 1.0, 1.2 20 0.001 }\n "
+						+ "output { 0.0 0.1 1.0, 1.2 20 0.001 } \n}").toString());
+		assertEquals("type backprop, error 0.01, restart 5, epochs 100, " + "input [[0.0, 0.1, 1.0], [1.2, 20.0, 0.0010]], "
+				+ "output [[0.0, 0.1, 1.0], [1.2, 20.0, 0.0010]]", npf
+				.training()
+				.parse("training { restart 5 epochs 100 type backprop error 1%\n input { 0.0 0.1 1.0, 1.2 20 0.001 }\n "
 						+ "output { 0.0 0.1 1.0, 1.2 20 0.001 } \n}").toString());
 	}
 
@@ -50,7 +55,7 @@ public class TestNeuralParserFactory {
 	}
 
 	@Test
-	public void testNetworkBlock() {
+	public void testNetworkBlock() { 
 		assertEquals("params: [size 45], layers: [(activation sigmoid - size 3)]",
 				npf.networkBlock().parse("parameters { size 45 } layer { activation sigmoid size 3 }").toString());
 		assertEquals("params: [size 45], layers: [(activation sigmoid - size 3 - biased)]",
@@ -60,12 +65,12 @@ public class TestNeuralParserFactory {
 
 	@Test
 	public void testRestart() {
-		assertEquals(new Integer(25), npf.restart().parse("restart 25"));
+		assertEquals(25, npf.restart().parse("restart 25").getRestarts());
 	}
 
 	@Test
 	public void testMaxEpoch() {
-		assertEquals(new Integer(100), npf.maxEpochs().parse("epochs 100"));
+		assertEquals(100, npf.maxEpochs().parse("epochs 100").getEpochs());
 	}
 
 	@Test

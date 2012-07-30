@@ -22,7 +22,11 @@ public class XORNetwork {
 				+ "        activation sigmoid\n" + "        size 1\n" + "    }\n" + "}\n";
 	}
 
-	private String training_script = "training {\n" + "  type resilient_propagation\n" + "  error 0.1%\n"
+	private String training_script = "training {\n" + "  type resilient_propagation\n" + " restart 5 error 0.1%\n"
+			+ "  input {\n" + "    0.0 0.0,\n" + "    0.0 1.0,\n" + "    1.0 0.0,\n" + "    1.0 1.0\n" + "  }\n"
+			+ "  output {\n" + "    0.0,\n" + "    1.0,\n" + "    1.0,\n" + "    0.0,\n" + "  }\n" + "  \n" + "}";
+
+	private String fail_training_script = "training {\n" + "  type resilient_propagation\n" + "  error 0.001% epoch 10\n"
 			+ "  input {\n" + "    0.0 0.0,\n" + "    0.0 1.0,\n" + "    1.0 0.0,\n" + "    1.0 1.0\n" + "  }\n"
 			+ "  output {\n" + "    0.0,\n" + "    1.0,\n" + "    1.0,\n" + "    0.0,\n" + "  }\n" + "  \n" + "}";
 

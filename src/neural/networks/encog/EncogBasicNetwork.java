@@ -2,6 +2,7 @@ package neural.networks.encog;
 
 import java.util.Arrays;
 
+import neural.Log;
 import neural.NeuralPropertyFactory;
 import neural.networks.AbstractNetwork;
 import neural.parsec.ast.Layer;
@@ -16,7 +17,10 @@ import org.encog.neural.networks.BasicNetwork;
 import org.encog.neural.networks.layers.BasicLayer;
 import org.encog.neural.networks.training.propagation.resilient.ResilientPropagation;
 
+
 public class EncogBasicNetwork extends AbstractNetwork {
+	
+	private final static int DEFAULT_EPOCHS = 10000;
 
 	private BasicNetwork basicNetwork;
 	private TrainingDef trainingDef;
@@ -57,24 +61,36 @@ public class EncogBasicNetwork extends AbstractNetwork {
 	}
 
 	public void train() {
-		System.out.println("Input : " + Arrays.deepToString(trainingDef.getInputData()));
-		System.out.println("output: " + Arrays.deepToString(trainingDef.getOutputData()));
-		MLDataSet dataSet = new BasicMLDataSet(trainingDef.getInputData(), trainingDef.getOutputData());
-		MLTrain trainer;
-
-		// replace with factory
-		if (trainingDef.getType().equals("resilient_propagation"))
-			trainer = new ResilientPropagation(basicNetwork, dataSet);
-		else
-			throw new UnsupportedOperationException("Havent implemented properly yet");
-
-		int epoch = 0;
+		boolean canRestart = false;
+		int restarts = trainingDef.getRestart();
+		Log.write("Beginning training");
 		do {
-			trainer.iteration();
-			epoch++;
-			System.out.println("Epoch " + epoch + ": error = " + trainer.getError());
-		} while (trainer.getError() > trainingDef.getError());
-
+			basicNetwork.reset();
+			Log.write("Input : " + Arrays.deepToString(trainingDef.getInputData()));
+			Log.write("output: " + Arrays.deepToString(trainingDef.getOutputData()));
+			MLDataSet dataSet = new BasicMLDataSet(trainingDef.getInputData(), trainingDef.getOutputData());
+			MLTrain trainer;
+	
+			// replace with factory
+			if (trainingDef.getType().equals("resilient_propagation"))
+				trainer = new ResilientPropagation(basicNetwork, dataSet);
+			else
+				throw new UnsupportedOperationException("Havent implemented properly yet");
+	
+			int epoch = 0;
+			int maxEpoch;
+			if (trainingDef.getEpochs() == 0) maxEpoch = DEFAULT_EPOCHS;
+			else maxEpoch = trainingDef.getEpochs();
+			do {
+				trainer.iteration();
+				epoch++;
+				Log.write("Epoch " + epoch + ": error = " + trainer.getError());
+		
+			} while ((trainer.getError() > trainingDef.getError()) &&
+					    (epoch <= maxEpoch));
+			canRestart = (trainingDef.getError() > 0) && (trainer.getError() > trainingDef.getError());
+		}
+		while (canRestart && (restarts-- > 0)); 
 	}
 
 	public void compute(double[] input, double[] output) {

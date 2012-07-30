@@ -24,8 +24,26 @@ public class TrainingDef {
 	private double error;
 	private double[][] inputData;
 	private double[][] outputData;
+	private int epochs;
+	private int restart;
 
 
+
+	public int getEpochs() {
+		return epochs;
+	}
+
+	public void setEpochs(int epochs) {
+		this.epochs = epochs;
+	}
+
+	public int getRestart() {
+		return restart;
+	}
+
+	public void setRestart(int restart) {
+		this.restart = restart;
+	}
 
 	public void setType(String type) {
 		this.type = type;
@@ -44,7 +62,7 @@ public class TrainingDef {
 	}
 
 	public String toString() {
-		return "type " + type + ", error " + error + ", input " + Arrays.deepToString(inputData) + ", output "
+		return "type " + type + ", error " + error + ", restart "+restart+", epochs "+epochs+", input " + Arrays.deepToString(inputData) + ", output "
 				+ Arrays.deepToString(outputData);
 	}
 

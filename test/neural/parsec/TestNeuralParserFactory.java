@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import neural.parsec.ast.AsExpression;
 import neural.parsec.ast.DoubleParameter;
-import neural.parsec.ast.ErrorCondition;
 import neural.parsec.ast.IntegerParameter;
 import neural.parsec.ast.Layer;
 import neural.parsec.ast.NetworkDef;
@@ -81,13 +80,13 @@ public class TestNeuralParserFactory {
 	@Test
 	public void testInputBlock() {
 		assertEquals("[[0.0, 0.1, 1.0], [1.2, 20.0, 0.0010]]",
-				npf.inputBlock().parse("input { 0.0 0.1 1.0, 1.2 20 0.001 }").toString());
+				npf.inputBlock().parse("input { 0.0 0.1 1.0, 1.2 20 0.001 }").getData().toString());
 	}
 
 	@Test
 	public void testOutputBlock() {
 		assertEquals("[[0.0, 0.1, 1.0], [1.2, 20.0, 0.0010]]",
-				npf.outputBlock().parse("output { 0.0 0.1 1.0, 1.2 20 0.001 }").toString());
+				npf.outputBlock().parse("output { 0.0 0.1 1.0, 1.2 20 0.001 }").getData().toString());
 
 	}
 
@@ -98,7 +97,7 @@ public class TestNeuralParserFactory {
 
 	@Test
 	public void testBiased() {
-		assertEquals(Boolean.TRUE, npf.biased().parse("biased"));
+		assertEquals(new Boolean(true), npf.biased().parse("biased"));
 	}
 
 	@Test
@@ -113,7 +112,7 @@ public class TestNeuralParserFactory {
 
 	@Test
 	public void testError() {
-		assertEquals(new ErrorCondition(0.01), npf.error().parse("error 1%"));
+		assertEquals(0.01, npf.error().parse("error 1%").getError(), 0.001);
 	}
 
 	@Test

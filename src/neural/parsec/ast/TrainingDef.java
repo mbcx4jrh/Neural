@@ -25,11 +25,22 @@ public class TrainingDef {
 	private double[][] inputData;
 	private double[][] outputData;
 
-	public TrainingDef(String type, ErrorCondition ec, Data in, Data out) {
+
+
+	public void setType(String type) {
 		this.type = type;
-		this.error = ec.getError();
-		this.inputData = in.data;
-		this.outputData = out.data;
+	}
+
+	public void setError(double error) {
+		this.error = error;
+	}
+
+	public void setInputData(double[][] inputData) {
+		this.inputData = inputData;
+	}
+
+	public void setOutputData(double[][] outputData) {
+		this.outputData = outputData;
 	}
 
 	public String toString() {

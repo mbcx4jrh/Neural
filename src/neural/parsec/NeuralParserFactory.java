@@ -6,7 +6,6 @@ import java.util.List;
 import neural.parsec.ast.AsExpression;
 import neural.parsec.ast.Data;
 import neural.parsec.ast.DoubleParameter;
-import neural.parsec.ast.ErrorCondition;
 import neural.parsec.ast.IntegerParameter;
 import neural.parsec.ast.Layer;
 import neural.parsec.ast.NetworkBlock;
@@ -14,6 +13,11 @@ import neural.parsec.ast.NetworkDef;
 import neural.parsec.ast.NetworkExpression;
 import neural.parsec.ast.Parameter;
 import neural.parsec.ast.TrainingDef;
+import neural.parsec.ast.TrainingItem;
+import neural.parsec.ast.training.ErrorTrainingItem;
+import neural.parsec.ast.training.TrainingInputItem;
+import neural.parsec.ast.training.TrainingOutputItem;
+import neural.parsec.ast.training.TrainingTypeItem;
 
 import org.codehaus.jparsec.Parser;
 import org.codehaus.jparsec.Parsers;
@@ -23,7 +27,6 @@ import org.codehaus.jparsec.Tokens.Fragment;
 import org.codehaus.jparsec.functors.Map;
 import org.codehaus.jparsec.functors.Map2;
 import org.codehaus.jparsec.functors.Map3;
-import org.codehaus.jparsec.functors.Map4;
 
 public class NeuralParserFactory {
 
@@ -204,16 +207,18 @@ public class NeuralParserFactory {
 				});
 	}
 
-	protected Parser<ErrorCondition> error() {
-		return Scanners.string("error").next(percentage()).map(new Map<Double, ErrorCondition>() {
+	protected Parser<ErrorTrainingItem> error() {
+		return Scanners.string("error").next(percentage()).map(new Map<Double, ErrorTrainingItem>() {
 
 			@Override
-			public ErrorCondition map(Double from) {
-				return new ErrorCondition(from);
+			public ErrorTrainingItem map(Double from) {
+				return new ErrorTrainingItem(from.doubleValue());
 			}
 
 		});
 	}
+	
+	
 
 	protected Parser<List<Double>> dataRow() {
 		return decimal().sepBy(Scanners.WHITESPACES);
@@ -225,12 +230,26 @@ public class NeuralParserFactory {
 						.optional().next(Scanners.string("}")));
 	}
 
-	protected Parser<Data> inputBlock() {
-		return namedDataBlock("input");
+	protected Parser<TrainingInputItem> inputBlock() {
+		return namedDataBlock("input").map(new Map<Data, TrainingInputItem>() {
+
+			@Override
+			public TrainingInputItem map(Data from) {
+				return new TrainingInputItem(from);
+			}
+			
+		});
 	}
 
-	protected Parser<Data> outputBlock() {
-		return namedDataBlock("output");
+	protected Parser<TrainingOutputItem> outputBlock() {
+		return namedDataBlock("output").map(new Map<Data, TrainingOutputItem>() {
+
+			@Override
+			public TrainingOutputItem map(Data from) {
+				return new TrainingOutputItem(from);
+			}
+		
+		});
 	}
 
 	protected Parser<Data> namedDataBlock(String name) {
@@ -244,23 +263,66 @@ public class NeuralParserFactory {
 
 				}));
 	}
-
+	
 	protected Parser<TrainingDef> training() {
-		return Scanners
-				.string("training")
-				.next(Scanners.WHITESPACES)
-				.next(Parsers.between(Scanners.string("{"), Parsers.sequence(Scanners.WHITESPACES.next(type()),
-						Scanners.WHITESPACES.next(error()), Scanners.WHITESPACES.next(inputBlock()),
-						Scanners.WHITESPACES.next(outputBlock()),
-						new Map4<String, ErrorCondition, Data, Data, TrainingDef>() {
-
-							@Override
-							public TrainingDef map(String a, ErrorCondition b, Data c, Data d) {
-								return new TrainingDef(a, b, c, d);
-							}
-
-						}), Scanners.WHITESPACES.optional().next(Scanners.string("}"))));
+		return Scanners.string("training")
+					   .next(Scanners.WHITESPACES)
+					   .next(trainingBlock());
 	}
+	
+	protected Parser<TrainingDef> trainingBlock() {
+		return Parsers.between(Scanners.string("{").next(Scanners.WHITESPACES.optional()), 
+				               Parsers.or(trainingParameter(), data()).sepBy(Scanners.WHITESPACES)
+				                      .map(new Map<List<TrainingItem>, TrainingDef>() {
+
+										@Override
+										public TrainingDef map(List<TrainingItem> from) {
+											TrainingDef def = new TrainingDef();
+											for (TrainingItem item: from) {
+												item.applyTo(def);
+											}
+											return def;
+										}
+				                    	  
+				                      }),	 
+				               Scanners.WHITESPACES.optional().next(Scanners.string("}")));
+	}
+	
+	protected Parser<TrainingItem> trainingParameter() {
+		return Parsers.or(error(), trainingType());
+		}
+	
+	protected Parser<TrainingItem> data() {
+		return Parsers.or(inputBlock(), outputBlock());
+	}
+	
+	protected Parser<TrainingTypeItem> trainingType() {
+		return type().map(new Map<String, TrainingTypeItem>() {
+
+			@Override
+			public TrainingTypeItem map(String from) {
+				return new TrainingTypeItem(from);
+			}
+			
+		});
+	}
+
+//	protected Parser<TrainingDef> training() {
+//		return Scanners
+//				.string("training")
+//				.next(Scanners.WHITESPACES)
+//				.next(Parsers.between(Scanners.string("{"), Parsers.sequence(Scanners.WHITESPACES.next(type()),
+//						Scanners.WHITESPACES.next(error()), Scanners.WHITESPACES.next(inputBlock()),
+//						Scanners.WHITESPACES.next(outputBlock()),
+//						new Map4<String, ErrorCondition, Data, Data, TrainingDef>() {
+//
+//							@Override
+//							public TrainingDef map(String a, ErrorCondition b, Data c, Data d) {
+//								return new TrainingDef(a, b, c, d);
+//							}
+//
+//						}), Scanners.WHITESPACES.optional().next(Scanners.string("}"))));
+//	}
 
 	protected Parser<Boolean> biased() {
 		// return Terminals.("biased").map(new Map<String, Boolean>() {

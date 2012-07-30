@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Data {
 
-	double[][] data;
+	private double[][] data;
 
 	public Data(List<List<Double>> objData) {
 		int i = 0;
@@ -25,6 +25,10 @@ public class Data {
 				j++;
 			}
 		}
+	}
+	
+	public double[][] getData() {
+		return data;
 	}
 
 	public String toString() {

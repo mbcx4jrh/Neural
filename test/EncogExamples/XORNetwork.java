@@ -31,7 +31,7 @@ public class XORNetwork {
 		ScriptParser parser = new ScriptParser();
 		Network network = parser.parseScript(getNetworkScript("sigmoid") + training_script);
 		assertNotNull(network);
-		assertEquals("feedforward", network.getType());
+		assertEquals("feedforward", network.getType()); 
 		assertEquals("basic_net", network.getName());
 	}
 

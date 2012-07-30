@@ -1,0 +1,17 @@
+network pca is feedforward {
+ 	//layers to go here
+}
+
+network memory is hopfield {
+	size 10
+}
+
+network visual_memory is combined {
+	input to pca
+	output pca to memory
+	output from memory
+}
+
+training for pca {
+	//define some input
+}

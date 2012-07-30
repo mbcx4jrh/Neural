@@ -1,0 +1,33 @@
+network joe as feedforward {
+	layer {
+		activation input
+		size 2
+		biased
+	}
+	layer {
+		activation sigmoid
+		size 3
+		biased
+	}
+	layer {
+		activation sigmoid
+		size 1
+	}
+}
+
+training {
+	type resilient_propagation
+	error 0.1%
+	input {
+		0 0,
+		1 0,
+		0 1,
+		1 1
+	}
+	output {
+		0,
+		1,
+		1,
+		0
+	}
+}

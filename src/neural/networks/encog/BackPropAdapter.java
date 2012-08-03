@@ -1,10 +1,9 @@
 package neural.networks.encog;
 
+import neural.parsec.ast.TrainingDef;
+
 import org.encog.ml.train.MLTrain;
 import org.encog.neural.networks.training.propagation.back.Backpropagation;
-
-import neural.TrainMethodAdapter;
-import neural.parsec.ast.TrainingDef;
 
 public class BackPropAdapter extends AbstractTrainingAdapter {
 

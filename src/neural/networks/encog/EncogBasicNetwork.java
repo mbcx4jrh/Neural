@@ -1,8 +1,5 @@
 package neural.networks.encog;
 
-import java.util.Arrays;
-
-import neural.Log;
 import neural.NeuralPropertyFactory;
 import neural.TrainMethodAdapter;
 import neural.networks.AbstractNetwork;
@@ -11,9 +8,6 @@ import neural.parsec.ast.NetworkDef;
 import neural.parsec.ast.TrainingDef;
 
 import org.encog.engine.network.activation.ActivationFunction;
-import org.encog.ml.data.MLDataSet;
-import org.encog.ml.data.basic.BasicMLDataSet;
-import org.encog.ml.train.BasicTraining;
 import org.encog.ml.train.MLTrain;
 import org.encog.neural.networks.BasicNetwork;
 import org.encog.neural.networks.layers.BasicLayer;
@@ -26,7 +20,7 @@ public class EncogBasicNetwork extends AbstractNetwork {
 	private BasicNetwork basicNetwork;
 	private TrainingDef trainingDef;
 	
-	private TrainingContinuation trainingContinuation;
+//	private TrainingContinuation trainingContinuation;
 
 	private NeuralPropertyFactory<ActivationFunction> activationFactory;
 	private NeuralPropertyFactory<TrainMethodAdapter> trainerFactory;
@@ -69,7 +63,7 @@ public class EncogBasicNetwork extends AbstractNetwork {
 		this.trainingDef = def;
 	}
 	
-	private MLTrain continuousTrainer = null;
+//	private MLTrain continuousTrainer = null;
 	
 	public void train(double[] input, double[] output) {
 //		double[][] in  = new double[1][input.length];

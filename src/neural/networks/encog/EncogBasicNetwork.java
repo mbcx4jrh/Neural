@@ -4,6 +4,7 @@ import java.util.Arrays;
 
 import neural.Log;
 import neural.NeuralPropertyFactory;
+import neural.TrainMethodAdapter;
 import neural.networks.AbstractNetwork;
 import neural.parsec.ast.Layer;
 import neural.parsec.ast.NetworkDef;
@@ -12,29 +13,37 @@ import neural.parsec.ast.TrainingDef;
 import org.encog.engine.network.activation.ActivationFunction;
 import org.encog.ml.data.MLDataSet;
 import org.encog.ml.data.basic.BasicMLDataSet;
+import org.encog.ml.train.BasicTraining;
 import org.encog.ml.train.MLTrain;
 import org.encog.neural.networks.BasicNetwork;
 import org.encog.neural.networks.layers.BasicLayer;
-import org.encog.neural.networks.training.propagation.resilient.ResilientPropagation;
+import org.encog.neural.networks.training.propagation.TrainingContinuation;
 
 
 public class EncogBasicNetwork extends AbstractNetwork {
 	
-	private final static int DEFAULT_EPOCHS = 10000;
 
 	private BasicNetwork basicNetwork;
 	private TrainingDef trainingDef;
+	
+	private TrainingContinuation trainingContinuation;
 
 	private NeuralPropertyFactory<ActivationFunction> activationFactory;
+	private NeuralPropertyFactory<TrainMethodAdapter> trainerFactory;
 
 	@Override
 	public void initNetwork(NetworkDef def) {
 		super.initNetwork(def);
 		basicNetwork = new BasicNetwork();
 		activationFactory = new NeuralPropertyFactory<ActivationFunction>(this.getPropertiesFilename(), "activation");
+		trainerFactory = new NeuralPropertyFactory<TrainMethodAdapter>(this.getPropertiesFilename(), "training");
 		createLayers(def);
 		basicNetwork.getStructure().finalizeStructure();
 		basicNetwork.reset(); // reset weights
+	}
+	
+	public BasicNetwork getEncogNetwork() {
+		return basicNetwork;
 	}
 
 	private void createLayers(NetworkDef def) {
@@ -59,39 +68,34 @@ public class EncogBasicNetwork extends AbstractNetwork {
 		super.initTraining(def);
 		this.trainingDef = def;
 	}
+	
+	private MLTrain continuousTrainer = null;
+	
+	public void train(double[] input, double[] output) {
+//		double[][] in  = new double[1][input.length];
+//		double[][] out = new double[1][output.length];
+//		in[0]  = input;
+//		out[0] = output;
+//		Log.write("train input : "+Arrays.deepToString(in));
+//		Log.write("train output: "+Arrays.deepToString(out));
+//		MLDataSet dataSet = new BasicMLDataSet(in, out);
+//		if (continuousTrainer == null) 
+//			continuousTrainer = getTrainer(dataSet);
+//		else 
+//			((BasicTraining) continuousTrainer).setTraining(dataSet);
+//		//if (trainingContinuation != null) trainer.resume(trainingContinuation);
+//		continuousTrainer.iteration();
+//		//trainingContinuation = trainer.pause();
+//		//trainer.finishTraining();
+	}
 
 	public void train() {
-		boolean canRestart = false;
-		int restarts = trainingDef.getRestart();
-		Log.write("Beginning training");
-		do {
-			basicNetwork.reset();
-			Log.write("Input : " + Arrays.deepToString(trainingDef.getInputData()));
-			Log.write("output: " + Arrays.deepToString(trainingDef.getOutputData()));
-			MLDataSet dataSet = new BasicMLDataSet(trainingDef.getInputData(), trainingDef.getOutputData());
-			MLTrain trainer;
-	
-			// replace with factory
-			if (trainingDef.getType().equals("resilient_propagation"))
-				trainer = new ResilientPropagation(basicNetwork, dataSet);
-			else
-				throw new UnsupportedOperationException("Havent implemented properly yet");
-	
-			int epoch = 0;
-			int maxEpoch;
-			if (trainingDef.getEpochs() == 0) maxEpoch = DEFAULT_EPOCHS;
-			else maxEpoch = trainingDef.getEpochs();
-			do {
-				trainer.iteration();
-				epoch++;
-				Log.write("Epoch " + epoch + ": error = " + trainer.getError());
-		
-			} while ((trainer.getError() > trainingDef.getError()) &&
-					    (epoch <= maxEpoch));
-			canRestart = (trainingDef.getError() > 0) && (trainer.getError() > trainingDef.getError());
-		}
-		while (canRestart && (restarts-- > 0)); 
+		basicNetwork.reset();
+		TrainMethodAdapter trainer = trainerFactory.getNewInstance(trainingDef.getType());
+		trainer.init(trainingDef, this);
+		trainer.train();
 	}
+
 
 	public void compute(double[] input, double[] output) {
 		basicNetwork.compute(input, output);

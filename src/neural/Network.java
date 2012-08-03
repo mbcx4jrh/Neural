@@ -14,6 +14,8 @@ public interface Network {
 	public void setPropertiesFilename(String filename);
 
 	public void train();
+	
+	public void train(double[] input, double[] output);
 
 	public void compute(double[] input, double[] output);
 

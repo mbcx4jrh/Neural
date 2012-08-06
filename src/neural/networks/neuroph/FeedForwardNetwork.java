@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.Properties;
 
 import neural.NeuralException;
@@ -129,11 +128,12 @@ public class FeedForwardNetwork extends AbstractNetwork {
 			trainingSet.addElement(new SupervisedTrainingElement(trainingDef.getInputData()[i],
 					                                             trainingDef.getOutputData()[i]));
 		}
-		trainingSet.addElement(new SupervisedTrainingElement(new double[]{0, 0}, new double[]{0}));
 		 
 		trainer.setNeuralNetwork(network);
 		trainer.learn(trainingSet, trainingDef.getError(), trainingDef.getEpochs()); 
 	}
+	
+
 
 	@Override
 	public void compute(double[] input, double[] output) {

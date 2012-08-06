@@ -60,26 +60,6 @@ public class EncogBasicNetwork extends AbstractNetwork {
 		super.initTraining(def);
 		this.trainingDef = def;
 	}
-	
-//	private MLTrain continuousTrainer = null;
-	
-	public void train(double[] input, double[] output) {
-//		double[][] in  = new double[1][input.length];
-//		double[][] out = new double[1][output.length];
-//		in[0]  = input;
-//		out[0] = output;
-//		Log.write("train input : "+Arrays.deepToString(in));
-//		Log.write("train output: "+Arrays.deepToString(out));
-//		MLDataSet dataSet = new BasicMLDataSet(in, out);
-//		if (continuousTrainer == null) 
-//			continuousTrainer = getTrainer(dataSet);
-//		else 
-//			((BasicTraining) continuousTrainer).setTraining(dataSet);
-//		//if (trainingContinuation != null) trainer.resume(trainingContinuation);
-//		continuousTrainer.iteration();
-//		//trainingContinuation = trainer.pause();
-//		//trainer.finishTraining();
-	}
 
 	public void train() {
 		basicNetwork.reset();

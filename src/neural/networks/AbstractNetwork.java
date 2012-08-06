@@ -47,10 +47,4 @@ public abstract class AbstractNetwork implements Network {
 
 	}
 
-	@Override
-	public void train(double[] input, double[] output) {
-		// TODO Auto-generated method stub
-		
-	}
-
 }

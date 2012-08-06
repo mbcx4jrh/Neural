@@ -42,11 +42,6 @@ public class XORNetwork {
 	public void testActivation() {
 		trainNetwork("sigmoid");
 	}
-	
-	@Test
-	public void testSeperateTraining() {
-		trainNetworkSeperately("sigmoid");
-	}
 
 	private void trainNetwork(String activation) {
 
@@ -68,27 +63,6 @@ public class XORNetwork {
 		}
 	}
 	
-	private void trainNetworkSeperately(String activation) {
-
-		double[][] input = new double[][] { { 0.0, 0.0 }, { 1.0, 0.0 }, { 0.0, 1.0 }, { 1.0, 1.0 } };
-		double[][] output = new double[][] { { 0.0 }, { 1.0 }, { 1.0 }, { 0.0 } };
-		int epochs = 1000;
-		ScriptParser parser = new ScriptParser();
-		Network network = parser.parseScript(getNetworkScript(activation) + training_script);
-		for (int e=0; e<epochs; e++) {
-		
-			for (int i=0; i<4; i++) {
-				network.train(input[i], output[i]);
-			}
-		
-		}
-		double[] result = new double[1];
-		for (int i = 0; i < 4; i++) {
-			network.compute(input[i], result);
-			System.out.println("v" + i + " input: " + Arrays.toString(input[i]) + " output:" + Arrays.toString(result));
-			//assertEqualWithin(0.1, output[i], result);
-		}
-	}
 	
 	@Test
 	public void testUsingScript() throws IOException {

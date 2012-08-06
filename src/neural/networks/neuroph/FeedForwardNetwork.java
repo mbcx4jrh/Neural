@@ -117,7 +117,7 @@ public class FeedForwardNetwork extends AbstractNetwork {
 
 	@Override
 	public void train() {
-		network.setLearningRule(trainingFactory.getNewInstance(trainingDef.getType()));
+		SupervisedLearning trainer = trainingFactory.getNewInstance(trainingDef.getType());
 		int inputSize = trainingDef.getInputData()[0].length;
 		int outputSize = trainingDef.getOutputData()[0].length;
 		int numSets = trainingDef.getInputData().length;
@@ -131,7 +131,8 @@ public class FeedForwardNetwork extends AbstractNetwork {
 		}
 		trainingSet.addElement(new SupervisedTrainingElement(new double[]{0, 0}, new double[]{0}));
 		 
-		network.learn(trainingSet);
+		trainer.setNeuralNetwork(network);
+		trainer.learn(trainingSet, trainingDef.getError(), trainingDef.getEpochs()); 
 	}
 
 	@Override

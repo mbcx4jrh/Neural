@@ -32,6 +32,12 @@ public abstract class AbstractNetwork implements Network {
 		throw new UnsupportedOperationException("Not implemented in your network");
 	}
 
+	@Override
+	public void train(double[][] input, double[][] output) {
+		throw new UnsupportedOperationException("Not implemented in your network");
+		
+	}
+
 	public void compute(double[] input, double[] output) {
 		throw new UnsupportedOperationException("Not implemented in your network");
 	}

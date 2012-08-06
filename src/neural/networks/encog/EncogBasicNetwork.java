@@ -61,14 +61,23 @@ public class EncogBasicNetwork extends AbstractNetwork {
 		this.trainingDef = def;
 	}
 
+	@Override
 	public void train() {
 		basicNetwork.reset();
 		TrainMethodAdapter trainer = trainerFactory.getNewInstance(trainingDef.getType());
 		trainer.init(trainingDef, this);
 		trainer.train();
 	}
+	
+	@Override
+	public void train(double[][] input, double[][] output) {
+		trainingDef.setInputData(input);
+		trainingDef.setOutputData(output);
+		train();
+	}
+	
 
-
+	@Override
 	public void compute(double[] input, double[] output) {
 		basicNetwork.compute(input, output);
 	}

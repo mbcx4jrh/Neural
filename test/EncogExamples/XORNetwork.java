@@ -70,6 +70,20 @@ public class XORNetwork {
 		trainUsingScript("scripts/xor-2.neural");
 	}
 	
+	@Test
+	public void testExternalTrainingData() throws IOException {
+		String script = FileUtils.readFileToString(new File("scripts/xor-1.neural"));
+		ScriptParser parser = new ScriptParser();
+		Network network = parser.parseScript(script);
+		
+		double[][] input = new double[][] { { 0.0, 0.0 }, { 1.0, 0.0 }, { 0.0, 1.0 }, { 1.0, 1.0 } };
+		double[][] output = new double[][] { { 0.0 }, { 1.0 }, { 1.0 }, { 0.0 } };
+
+		network.train(input, output);
+		
+		testXor(network); 
+	}
+	
 	private void trainUsingScript(String name) throws IOException {
 		String script = FileUtils.readFileToString(new File(name));
 		ScriptParser parser = new ScriptParser();
@@ -80,7 +94,7 @@ public class XORNetwork {
 
 	@SuppressWarnings("unused")
 	@Before
-	public void infiniTestFix() {
+	public void infiniTestFix() { 
 		EncogBasicNetwork n = new EncogBasicNetwork();
 	}
 

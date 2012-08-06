@@ -8,10 +8,8 @@ import neural.parsec.ast.NetworkDef;
 import neural.parsec.ast.TrainingDef;
 
 import org.encog.engine.network.activation.ActivationFunction;
-import org.encog.ml.train.MLTrain;
 import org.encog.neural.networks.BasicNetwork;
 import org.encog.neural.networks.layers.BasicLayer;
-import org.encog.neural.networks.training.propagation.TrainingContinuation;
 
 
 public class EncogBasicNetwork extends AbstractNetwork {

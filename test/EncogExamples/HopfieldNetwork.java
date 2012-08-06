@@ -7,7 +7,6 @@ import neural.Network;
 import neural.ScriptParser;
 
 import org.encog.util.file.FileUtil;
-import org.junit.Test;
 
 public class HopfieldNetwork {
 	

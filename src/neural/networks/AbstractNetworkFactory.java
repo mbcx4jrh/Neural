@@ -9,7 +9,7 @@ public abstract class AbstractNetworkFactory implements NetworkFactory {
 
 	private NeuralPropertyFactory<Network> classes;
 
-	private String filename = "properties/encog.properties";
+	private String filename;
 
 	public void setPropertiesFile(String filename) {
 		this.filename = filename;

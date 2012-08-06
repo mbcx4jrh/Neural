@@ -15,7 +15,7 @@ import org.encog.neural.networks.ContainsFlat;
 
 public abstract class AbstractTrainingAdapter implements TrainMethodAdapter{
 
-	static final int DEFAULT_EPOCHS = 1000;
+	static final int DEFAULT_EPOCHS = 100;
 
 	private EncogBasicNetwork encogNetwork;
 	private TrainingDef trainingDef;
@@ -43,11 +43,11 @@ public abstract class AbstractTrainingAdapter implements TrainMethodAdapter{
 	public void train() {
 		boolean canRestart = false;
 		int restarts = trainingDef.getRestart();
-		Log.write("Beginning training");
+		//Log.write("Beginning training");
 		do {
-			//basicNetwork.reset();
-			Log.write("Input : " + Arrays.deepToString(trainingDef.getInputData()));
-			Log.write("output: " + Arrays.deepToString(trainingDef.getOutputData()));
+			encogNetwork.getEncogNetwork().reset();
+			//Log.write("Input : " + Arrays.deepToString(trainingDef.getInputData()));
+			//Log.write("output: " + Arrays.deepToString(trainingDef.getOutputData()));
 			//MLDataSet dataSet = new BasicMLDataSet(trainingDef.getInputData(), trainingDef.getOutputData());
 			MLTrain trainer = getTrainer(trainingDef);
 			
@@ -59,7 +59,7 @@ public abstract class AbstractTrainingAdapter implements TrainMethodAdapter{
 			do {
 				trainer.iteration();
 				epoch++;
-				Log.write("Epoch " + epoch + ": error = " + trainer.getError());
+				//Log.write("Epoch " + epoch + ": error = " + trainer.getError());
 		
 			} while ((trainer.getError() > trainingDef.getError()) &&
 					    (epoch <= maxEpoch));

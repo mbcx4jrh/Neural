@@ -23,7 +23,8 @@ public class HopfieldNetwork {
 		
 		for (int i=0; i<epochs; i++) {
 			for (int d=0; d<TRAIN.length; d++) {
-				//network.train(convertPattern(TRAIN, d), null);
+				
+				//doubleconvertPattern(TRAIN, d);
 			}
 		}
 		

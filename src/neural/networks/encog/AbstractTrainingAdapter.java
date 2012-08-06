@@ -1,8 +1,5 @@
 package neural.networks.encog;
 
-import java.util.Arrays;
-
-import neural.Log;
 import neural.Network;
 import neural.NeuralException;
 import neural.TrainMethodAdapter;

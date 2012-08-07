@@ -11,6 +11,8 @@ public abstract class Parameter {
 	public String getName() {
 		return name;
 	}
+	
+	public abstract String getValueAsString();
 
 	public String toString() {
 		return "Name: " + name + ", Value: Fuckup (abstract class is being used)";

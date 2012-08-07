@@ -1,12 +1,18 @@
 package EncogExamples;
 
+import static org.junit.Assert.assertEquals;
+
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 
 import neural.Network;
 import neural.ScriptParser;
+import neural.networks.encog.EncogHopfieldNetwork;
 
 import org.encog.util.file.FileUtil;
+import org.junit.Before;
+import org.junit.Test;
 
 public class HopfieldNetwork {
 	
@@ -14,34 +20,79 @@ public class HopfieldNetwork {
 	private final static int HEIGHT = 10;
 	
 	
-	//@Test 
+	@Test 
 	public void hopfieldTest() throws IOException {
-		int epochs = 10;
 		String script = FileUtil.readFileAsString(new File("scripts/hopfield-1.neural"));
 		ScriptParser parser = new ScriptParser();
 		Network network = parser.parseScript(script);
 		
-		for (int i=0; i<epochs; i++) {
-			for (int d=0; d<TRAIN.length; d++) {
-				
-				//doubleconvertPattern(TRAIN, d);
-			}
-		}
+		double[][] training = convertPattern(TRAIN);
+		double[][] testing = convertPattern(TEST);
+		double[] output = new double[100];
 		
+		out("Training:");
+		for (int i=0; i<training.length; i++) {
+			out(training[i]);
+			out("---");
+		}
+		network.train(training, null);
+		
+		for (int i=0; i< testing.length; i++) {
+			network.compute(testing[i], output);
+			console(testing[i], output);
+			assertEquals(Arrays.toString(training[i]), Arrays.toString(output));
+		} 
+		
+		
+		 
 	}
 	
-	private double[] convertPattern(String[][] data, int index)
+	private void console(double[] ds, double[] ds2) {
+		out("Input:");
+		out(ds);
+		out("Output:");
+		out(ds2);
+	}
+	
+	
+
+	private void out(double[] ds) {
+		StringBuffer sb = new StringBuffer();
+		char ch;
+		for (int i=0; i<HEIGHT; i++) {
+			for (int j=0; j<WIDTH; j++) {
+				if (ds[i*WIDTH+j] >0)
+					ch = 'O';
+				else 
+					ch = ' ';
+				sb.append(ch);
+			}
+			sb.append("\n");
+		}
+		System.out.println(sb.toString());
+	}
+	
+	private void out(String m) {
+		System.out.println(m);
+	}
+
+	private double[][] convertPattern(String[][] data)
 	{
 		int resultIndex = 0;
-		double[] result = new double[(WIDTH*HEIGHT)];
-		for(int row=0;row<HEIGHT;row++)
-		{
-			for(int col=0;col<WIDTH;col++)
+		double[][] result = new double[data.length][(WIDTH*HEIGHT)];
+		for (int index =0; index<data.length; index++) {
+			for(int row=0;row<HEIGHT;row++)
 			{
-				char ch = data[index][row].charAt(col);
-				if (ch != 'O')
-					result[resultIndex++] =1;
+				for(int col=0;col<WIDTH;col++)
+				{
+					char ch = data[index][row].charAt(col);
+					if  (ch != 'O')
+						result[index][resultIndex++] = -1;
+					else
+						result[index][resultIndex++] = 1;
+				}
 			}
+			resultIndex = 0;
 		}
 		return result;
 	}
@@ -71,7 +122,9 @@ public class HopfieldNetwork {
         "  OO  OO  ",
         "OO  OO  OO",
         "OO  OO  OO"  },
-
+        
+   
+            
       { "OOOOO     ",
         "OOOOO     ",
         "OOOOO     ",
@@ -82,17 +135,16 @@ public class HopfieldNetwork {
         "     OOOOO",
         "     OOOOO",
         "     OOOOO"  },
-
-      { "O  O  O  O",
-        " O  O  O  ",
-        "  O  O  O ",
-        "O  O  O  O",
-        " O  O  O  ",
-        "  O  O  O ",
-        "O  O  O  O",
-        " O  O  O  ",
-        "  O  O  O ",
-        "O  O  O  O"  },
+        { "O  O  O  O",
+            " O  O  O  ",
+            "  O  O  O ",
+            "O  O  O  O",
+            " O  O  O  ",
+            "  O  O  O ",
+            "O  O  O  O",
+            " O  O  O  ",
+            "  O  O  O ",
+            "O  O  O  O"  },
 
       { "OOOOOOOOOO",
         "O        O",
@@ -167,4 +219,9 @@ public class HopfieldNetwork {
         "OOOOOOOOOO"  } };
 
 
+	@Before
+	public void pokeInfinitest() {
+		@SuppressWarnings("unused")
+		EncogHopfieldNetwork n = new EncogHopfieldNetwork();
+	}
 }

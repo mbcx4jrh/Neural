@@ -1,3 +1,5 @@
 network joe is hopfield {
-	size 10
+	parameters {
+		size 100
+	}
 }

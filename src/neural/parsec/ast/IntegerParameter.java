@@ -8,6 +8,14 @@ public class IntegerParameter extends Parameter {
 		super(name);
 		this.value = value;
 	}
+	
+	public Integer getValue() {
+		return value;
+	}
+	
+	public String getValueAsString() {
+		return ""+value;
+	}
 
 	public String toString() {
 		return getName() + " " + value.toString();

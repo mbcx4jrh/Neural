@@ -59,7 +59,7 @@ public class XORNetwork {
 		for (int i = 0; i < 4; i++) {
 			network.compute(input[i], result);
 			System.out.println("v" + i + " input: " + Arrays.toString(input[i]) + " output:" + Arrays.toString(result));
-			assertEqualWithin(0.1, output[i], result);
+			assertEqualWithin(0.2, output[i], result);
 		}
 	}
 	

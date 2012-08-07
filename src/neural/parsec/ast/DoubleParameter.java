@@ -12,6 +12,10 @@ public class DoubleParameter extends Parameter {
 	public Double getValue() {
 		return value;
 	}
+	
+	public String getValueAsString() {
+		return ""+value;
+	}
 
 	public String toString() {
 		return getName() + " " + value.toString();

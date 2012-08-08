@@ -27,7 +27,7 @@ import org.neuroph.util.NeuronProperties;
 import org.neuroph.util.TransferFunctionType;
 import org.neuroph.util.random.NguyenWidrowRandomizer;
 
-public class FeedForwardNetwork extends AbstractNetwork {
+public class NeurophFeedForwardNetwork extends AbstractNetwork {
 
 	private NeuralNetwork network;
 	private Properties activationMap;

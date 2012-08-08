@@ -10,7 +10,7 @@ import java.util.Arrays;
 
 import neural.Network;
 import neural.ScriptParser;
-import neural.networks.neuroph.FeedForwardNetwork;
+import neural.networks.neuroph.NeurophFeedForwardNetwork;
 
 import org.apache.commons.io.FileUtils;
 import org.junit.Before;
@@ -31,7 +31,7 @@ public class XORNetwork {
 			+ "  input {\n" + "    0.0 0.0,\n" + "    0.0 1.0,\n" + "    1.0 0.0,\n" + "    1.0 1.0\n" + "  }\n"
 			+ "  output {\n" + "    0.0,\n" + "    1.0,\n" + "    1.0,\n" + "    0.0,\n" + "  }\n" + "  \n" + "}";
 
-	@Before
+	@Before 
 	public void initParser() {  
 		parser = new ScriptParser();
 		parser.setUnderlyingLibrary("neural.networks.NeurophNetworkFactory");
@@ -86,7 +86,7 @@ public class XORNetwork {
 	@SuppressWarnings("unused")
 	@Before
 	public void infiniTestFix() {
-		FeedForwardNetwork n = new FeedForwardNetwork(); 
+		NeurophFeedForwardNetwork n = new NeurophFeedForwardNetwork(); 
 	}
 
 }

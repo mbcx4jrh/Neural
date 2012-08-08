@@ -1,4 +1,4 @@
-package EncogExamples;
+package common;
 
 import static org.junit.Assert.assertEquals;
 
@@ -12,18 +12,22 @@ import neural.networks.encog.EncogHopfieldNetwork;
 
 import org.encog.util.file.FileUtil;
 import org.junit.Before;
-import org.junit.Test;
 
-public class HopfieldNetwork {
+public class HopfieldNetworkTest {
 	
 	private final static int WIDTH = 10;
 	private final static int HEIGHT = 10;
 	
+	private ScriptParser parser;
 	
-	@Test 
+	public void setParser(ScriptParser parser) {
+		this.parser = parser;
+	}
+	
+	
+	
 	public void hopfieldTest() throws IOException {
 		String script = FileUtil.readFileAsString(new File("scripts/hopfield-1.neural"));
-		ScriptParser parser = new ScriptParser();
 		Network network = parser.parseScript(script);
 		
 		double[][] training = convertPattern(TRAIN);
@@ -135,16 +139,7 @@ public class HopfieldNetwork {
         "     OOOOO",
         "     OOOOO",
         "     OOOOO"  },
-        { "O  O  O  O",
-            " O  O  O  ",
-            "  O  O  O ",
-            "O  O  O  O",
-            " O  O  O  ",
-            "  O  O  O ",
-            "O  O  O  O",
-            " O  O  O  ",
-            "  O  O  O ",
-            "O  O  O  O"  },
+
 
       { "OOOOOOOOOO",
         "O        O",
@@ -196,16 +191,6 @@ public class HopfieldNetwork {
         " OOO O   O",
         "     OOOOO"  },
 
-      { "O  OOOO  O",
-        "OO  OOOO  ",
-        "OOO  OOOO ",
-        "OOOO  OOOO",
-        " OOOO  OOO",
-        "  OOOO  OO",
-        "O  OOOO  O",
-        "OO  OOOO  ",
-        "OOO  OOOO ",
-        "OOOO  OOOO"  },
 
       { "OOOOOOOOOO",
         "O        O",

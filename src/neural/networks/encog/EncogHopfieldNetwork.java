@@ -1,7 +1,5 @@
 package neural.networks.encog;
 
-import java.util.Arrays;
-
 import neural.networks.AbstractNetwork;
 import neural.parsec.ast.NetworkDef;
 

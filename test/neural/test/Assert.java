@@ -8,7 +8,7 @@ public class Assert {
 	static public void assertEqualWithin(double error, double expected, double test) {
 		if (Math.abs(test - expected) > error)
 			throw new ComparisonFailure("Not within error of " + error + " (" + Math.abs(test - expected) + ")", ""
-					+ expected, "" + test);
+					+ expected, "" + test); 
 	} 
 
 	static public void assertEqualWithin(double error, double[] expected, double[] test) {

@@ -1,0 +1,21 @@
+network cluster is ART1 {
+	layer {
+		activation input
+		size 5
+	}
+	layer {
+		activation output
+		size 10
+	}
+}
+
+testing {
+	input {
+		source scripts/art1-1.txt
+		map chars {
+			' ' -1,
+			'O' 1
+		}
+	}
+	output console
+}

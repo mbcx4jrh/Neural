@@ -30,6 +30,12 @@ public class TestNeuralParserFactory {
 	}
 
 	@Test
+	public void testTestingInline() {
+		assertEquals("testing input [[0.0, 0.1], [1.0, -1.0], [0.0, -0.2]]", 
+				npf.testing().parse("testing { input { 0.0 0.1, 1 -1, 0 -0.2 } }").toString());
+	}
+	
+	@Test
 	public void testTraining() {
 		assertEquals("type backprop, error 0.01, restart 0, epochs 0, " + "input [[0.0, 0.1, 1.0], [1.2, 20.0, 0.0010]], "
 				+ "output [[0.0, 0.1, 1.0], [1.2, 20.0, 0.0010]]", npf
@@ -108,6 +114,21 @@ public class TestNeuralParserFactory {
 	@Test
 	public void testDecimal() {
 		assertEquals(new Double(0.1), npf.decimal().parse("0.1"));
+		assertEquals(new Double(-0.1), npf.decimal().parse("-0.1"));
+	} 
+	
+	@Test
+	public void testPositiveDecimal() {
+		assertEquals(new Double(0.1), npf.positiveDecimal().parse("0.1"));
+		assertEquals(new Double(0.0), npf.positiveDecimal().parse("0.0"));
+		
+	}
+	
+	@Test
+	public void testNegativeDecimal() {
+		assertEquals(new Double(-0.1), npf.negativeDecimal().parse("-0.1"));
+		assertEquals(new Double(0.0), npf.negativeDecimal().parse("-0.0"));
+		
 	}
 
 	@Test

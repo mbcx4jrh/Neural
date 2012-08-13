@@ -12,6 +12,7 @@ import neural.parsec.ast.NetworkBlock;
 import neural.parsec.ast.NetworkDef;
 import neural.parsec.ast.NetworkExpression;
 import neural.parsec.ast.Parameter;
+import neural.parsec.ast.TestingDef;
 import neural.parsec.ast.TrainingDef;
 import neural.parsec.ast.TrainingItem;
 import neural.parsec.ast.training.ErrorTrainingItem;
@@ -149,8 +150,8 @@ public class NeuralParserFactory {
 	protected Parser<Double> whitespaceDouble() {
 		return Scanners.WHITESPACES.next(decimal());
 	}
-
-	protected Parser<Double> decimal() {
+	
+	protected Parser<Double> positiveDecimal() {
 		return Scanners.DECIMAL.map(new Map<String, Double>() {
 
 			public Double map(String arg0) {
@@ -158,6 +159,22 @@ public class NeuralParserFactory {
 			}
 
 		});
+	}
+
+	protected Parser<Double> decimal() {
+		return Parsers.or(negativeDecimal(), positiveDecimal()); 
+	}
+	
+	protected Parser<Double> negativeDecimal() {
+		return Scanners.string("-").next(positiveDecimal()
+				.map(new Map<Double, Double>() {
+
+					@Override
+					public Double map(Double from) {
+						return new Double(0-from.doubleValue());
+					}
+				
+				}));
 	}
 
 	protected Parser<String> type() {
@@ -309,23 +326,6 @@ public class NeuralParserFactory {
 		});
 	}
 
-//	protected Parser<TrainingDef> training() {
-//		return Scanners
-//				.string("training")
-//				.next(Scanners.WHITESPACES)
-//				.next(Parsers.between(Scanners.string("{"), Parsers.sequence(Scanners.WHITESPACES.next(type()),
-//						Scanners.WHITESPACES.next(error()), Scanners.WHITESPACES.next(inputBlock()),
-//						Scanners.WHITESPACES.next(outputBlock()),
-//						new Map4<String, ErrorCondition, Data, Data, TrainingDef>() {
-//
-//							@Override
-//							public TrainingDef map(String a, ErrorCondition b, Data c, Data d) {
-//								return new TrainingDef(a, b, c, d);
-//							}
-//
-//						}), Scanners.WHITESPACES.optional().next(Scanners.string("}"))));
-//	}
-
 	protected Parser<Boolean> biased() {
 		// return Terminals.("biased").map(new Map<String, Boolean>() {
 		return Scanners.string("biased").map(new Map<Void, Boolean>() {
@@ -360,5 +360,25 @@ public class NeuralParserFactory {
 						}
 				    	   
 				       });
+	}
+	
+	protected Parser<TestingDef> testing() {
+		return Scanners.string("testing").next(Scanners.WHITESPACES)
+				                         .next(testingBlock());
+	}
+	
+	protected Parser<TestingDef> testingBlock() {
+		return Parsers.between(Scanners.string("{").next(Scanners.WHITESPACES), 
+				               inputBlock().map(new Map<TrainingInputItem, TestingDef>() {
+
+			@Override
+			public TestingDef map(TrainingInputItem from) {
+				TestingDef def = new TestingDef();
+				def.setInputData(from.getData());
+				return def;
+			}
+		
+		}), 
+								Scanners.WHITESPACES.next(Scanners.string("}")));
 	}
 }

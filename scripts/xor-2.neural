@@ -17,7 +17,7 @@ network joe is feedforward {
 
 training {
 	type backpropagation
-	error 0.1%
+	error 0.01%
 	epochs 100000
 	input {
 		0 0,

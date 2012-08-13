@@ -111,12 +111,14 @@ public class NeuralParserFactory {
 
 		return Scanners.WHITESPACES
 				.optional()
-				.next(Parsers.sequence(networkDef(), Scanners.WHITESPACES.optional().next(training().optional()),
-						new Map2<NetworkDef, TrainingDef, Script>() {
+				.next(Parsers.sequence(networkDef(), 
+						               Scanners.WHITESPACES.optional().next(training().optional()),
+						               Scanners.WHITESPACES.optional().next(testing().optional()),
+						new Map3<NetworkDef, TrainingDef, TestingDef, Script>() {
 
 							@Override
-							public Script map(NetworkDef a, TrainingDef b) {
-								return new Script(a, b);
+							public Script map(NetworkDef a, TrainingDef b, TestingDef c) {
+								return new Script(a, b, c);
 							}
 
 						})).followedBy(Scanners.WHITESPACES.optional());
@@ -374,7 +376,7 @@ public class NeuralParserFactory {
 			@Override
 			public TestingDef map(TrainingInputItem from) {
 				TestingDef def = new TestingDef();
-				def.setInputData(from.getData());
+				def.setData(from.getData());
 				return def;
 			}
 		

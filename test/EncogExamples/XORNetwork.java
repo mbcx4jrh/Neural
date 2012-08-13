@@ -25,7 +25,7 @@ public class XORNetwork {
 				+ "        activation sigmoid\n" + "        size 1\n" + "    }\n" + "}\n";
 	}
 
-	private String training_script = "training {\n" + "  type resilient_propagation\n" + " restart 5 error 0.01%\n"
+	private String training_script = "training {\n" + "  type resilient_propagation\n" + " epochs 100000 restart 5 error 0.01%\n"
 			+ "  input {\n" + "    0.0 0.0,\n" + "    0.0 1.0,\n" + "    1.0 0.0,\n" + "    1.0 1.0\n" + "  }\n"
 			+ "  output {\n" + "    0.0,\n" + "    1.0,\n" + "    1.0,\n" + "    0.0,\n" + "  }\n" + "  \n" + "}";
 
@@ -68,6 +68,7 @@ public class XORNetwork {
 	public void testUsingScript() throws IOException {
 		trainUsingScript("scripts/xor-1.neural");
 		trainUsingScript("scripts/xor-2.neural");
+		testUsingScript("scripts/xor-3.neural");
 	}
 	
 	@Test
@@ -90,6 +91,14 @@ public class XORNetwork {
 		Network network = parser.parseScript(script);
 		network.train();
 		testXor(network);
+	}
+	
+	private void testUsingScript(String name) throws IOException {
+		String script = FileUtils.readFileToString(new File(name));
+		ScriptParser parser = new ScriptParser();
+		Network network = parser.parseScript(script);
+		network.train();
+		network.compute();	
 	}
 
 	@SuppressWarnings("unused")

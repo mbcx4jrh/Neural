@@ -37,6 +37,7 @@ public abstract class AbstractNetworkFactory implements NetworkFactory {
 		network.setPropertiesFilename(filename);
 		network.initNetwork(definition.getNetworkDef());
 		network.initTraining(definition.getTrainingDef());
+		network.initTesting(definition.getTestingDef());
 
 		return network;
 	}

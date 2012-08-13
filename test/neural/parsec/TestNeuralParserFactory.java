@@ -33,6 +33,8 @@ public class TestNeuralParserFactory {
 	public void testTestingInline() {
 		assertEquals("testing input [[0.0, 0.1], [1.0, -1.0], [0.0, -0.2]]", 
 				npf.testing().parse("testing { input { 0.0 0.1, 1 -1, 0 -0.2 } }").toString());
+		assertEquals("testing input [[1.1, 0.1], [1.0, -1.0], [0.0, -0.2], [0.1, 3.4]]", 
+				npf.testing().parse("testing { input { 1.1 0.1, 1 -1, 0 -0.2, 0.1 3.4 } }").toString());
 	}
 	
 	@Test

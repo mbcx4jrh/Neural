@@ -17,7 +17,7 @@ network joe is feedforward {
 
 training {
 	type resilient_propagation
-	error 0.1%
+	error 0.01%
 	input {
 		0 0,
 		1 0,

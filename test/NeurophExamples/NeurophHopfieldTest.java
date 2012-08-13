@@ -20,7 +20,7 @@ public class NeurophHopfieldTest {
 		parser.setUnderlyingLibrary("neural.networks.NeurophNetworkFactory");
 		tester.setParser(parser);
 		tester.hopfieldTest();
-	} 
+	}
 	
 	@Before
 	public void pokeInfinitest() {

@@ -1,6 +1,7 @@
 package neural;
 
 import neural.parsec.ast.NetworkDef;
+import neural.parsec.ast.TestingDef;
 import neural.parsec.ast.TrainingDef;
 
 public interface Network {
@@ -18,9 +19,13 @@ public interface Network {
 	public void train(double[][] input, double[][] output);
 
 	public void compute(double[] input, double[] output);
+	
+	public void compute();
 
-	public abstract void initTraining(TrainingDef def);
+	public void initTraining(TrainingDef def);
+	
+	public void initTesting(TestingDef def);
 
-	public abstract void initNetwork(NetworkDef def);
+	public void initNetwork(NetworkDef def);
 
 }

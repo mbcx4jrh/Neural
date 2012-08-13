@@ -1,11 +1,12 @@
 package neural.networks.encog;
 
+import neural.ConsoleTester;
 import neural.NeuralPropertyFactory;
+import neural.Tester;
 import neural.TrainMethodAdapter;
 import neural.networks.AbstractNetwork;
 import neural.parsec.ast.Layer;
 import neural.parsec.ast.NetworkDef;
-import neural.parsec.ast.TrainingDef;
 
 import org.encog.engine.network.activation.ActivationFunction;
 import org.encog.neural.networks.BasicNetwork;
@@ -16,7 +17,8 @@ public class EncogBasicNetwork extends AbstractNetwork {
 	
 
 	private BasicNetwork basicNetwork;
-	private TrainingDef trainingDef;
+
+
 	
 //	private TrainingContinuation trainingContinuation;
 
@@ -55,24 +57,19 @@ public class EncogBasicNetwork extends AbstractNetwork {
 		}
 	}
 
-	@Override
-	public void initTraining(TrainingDef def) {
-		super.initTraining(def);
-		this.trainingDef = def;
-	}
 
 	@Override
 	public void train() {
 		basicNetwork.reset();
-		TrainMethodAdapter trainer = trainerFactory.getNewInstance(trainingDef.getType());
-		trainer.init(trainingDef, this);
+		TrainMethodAdapter trainer = trainerFactory.getNewInstance(this.getTrainingDef().getType());
+		trainer.init(this.getTrainingDef(), this);
 		trainer.train();
 	}
 	
 	@Override
 	public void train(double[][] input, double[][] output) {
-		trainingDef.setInputData(input);
-		trainingDef.setOutputData(output);
+		this.getTrainingDef().setInputData(input);
+		this.getTrainingDef().setOutputData(output);
 		train();
 	}
 	
@@ -82,4 +79,9 @@ public class EncogBasicNetwork extends AbstractNetwork {
 		basicNetwork.compute(input, output);
 	}
 
+	@Override
+	public void compute() {
+		Tester tester = new ConsoleTester(this.getTestingDef());
+		tester.test(this);
+	}
 }

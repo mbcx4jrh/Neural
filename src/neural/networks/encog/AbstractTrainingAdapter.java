@@ -12,8 +12,6 @@ import org.encog.neural.networks.ContainsFlat;
 
 public abstract class AbstractTrainingAdapter implements TrainMethodAdapter{
 
-	static final int DEFAULT_EPOCHS = 100;
-
 	private EncogBasicNetwork encogNetwork;
 	private TrainingDef trainingDef;
 
@@ -51,8 +49,7 @@ public abstract class AbstractTrainingAdapter implements TrainMethodAdapter{
 	
 			int epoch = 0;
 			int maxEpoch;
-			if (trainingDef.getEpochs() == 0) maxEpoch = DEFAULT_EPOCHS;
-			else maxEpoch = trainingDef.getEpochs();
+			maxEpoch = trainingDef.getEpochs();
 			do {
 				trainer.iteration();
 				epoch++;

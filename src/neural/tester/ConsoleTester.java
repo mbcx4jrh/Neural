@@ -1,7 +1,8 @@
-package neural;
+package neural.tester;
 
 import java.util.Arrays;
 
+import neural.Tester;
 import neural.parsec.ast.TestingDef;
 
 public class ConsoleTester extends Tester {

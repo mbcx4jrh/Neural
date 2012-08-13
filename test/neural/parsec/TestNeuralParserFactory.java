@@ -39,7 +39,7 @@ public class TestNeuralParserFactory {
 	
 	@Test
 	public void testTraining() {
-		assertEquals("type backprop, error 0.01, restart 0, epochs 0, " + "input [[0.0, 0.1, 1.0], [1.2, 20.0, 0.0010]], "
+		assertEquals("type backprop, error 0.01, restart 1, epochs 250, " + "input [[0.0, 0.1, 1.0], [1.2, 20.0, 0.0010]], "
 				+ "output [[0.0, 0.1, 1.0], [1.2, 20.0, 0.0010]]", npf
 				.training()
 				.parse("training { type backprop error 1%\n input { 0.0 0.1 1.0, 1.2 20 0.001 }\n "

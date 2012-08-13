@@ -24,8 +24,8 @@ public class TrainingDef {
 	private double error;
 	private double[][] inputData;
 	private double[][] outputData;
-	private int epochs;
-	private int restart;
+	private int epochs = 250;
+	private int restart = 1;
 
 
 

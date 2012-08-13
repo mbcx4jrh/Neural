@@ -1,12 +1,12 @@
 package neural.networks.encog;
 
-import neural.ConsoleTester;
 import neural.NeuralPropertyFactory;
 import neural.Tester;
 import neural.TrainMethodAdapter;
 import neural.networks.AbstractNetwork;
 import neural.parsec.ast.Layer;
 import neural.parsec.ast.NetworkDef;
+import neural.tester.ConsoleTester;
 
 import org.encog.engine.network.activation.ActivationFunction;
 import org.encog.neural.networks.BasicNetwork;

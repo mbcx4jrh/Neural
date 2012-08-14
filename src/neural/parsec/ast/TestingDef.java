@@ -17,6 +17,14 @@ public class TestingDef {
 	public double[][] getData() {
 		return data;
 	}
+	
+	public String getOutputType() {
+		return output.getType();
+	}
+	
+	public String getOutputId() {
+		return output.getId();
+	}
 
 	public String toString() {
 		String out =  "testing input "+Arrays.deepToString(data);

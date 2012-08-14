@@ -11,6 +11,8 @@ import java.util.Arrays;
 import neural.Network;
 import neural.ScriptParser;
 import neural.networks.encog.EncogBasicNetwork;
+import neural.tester.MemoryTester;
+import neural.tester.MemoryTesterStore;
 
 import org.apache.commons.io.FileUtils;
 import org.junit.Before;
@@ -99,6 +101,11 @@ public class XORNetwork {
 		Network network = parser.parseScript(script);
 		network.train();
 		network.compute();	
+		
+		MemoryTester tester = MemoryTesterStore.getInstance().retrieve("xor-3");
+		
+		assertEqualWithin(0.2, new double[] { 0 }, tester.lastOutput());
+		
 	}
 
 	@SuppressWarnings("unused")

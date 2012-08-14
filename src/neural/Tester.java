@@ -5,9 +5,15 @@ import neural.parsec.ast.TestingDef;
 public abstract class Tester {
 
 	private TestingDef testingDef;
+	private String id;
 
-	public Tester(TestingDef def) {
+	public void init(String id, TestingDef def) {
 		this.testingDef = def;
+		this.id = id;
+	}
+	
+	public String getId() {
+		return id;
 	}
 	
 	public void test(Network network) {

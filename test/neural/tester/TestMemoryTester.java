@@ -19,11 +19,11 @@ public class TestMemoryTester {
 	
 	@Test 
 	public void testStoreAndRetrieve() {
-		MemoryTester tester = MemoryTester.storeMemoryTester("xor1", null);
+		MemoryTester tester = new MemoryTester();
+		tester.init("xor", null);
 		
 		tester.releaseResult(in1, out1);
 		
-		tester = MemoryTester.getMemoryTester("xor1");
 		assertEquals(Arrays.toString(tester.lastInput()), Arrays.toString(in1));
 		assertEquals(Arrays.toString(tester.lastOutput()), Arrays.toString(out1));
 		

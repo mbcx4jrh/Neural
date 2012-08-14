@@ -18,12 +18,9 @@ public class EncogBasicNetwork extends AbstractNetwork {
 
 	private BasicNetwork basicNetwork;
 
-
-	
-//	private TrainingContinuation trainingContinuation;
-
 	private NeuralPropertyFactory<ActivationFunction> activationFactory;
 	private NeuralPropertyFactory<TrainMethodAdapter> trainerFactory;
+	private NeuralPropertyFactory<Tester> testerFactory;
 
 	@Override
 	public void initNetwork(NetworkDef def) {
@@ -31,6 +28,7 @@ public class EncogBasicNetwork extends AbstractNetwork {
 		basicNetwork = new BasicNetwork();
 		activationFactory = new NeuralPropertyFactory<ActivationFunction>(this.getPropertiesFilename(), "activation");
 		trainerFactory = new NeuralPropertyFactory<TrainMethodAdapter>(this.getPropertiesFilename(), "training");
+		testerFactory = new NeuralPropertyFactory<Tester>(this.getPropertiesFilename(), "tester");
 		createLayers(def);
 		basicNetwork.getStructure().finalizeStructure();
 		basicNetwork.reset(); // reset weights
@@ -81,7 +79,12 @@ public class EncogBasicNetwork extends AbstractNetwork {
 
 	@Override
 	public void compute() {
-		Tester tester = new ConsoleTester(this.getTestingDef());
+		Tester tester;
+		if (this.getTestingDef().getOutputType() == null)
+			tester = new ConsoleTester();
+		else
+			tester = testerFactory.getNewInstance(this.getTestingDef().getOutputType());
+		tester.init(this.getTestingDef().getOutputId(), this.getTestingDef());
 		tester.test(this);
 	}
 }

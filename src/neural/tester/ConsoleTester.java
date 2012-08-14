@@ -7,9 +7,9 @@ import neural.parsec.ast.TestingDef;
 
 public class ConsoleTester extends Tester {
 
-	public ConsoleTester(TestingDef def) {
-		super(def);
-		// TODO Auto-generated constructor stub
+	
+	public void init(TestingDef def) {
+		super.init(null, def);
 	}
 
 	@Override

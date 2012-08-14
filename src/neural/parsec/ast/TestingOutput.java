@@ -2,6 +2,14 @@ package neural.parsec.ast;
 
 public class TestingOutput {
 
+	public String getType() {
+		return type;
+	}
+
+	public String getId() {
+		return id;
+	}
+
 	private String type;
 	private String id;
 

@@ -106,6 +106,13 @@ public class XORNetwork {
 		
 		assertEqualWithin(0.2, new double[] { 0 }, tester.lastOutput());
 		
+		double[][] input = new double[][] { { 0.0, 0.0 }, { 1.0, 0.0 }, { 0.0, 1.0 }, { 1.0, 1.0 } };
+		double[][] output = new double[][] { { 0.0 }, { 1.0 }, { 1.0 }, { 0.0 } };
+		
+		for (int i=0; i<input.length; i++) {
+			assertEqualWithin(0.2, input[i], tester.getInput()[i]);
+			assertEqualWithin(0.2, output[i], tester.getOutput()[i]);
+		}
 	}
 
 	@SuppressWarnings("unused")

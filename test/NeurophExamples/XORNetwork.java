@@ -11,6 +11,8 @@ import java.util.Arrays;
 import neural.Network;
 import neural.ScriptParser;
 import neural.networks.neuroph.NeurophFeedForwardNetwork;
+import neural.tester.MemoryTester;
+import neural.tester.MemoryTesterStore;
 
 import org.apache.commons.io.FileUtils;
 import org.junit.Before;
@@ -74,6 +76,7 @@ public class XORNetwork {
 	public void testUsingScript() throws IOException {
 		trainUsingScript("scripts/xor-1.neural");
 		trainUsingScript("scripts/xor-2.neural");
+		testUsingScript("scripts/xor-3.neural");
 	}
 	
 	private void trainUsingScript(String name) throws IOException {
@@ -82,6 +85,26 @@ public class XORNetwork {
 		network.train();
 		testXor(network);
 	}
+	
+	private void testUsingScript(String name) throws IOException {
+		String script = FileUtils.readFileToString(new File(name));
+		Network network = parser.parseScript(script);
+		network.train();
+		network.compute();	
+		
+		MemoryTester tester = MemoryTesterStore.getInstance().retrieve("xor-3");
+		
+
+		
+		double[][] input = new double[][] { { 0.0, 0.0 }, { 1.0, 0.0 }, { 0.0, 1.0 }, { 1.0, 1.0 } };
+		double[][] output = new double[][] { { 0.0 }, { 1.0 }, { 1.0 }, { 0.0 } };
+		
+		for (int i=0; i<input.length; i++) {
+			assertEqualWithin(0.2, input[i], tester.getInput()[i]);
+			assertEqualWithin(0.2, output[i], tester.getOutput()[i]);
+		}
+	}
+
 
 	@SuppressWarnings("unused")
 	@Before

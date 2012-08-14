@@ -1,9 +1,12 @@
 package neural.networks;
 
 import neural.Network;
+import neural.NeuralPropertyFactory;
+import neural.Tester;
 import neural.parsec.ast.NetworkDef;
 import neural.parsec.ast.TestingDef;
 import neural.parsec.ast.TrainingDef;
+import neural.tester.ConsoleTester;
 
 public abstract class AbstractNetwork implements Network {
 
@@ -12,6 +15,9 @@ public abstract class AbstractNetwork implements Network {
 	private String propertiesFilename;
 	private TrainingDef trainingDef;
 	private TestingDef testingDef;
+	
+	private NeuralPropertyFactory<Tester> testerFactory;
+	
 
 	@Override
 	public String getName() {
@@ -24,6 +30,7 @@ public abstract class AbstractNetwork implements Network {
 
 	public void setPropertiesFilename(String propertiesFilename) {
 		this.propertiesFilename = propertiesFilename;
+		this.testerFactory = new NeuralPropertyFactory<Tester>(propertiesFilename, "tester");
 	}
 
 	@Override
@@ -46,7 +53,13 @@ public abstract class AbstractNetwork implements Network {
 	}
 
 	public void compute() {
-		throw new UnsupportedOperationException("Not implemented in your network");
+		Tester tester;
+		if (this.getTestingDef().getOutputType() == null)
+			tester = new ConsoleTester();
+		else
+			tester = testerFactory.getNewInstance(this.getTestingDef().getOutputType());
+		tester.init(this.getTestingDef().getOutputId(), this.getTestingDef());
+		tester.test(this);
 	}
 
 	public TrainingDef getTrainingDef() {

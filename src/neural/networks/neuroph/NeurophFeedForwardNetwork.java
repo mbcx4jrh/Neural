@@ -134,7 +134,6 @@ public class NeurophFeedForwardNetwork extends AbstractNetwork {
 	}
 	
 
-
 	@Override
 	public void compute(double[] input, double[] output) {
 		network.setInput(input);

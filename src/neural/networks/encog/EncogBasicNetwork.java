@@ -1,12 +1,10 @@
 package neural.networks.encog;
 
 import neural.NeuralPropertyFactory;
-import neural.Tester;
 import neural.TrainMethodAdapter;
 import neural.networks.AbstractNetwork;
 import neural.parsec.ast.Layer;
 import neural.parsec.ast.NetworkDef;
-import neural.tester.ConsoleTester;
 
 import org.encog.engine.network.activation.ActivationFunction;
 import org.encog.neural.networks.BasicNetwork;
@@ -20,7 +18,6 @@ public class EncogBasicNetwork extends AbstractNetwork {
 
 	private NeuralPropertyFactory<ActivationFunction> activationFactory;
 	private NeuralPropertyFactory<TrainMethodAdapter> trainerFactory;
-	private NeuralPropertyFactory<Tester> testerFactory;
 
 	@Override
 	public void initNetwork(NetworkDef def) {
@@ -28,7 +25,6 @@ public class EncogBasicNetwork extends AbstractNetwork {
 		basicNetwork = new BasicNetwork();
 		activationFactory = new NeuralPropertyFactory<ActivationFunction>(this.getPropertiesFilename(), "activation");
 		trainerFactory = new NeuralPropertyFactory<TrainMethodAdapter>(this.getPropertiesFilename(), "training");
-		testerFactory = new NeuralPropertyFactory<Tester>(this.getPropertiesFilename(), "tester");
 		createLayers(def);
 		basicNetwork.getStructure().finalizeStructure();
 		basicNetwork.reset(); // reset weights
@@ -75,16 +71,5 @@ public class EncogBasicNetwork extends AbstractNetwork {
 	@Override
 	public void compute(double[] input, double[] output) {
 		basicNetwork.compute(input, output);
-	}
-
-	@Override
-	public void compute() {
-		Tester tester;
-		if (this.getTestingDef().getOutputType() == null)
-			tester = new ConsoleTester();
-		else
-			tester = testerFactory.getNewInstance(this.getTestingDef().getOutputType());
-		tester.init(this.getTestingDef().getOutputId(), this.getTestingDef());
-		tester.test(this);
 	}
 }

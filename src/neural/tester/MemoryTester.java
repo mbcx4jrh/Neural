@@ -6,7 +6,6 @@ import java.util.Map;
 import neural.NeuralException;
 import neural.Tester;
 import neural.parsec.ast.TestingDef;
-import neural.parsec.ast.TrainingDef;
 
 public class MemoryTester extends Tester {
 	

@@ -35,6 +35,19 @@ public class TestNeuralParserFactory {
 				npf.testing().parse("testing { input { 0.0 0.1, 1 -1, 0 -0.2 } }").toString());
 		assertEquals("testing input [[1.1, 0.1], [1.0, -1.0], [0.0, -0.2], [0.1, 3.4]]", 
 				npf.testing().parse("testing { input { 1.1 0.1, 1 -1, 0 -0.2, 0.1 3.4 } }").toString());
+		assertEquals("testing input [[1.1, 0.1], [1.0, -1.0], [0.0, -0.2], [0.1, 3.4]]"+
+				     " output type:memory id:xor-1.neural", 
+				npf.testing().parse("testing { input { 1.1 0.1, 1 -1, 0 -0.2, 0.1 3.4 } output memory \"xor-1.neural\" }").toString());
+	}
+	
+	@Test
+	public void testTestingOutputStatement() {
+		assertEquals("output type:memory id:xor-1.txt", npf.testingOutput().parse("output memory \"xor-1.txt\"").toString());
+	}
+	
+	@Test 
+	public void testFilename() {
+		assertEquals("xor-1.txt", npf.filename().parse("\"xor-1.txt\""));
 	}
 	
 	@Test

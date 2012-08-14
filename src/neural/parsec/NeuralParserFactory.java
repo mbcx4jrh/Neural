@@ -13,6 +13,7 @@ import neural.parsec.ast.NetworkDef;
 import neural.parsec.ast.NetworkExpression;
 import neural.parsec.ast.Parameter;
 import neural.parsec.ast.TestingDef;
+import neural.parsec.ast.TestingOutput;
 import neural.parsec.ast.TrainingDef;
 import neural.parsec.ast.TrainingItem;
 import neural.parsec.ast.training.ErrorTrainingItem;
@@ -371,16 +372,41 @@ public class NeuralParserFactory {
 	
 	protected Parser<TestingDef> testingBlock() {
 		return Parsers.between(Scanners.string("{").next(Scanners.WHITESPACES), 
-				               inputBlock().map(new Map<TrainingInputItem, TestingDef>() {
+				               Parsers.sequence(inputBlock(),
+				            		            Scanners.WHITESPACES.optional().next(testingOutput().optional()), 
+				            		          new Map2<TrainingInputItem, TestingOutput, TestingDef>() {
 
 			@Override
-			public TestingDef map(TrainingInputItem from) {
-				TestingDef def = new TestingDef();
-				def.setData(from.getData());
-				return def;
+			public TestingDef map(TrainingInputItem a, TestingOutput b) {
+				return new TestingDef(a, b);
 			}
 		
-		}), 
-								Scanners.WHITESPACES.next(Scanners.string("}")));
+		}),
+								Scanners.WHITESPACES.optional().next(Scanners.string("}")));
+	}
+	
+	protected Parser<TestingOutput> testingOutput() {
+		return Scanners.string("output").next(Scanners.WHITESPACES)
+				                        .next(Parsers.sequence(identifier(), 
+				                                               Scanners.WHITESPACES.next(filename()), 
+				                             new Map2<String, String, TestingOutput>() {
+
+													@Override
+													public TestingOutput map(String a, String b) {
+														return new TestingOutput(a,b);
+													}
+												
+				                        		}));
+	}
+	
+	protected Parser<String> filename() {
+		return Scanners.DOUBLE_QUOTE_STRING.map(new Map<String, String>() {
+
+			@Override
+			public String map(String from) {
+				return from.substring(1, from.length()-1);
+			}
+		});
+		
 	}
 }

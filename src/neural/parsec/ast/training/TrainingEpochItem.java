@@ -1,9 +1,9 @@
 package neural.parsec.ast.training;
 
+import neural.parsec.ast.AbstractTrainingItem;
 import neural.parsec.ast.TrainingDef;
-import neural.parsec.ast.TrainingItem;
 
-public class TrainingEpochItem implements TrainingItem {
+public class TrainingEpochItem extends AbstractTrainingItem {
 	
 	private int epochs;
 

@@ -17,7 +17,7 @@ public abstract class Tester {
 	}
 	
 	public void test(Network network) {
-		for (double[] input: testingDef.getData()) {
+		for (double[] input: testingDef.getInputData()) {
 			double[] output =new double[input.length];
 			network.compute(input, output);
 			releaseResult(input, output);

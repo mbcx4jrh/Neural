@@ -2,20 +2,25 @@ package neural.parsec.ast;
 
 import java.util.Arrays;
 
-import neural.parsec.ast.training.TrainingInputItem;
+public class TestingDef implements DataDefinition {
 
-public class TestingDef {
+	private double[][] inputData;
+	private double[][] outputData;
+	private DataLocation output;
+	private DataLocation input;
 
-	private double[][] data;
-	private TestingOutput output;
 
-	public TestingDef(TrainingInputItem input, TestingOutput output) {
-		this.data = input.getData().getData();
-		this.output = output;
+	
+	public void setInputData(double[][] data) {
+		this.inputData = data;
 	}
 	
-	public double[][] getData() {
-		return data;
+	public void setOutputData(double[][] data) {
+		this.outputData = data;
+	}
+	
+	public double[][] getInputData() {
+		return inputData;
 	}
 	
 	public String getOutputType() {
@@ -27,9 +32,23 @@ public class TestingDef {
 	}
 
 	public String toString() {
-		String out =  "testing input "+Arrays.deepToString(data);
+		String out =  "testing input ";
+		if (inputData != null) out += Arrays.deepToString(inputData);
+		else out+= input.toString();
 		if (output != null) out += (" " +output.toString());
 		return out;
+	}
+
+	public DataLocation getInput() {
+		return input;
+	}
+
+	public void setInputLocation(DataLocation input) {
+		this.input = input;
+	}
+	
+	public void setOutputLocation(DataLocation output) {
+		this.output = output;
 	}
 
 }

@@ -2,7 +2,7 @@ package neural.parsec.ast;
 
 import java.util.Arrays;
 
-public class TrainingDef {
+public class TrainingDef implements DataDefinition{
 
 	public String getType() {
 		return type;
@@ -26,6 +26,8 @@ public class TrainingDef {
 	private double[][] outputData;
 	private int epochs = 250;
 	private int restart = 1;
+	private DataLocation inputLocation;
+	private DataLocation outputLocation;
 
 
 
@@ -64,6 +66,16 @@ public class TrainingDef {
 	public String toString() {
 		return "type " + type + ", error " + error + ", restart "+restart+", epochs "+epochs+", input " + Arrays.deepToString(inputData) + ", output "
 				+ Arrays.deepToString(outputData);
+	}
+
+	@Override
+	public void setInputLocation(DataLocation location) {
+		this.inputLocation = location;
+	}
+
+	@Override
+	public void setOutputLocation(DataLocation location) {
+		this.outputLocation = location;
 	}
 
 }

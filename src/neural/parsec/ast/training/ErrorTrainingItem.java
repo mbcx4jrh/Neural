@@ -1,9 +1,9 @@
 package neural.parsec.ast.training;
 
+import neural.parsec.ast.AbstractTrainingItem;
 import neural.parsec.ast.TrainingDef;
-import neural.parsec.ast.TrainingItem;
 
-public class ErrorTrainingItem implements TrainingItem {
+public class ErrorTrainingItem extends AbstractTrainingItem {
 	
 	private double error;
 	

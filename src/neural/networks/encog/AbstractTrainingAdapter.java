@@ -30,8 +30,6 @@ public abstract class AbstractTrainingAdapter implements TrainMethodAdapter{
 
 	@Override
 	public void train(double[] input, double[] output) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override

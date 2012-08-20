@@ -36,8 +36,17 @@ public class TestNeuralParserFactory {
 		assertEquals("testing input [[1.1, 0.1], [1.0, -1.0], [0.0, -0.2], [0.1, 3.4]]", 
 				npf.testing().parse("testing { input { 1.1 0.1, 1 -1, 0 -0.2, 0.1 3.4 } }").toString());
 		assertEquals("testing input [[1.1, 0.1], [1.0, -1.0], [0.0, -0.2], [0.1, 3.4]]"+
-				     " output type:memory id:xor-1.neural", 
-				npf.testing().parse("testing { input { 1.1 0.1, 1 -1, 0 -0.2, 0.1 3.4 } output memory \"xor-1.neural\" }").toString());
+			     " output type:memory id:xor-1.neural", 
+			npf.testing().parse("testing { input { 1.1 0.1, 1 -1, 0 -0.2, 0.1 3.4 } output memory \"xor-1.neural\" }").toString());
+		assertEquals("testing input type:file id:aaa-1.txt"+
+			     " output type:memory id:xor-1.neural", 
+			npf.testing().parse("testing { input file \"aaa-1.txt\" output memory \"xor-1.neural\" }").toString());
+	}
+	
+	@Test
+	public void testSourceStatement() {
+		assertEquals("type:file id:data-1.txt",
+				npf.source().parse("input file \"data-1.txt\"").toString());
 	}
 	
 	@Test
@@ -106,7 +115,7 @@ public class TestNeuralParserFactory {
 	@Test
 	public void testInputBlock() {
 		assertEquals("[[0.0, 0.1, 1.0], [1.2, 20.0, 0.0010]]",
-				npf.inputBlock().parse("input { 0.0 0.1 1.0, 1.2 20 0.001 }").getData().toString());
+				npf.inputBlock().parse("input { 0.0 0.1 1.0, 1.2 20 0.001 }").toString());
 	}
 
 	@Test

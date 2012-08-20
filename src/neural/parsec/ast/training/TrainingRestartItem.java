@@ -1,9 +1,9 @@
 package neural.parsec.ast.training;
 
+import neural.parsec.ast.AbstractTrainingItem;
 import neural.parsec.ast.TrainingDef;
-import neural.parsec.ast.TrainingItem;
 
-public class TrainingRestartItem implements TrainingItem {
+public class TrainingRestartItem extends AbstractTrainingItem {
 
 	private int restarts;
 	

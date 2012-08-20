@@ -5,7 +5,9 @@ import java.util.List;
 
 import neural.parsec.ast.AsExpression;
 import neural.parsec.ast.Data;
+import neural.parsec.ast.DataItem;
 import neural.parsec.ast.DoubleParameter;
+import neural.parsec.ast.ExternalInput;
 import neural.parsec.ast.IntegerParameter;
 import neural.parsec.ast.Layer;
 import neural.parsec.ast.NetworkBlock;
@@ -17,8 +19,8 @@ import neural.parsec.ast.TestingOutput;
 import neural.parsec.ast.TrainingDef;
 import neural.parsec.ast.TrainingItem;
 import neural.parsec.ast.training.ErrorTrainingItem;
+import neural.parsec.ast.training.InlineInputItem;
 import neural.parsec.ast.training.TrainingEpochItem;
-import neural.parsec.ast.training.TrainingInputItem;
 import neural.parsec.ast.training.TrainingOutputItem;
 import neural.parsec.ast.training.TrainingRestartItem;
 import neural.parsec.ast.training.TrainingTypeItem;
@@ -252,12 +254,12 @@ public class NeuralParserFactory {
 						.optional().next(Scanners.string("}")));
 	}
 
-	protected Parser<TrainingInputItem> inputBlock() {
-		return namedDataBlock("input").map(new Map<Data, TrainingInputItem>() {
+	protected Parser<InlineInputItem> inputBlock() {
+		return namedDataBlock("input").map(new Map<Data, InlineInputItem>() {
 
 			@Override
-			public TrainingInputItem map(Data from) {
-				return new TrainingInputItem(from);
+			public InlineInputItem map(Data from) {
+				return new InlineInputItem(from);
 			}
 			
 		});
@@ -286,6 +288,7 @@ public class NeuralParserFactory {
 				}));
 	}
 	
+	
 	protected Parser<TrainingDef> training() {
 		return Scanners.string("training")
 					   .next(Scanners.WHITESPACES)
@@ -295,12 +298,12 @@ public class NeuralParserFactory {
 	protected Parser<TrainingDef> trainingBlock() {
 		return Parsers.between(Scanners.string("{").next(Scanners.WHITESPACES.optional()), 
 				               Parsers.or(trainingParameter(), data()).sepBy(Scanners.WHITESPACES)
-				                      .map(new Map<List<TrainingItem>, TrainingDef>() {
+				                      .map(new Map<List<DataItem>, TrainingDef>() {
 
 										@Override
-										public TrainingDef map(List<TrainingItem> from) {
+										public TrainingDef map(List<DataItem> from) {
 											TrainingDef def = new TrainingDef();
-											for (TrainingItem item: from) {
+											for (DataItem item: from) {
 												item.applyTo(def);
 											}
 											return def;
@@ -310,19 +313,19 @@ public class NeuralParserFactory {
 				               Scanners.WHITESPACES.optional().next(Scanners.string("}")));
 	}
 	
-	protected Parser<TrainingItem> trainingParameter() {
+	protected Parser<DataItem> trainingParameter() {
 		return Parsers.or(error(), trainingType(), restart(), maxEpochs());
-		}
+	}
 	
-	protected Parser<TrainingItem> data() {
+	protected Parser<DataItem> data() {
 		return Parsers.or(inputBlock(), outputBlock());
 	}
 	
-	protected Parser<TrainingTypeItem> trainingType() {
-		return type().map(new Map<String, TrainingTypeItem>() {
+	protected Parser<DataItem> trainingType() {
+		return type().map(new Map<String, DataItem>() {
 
 			@Override
-			public TrainingTypeItem map(String from) {
+			public DataItem map(String from) {
 				return new TrainingTypeItem(from);
 			}
 			
@@ -372,17 +375,23 @@ public class NeuralParserFactory {
 	
 	protected Parser<TestingDef> testingBlock() {
 		return Parsers.between(Scanners.string("{").next(Scanners.WHITESPACES), 
-				               Parsers.sequence(inputBlock(),
+				               Parsers.sequence(input(),
 				            		            Scanners.WHITESPACES.optional().next(testingOutput().optional()), 
-				            		          new Map2<TrainingInputItem, TestingOutput, TestingDef>() {
+				            		          new Map2<DataItem, TestingOutput, TestingDef>() {
 
 			@Override
-			public TestingDef map(TrainingInputItem a, TestingOutput b) {
-				return new TestingDef(a, b);
+			public TestingDef map(DataItem a, TestingOutput b) {
+				TestingDef def = new TestingDef();
+				a.applyTo(def);
+				if (b!=null) b.applyTo(def);
+				return def;
 			}
-		
 		}),
 								Scanners.WHITESPACES.optional().next(Scanners.string("}")));
+	}
+	
+	protected Parser<DataItem> input() {
+		return Parsers.or(inputBlock(), source());
 	}
 	
 	protected Parser<TestingOutput> testingOutput() {
@@ -398,6 +407,21 @@ public class NeuralParserFactory {
 												
 				                        		}));
 	}
+
+	protected Parser<ExternalInput> source() {
+	
+		return Scanners.string("input").next(Scanners.WHITESPACES)
+            .next(Parsers.sequence(identifier(), 
+                                   Scanners.WHITESPACES.next(filename()), 
+                 new Map2<String, String, ExternalInput>() {
+
+						@Override
+						public ExternalInput map(String a, String b) {
+							return new ExternalInput(a,b);
+						}
+					
+            		}));
+	}
 	
 	protected Parser<String> filename() {
 		return Scanners.DOUBLE_QUOTE_STRING.map(new Map<String, String>() {
@@ -409,4 +433,6 @@ public class NeuralParserFactory {
 		});
 		
 	}
+	
+	
 }

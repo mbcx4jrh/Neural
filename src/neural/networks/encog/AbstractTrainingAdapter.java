@@ -2,7 +2,9 @@ package neural.networks.encog;
 
 import neural.Network;
 import neural.NeuralException;
+import neural.NeuralPropertyFactory;
 import neural.TrainMethodAdapter;
+import neural.data.DataSource;
 import neural.parsec.ast.TrainingDef;
 
 import org.encog.ml.data.MLDataSet;
@@ -14,6 +16,7 @@ public abstract class AbstractTrainingAdapter implements TrainMethodAdapter{
 
 	private EncogBasicNetwork encogNetwork;
 	private TrainingDef trainingDef;
+	private NeuralPropertyFactory<DataSource> dataSourceFactory;
 
 	public AbstractTrainingAdapter() {
 		super();
@@ -26,6 +29,7 @@ public abstract class AbstractTrainingAdapter implements TrainMethodAdapter{
 			throw new NeuralException("Can only apply enog trainer to encog basic network");
 		
 		encogNetwork = (EncogBasicNetwork)network;
+		dataSourceFactory = new NeuralPropertyFactory<DataSource>(network.getPropertiesFilename(), "data");
 	}
 
 	@Override
@@ -66,8 +70,38 @@ public abstract class AbstractTrainingAdapter implements TrainMethodAdapter{
 	}
 
 	protected MLDataSet getData() {
-		return new BasicMLDataSet(trainingDef.getInputData(), trainingDef.getOutputData());
+		double[][] input;
+		double[][] output;
+		
+		//input data
+		if (trainingDef.getInputData() !=null) {
+			input = trainingDef.getInputData();
+		}
+		else if (trainingDef.getInputLocation() != null) {
+			input = loadData(trainingDef.getInputLocation().getType(),
+					trainingDef.getInputLocation().getId());
+		}
+		else throw new NeuralException("Missing input data definition in script");
+		
+		//output data
+		if (trainingDef.getOutputData() !=null) {
+			output = trainingDef.getOutputData();
+		}
+		else if (trainingDef.getOutputLocation() != null) {
+			output = loadData(trainingDef.getOutputLocation().getType(),
+					trainingDef.getOutputLocation().getId());
+		}
+		else throw new NeuralException("Missing output data definition in script");
+		
 	
+		return new BasicMLDataSet(input, output);
+	
+	}
+	
+	private double[][] loadData(String type, String id) {
+		DataSource src = dataSourceFactory.getNewInstance(type);
+		src.init(id);
+		return src.getAll();
 	}
 
 	abstract protected MLTrain getTrainer(TrainingDef definiton);

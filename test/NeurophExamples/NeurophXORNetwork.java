@@ -106,10 +106,9 @@ public class NeurophXORNetwork {
 	}
 
 
-	@SuppressWarnings("unused")
 	@Before
 	public void infiniTestFix() {
-		NeurophFeedForwardNetwork n = new NeurophFeedForwardNetwork(); 
+		//NeurophFeedForwardNetwork n = new NeurophFeedForwardNetwork(); 
 	}
 
 }

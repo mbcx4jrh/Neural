@@ -7,5 +7,7 @@ public interface DataSource extends Iterator<double[]>, Iterable<double[]>{
 	public void init(String id);
 	
 	public void reset();
+	
+	public double[][] getAll();
 
 }

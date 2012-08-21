@@ -4,6 +4,11 @@ import java.util.Iterator;
 
 public abstract class AbstractMemoryDataSource implements DataSource {
 	
+	@Override
+	public double[][] getAll() {
+		return data;
+	}
+
 	private int currentRow;
 	private double[][] data;
 	protected String id;

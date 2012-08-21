@@ -46,7 +46,7 @@ public class TestNeuralParserFactory {
 	@Test
 	public void testSourceStatement() {
 		assertEquals("type:file id:data-1.txt",
-				npf.source().parse("input file \"data-1.txt\"").toString());
+				npf.inputSource().parse("input file \"data-1.txt\"").toString());
 	}
 	
 	@Test
@@ -71,6 +71,16 @@ public class TestNeuralParserFactory {
 				.training()
 				.parse("training { restart 5 epochs 100 type backprop error 1%\n input { 0.0 0.1 1.0, 1.2 20 0.001 }\n "
 						+ "output { 0.0 0.1 1.0, 1.2 20 0.001 } \n}").toString());
+	}
+	
+	@Test 
+	public void testTrainingFromFile() {
+		assertEquals("type backprop, error 0.1, restart 1, epochs 250, input type:mental id:joe, output [[0.0, 0.1], [1.0, 1.0]]",
+				npf.training().parse("training { type backprop error 10% input mental \"joe\" "+ 
+						"output { 0 0.1, 1 1 } }").toString());
+		assertEquals("type backprop, error 0.1, restart 1, epochs 250, input type:mental id:joe, output type:psy id:richa",
+				npf.training().parse("training { type backprop error 10% input mental \"joe\" "+ 
+						"output psy \"richa\" }").toString());
 	}
 
 	@Test

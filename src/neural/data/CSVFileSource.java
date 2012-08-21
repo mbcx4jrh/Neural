@@ -73,4 +73,9 @@ public class CSVFileSource implements DataSource{
 		return this;
 	}
 
+	@Override
+	public double[][] getAll() {
+		return data;
+	}
+
 }

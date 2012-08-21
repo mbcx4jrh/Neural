@@ -8,6 +8,7 @@ import neural.parsec.ast.Data;
 import neural.parsec.ast.DataItem;
 import neural.parsec.ast.DoubleParameter;
 import neural.parsec.ast.ExternalInput;
+import neural.parsec.ast.ExternalOutput;
 import neural.parsec.ast.IntegerParameter;
 import neural.parsec.ast.Layer;
 import neural.parsec.ast.NetworkBlock;
@@ -317,7 +318,7 @@ public class NeuralParserFactory {
 	}
 	
 	protected Parser<DataItem> data() {
-		return Parsers.or(inputBlock(), outputBlock());
+		return Parsers.or(inputBlock(), inputSource(), outputBlock(), outputSource());
 	}
 	
 	protected Parser<DataItem> trainingType() {
@@ -390,7 +391,7 @@ public class NeuralParserFactory {
 	}
 	
 	protected Parser<DataItem> input() {
-		return Parsers.or(inputBlock(), source());
+		return Parsers.or(inputBlock(), inputSource());
 	}
 	
 	protected Parser<TestingOutput> testingOutput() {
@@ -407,8 +408,8 @@ public class NeuralParserFactory {
 				                        		}));
 	}
 
-	protected Parser<ExternalInput> source() {
-	
+	protected Parser<ExternalInput> inputSource() {
+		
 		return Scanners.string("input").next(Scanners.WHITESPACES)
             .next(Parsers.sequence(identifier(), 
                                    Scanners.WHITESPACES.next(filename()), 
@@ -417,6 +418,21 @@ public class NeuralParserFactory {
 						@Override
 						public ExternalInput map(String a, String b) {
 							return new ExternalInput(a,b);
+						}
+					
+            		}));
+	}	
+	
+	protected Parser<ExternalOutput> outputSource() {
+	
+		return Scanners.string("output").next(Scanners.WHITESPACES)
+            .next(Parsers.sequence(identifier(), 
+                                   Scanners.WHITESPACES.next(filename()), 
+                 new Map2<String, String, ExternalOutput>() {
+
+						@Override
+						public ExternalOutput map(String a, String b) {
+							return new ExternalOutput(a,b);
 						}
 					
             		}));

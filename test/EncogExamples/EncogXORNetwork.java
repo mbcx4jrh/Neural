@@ -71,6 +71,7 @@ public class EncogXORNetwork {
 		trainUsingScript("scripts/xor-1.neural");
 		trainUsingScript("scripts/xor-2.neural");
 		testUsingScript("scripts/xor-3.neural");
+		testUsingScript("scripts/xor-4.neural");
 	}
 	
 	@Test

@@ -41,4 +41,9 @@ public class InlineDataSource implements DataSource {
 		return this;
 	}
 
+	@Override
+	public double[][] getAll() {
+		return data;
+	}
+
 }

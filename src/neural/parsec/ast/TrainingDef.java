@@ -4,6 +4,14 @@ import java.util.Arrays;
 
 public class TrainingDef implements DataDefinition{
 
+	public DataLocation getInputLocation() {
+		return inputLocation;
+	}
+
+	public DataLocation getOutputLocation() {
+		return outputLocation;
+	}
+
 	public String getType() {
 		return type;
 	}
@@ -64,8 +72,17 @@ public class TrainingDef implements DataDefinition{
 	}
 
 	public String toString() {
-		return "type " + type + ", error " + error + ", restart "+restart+", epochs "+epochs+", input " + Arrays.deepToString(inputData) + ", output "
-				+ Arrays.deepToString(outputData);
+		String s =  "type " + type + ", error " + error + ", restart "+restart+", epochs "+epochs+", input ";
+		
+		 if (inputLocation != null) s+= inputLocation.toString(); 
+		 else s+= Arrays.deepToString(inputData);
+		
+		 s+= ", output ";
+		 
+		 if (outputLocation != null) s+= outputLocation.toString();
+		 else s+= Arrays.deepToString(outputData);
+		 
+		 return s;
 	}
 
 	@Override

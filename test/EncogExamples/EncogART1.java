@@ -5,6 +5,7 @@ import java.io.IOException;
 
 import neural.Network;
 import neural.ScriptParser;
+import neural.networks.encog.EncogART1Network;
 
 import org.apache.commons.io.FileUtils;
 import org.junit.Before;
@@ -23,8 +24,13 @@ public class EncogART1 {
 	
 	@Test
 	public void testEncogExample() {
-	
+		network.compute();
 	}
 
+	
+	@Before 
+	public void infiniTestFix() {
+		EncogART1Network n = new EncogART1Network();
+	}
 
 }

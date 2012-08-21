@@ -10,11 +10,5 @@ network cluster is ART1 {
 }
 
 testing {
-	input {
-		file "scripts/art1-1.txt"
-		map chars {
-			' ' -1,
-			'O' 1
-		}
-	}
+	input patternfile "scripts/art1-1.txt"
 }

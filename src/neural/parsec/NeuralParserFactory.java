@@ -17,7 +17,6 @@ import neural.parsec.ast.Parameter;
 import neural.parsec.ast.TestingDef;
 import neural.parsec.ast.TestingOutput;
 import neural.parsec.ast.TrainingDef;
-import neural.parsec.ast.TrainingItem;
 import neural.parsec.ast.training.ErrorTrainingItem;
 import neural.parsec.ast.training.InlineInputItem;
 import neural.parsec.ast.training.TrainingEpochItem;

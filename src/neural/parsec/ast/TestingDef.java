@@ -24,7 +24,8 @@ public class TestingDef implements DataDefinition {
 	}
 	
 	public String getOutputType() {
-		return output.getType();
+		if (output == null) return null;
+		else return output.getType();
 	}
 	
 	public String getOutputId() {

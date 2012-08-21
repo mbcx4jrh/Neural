@@ -3,6 +3,8 @@ package neural.networks;
 import neural.Network;
 import neural.NeuralPropertyFactory;
 import neural.Tester;
+import neural.data.DataSource;
+import neural.parsec.ast.DataLocation;
 import neural.parsec.ast.NetworkDef;
 import neural.parsec.ast.TestingDef;
 import neural.parsec.ast.TrainingDef;
@@ -17,6 +19,8 @@ public abstract class AbstractNetwork implements Network {
 	private TestingDef testingDef;
 	
 	private NeuralPropertyFactory<Tester> testerFactory;
+	private NeuralPropertyFactory<DataSource> dataSourceFactory;
+	
 	
 
 	@Override
@@ -31,6 +35,7 @@ public abstract class AbstractNetwork implements Network {
 	public void setPropertiesFilename(String propertiesFilename) {
 		this.propertiesFilename = propertiesFilename;
 		this.testerFactory = new NeuralPropertyFactory<Tester>(propertiesFilename, "tester");
+		this.dataSourceFactory = new NeuralPropertyFactory<DataSource>(propertiesFilename, "data");
 	}
 
 	@Override
@@ -54,11 +59,21 @@ public abstract class AbstractNetwork implements Network {
 
 	public void compute() {
 		Tester tester;
-		if (this.getTestingDef().getOutputType() == null)
+		if (this.getTestingDef().getOutputType() == null) {
 			tester = new ConsoleTester();
-		else
+			tester.init(null, this.getTestingDef());
+		}
+		else {
 			tester = testerFactory.getNewInstance(this.getTestingDef().getOutputType());
-		tester.init(this.getTestingDef().getOutputId(), this.getTestingDef());
+			tester.init(this.getTestingDef().getOutputId(), this.getTestingDef());
+		}
+		
+		DataLocation location = this.getTestingDef().getInput();
+		if (location != null) {
+			DataSource source = dataSourceFactory.getNewInstance(location.getType());
+			source.init(location.getId());
+			tester.setSource(source);
+		}
 		tester.test(this);
 	}
 

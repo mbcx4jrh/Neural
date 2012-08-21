@@ -18,7 +18,7 @@ public interface Network {
 	
 	public void train(double[][] input, double[][] output);
 
-	public void compute(double[] input, double[] output);
+	public double[] compute(double[] input);
 	
 	public void compute();
 

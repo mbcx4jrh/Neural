@@ -46,7 +46,7 @@ public class NeurophHopfieldNetwork extends AbstractNetwork {
 	}
 
 	@Override
-	public void compute(double[] input, double[] output) {
+	public double[] compute(double[] input) {
 		String prev;
 		String current = Arrays.toString(input);
 		double[] result;
@@ -60,7 +60,7 @@ public class NeurophHopfieldNetwork extends AbstractNetwork {
 			result = network.getOutput();
 			current = Arrays.toString(result);
 		} while (!prev.equals(current) && cycles++ < maxCycles);
-		System.arraycopy(result, 0, output, 0, result.length);
+		return result;
 	}
 	
 	

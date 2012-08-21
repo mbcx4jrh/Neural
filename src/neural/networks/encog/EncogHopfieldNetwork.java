@@ -34,12 +34,11 @@ public class EncogHopfieldNetwork extends AbstractNetwork {
  
 
 	@Override
-	public void compute(double[] input, double[] output) {
+	public double[] compute(double[] input) {
 		BiPolarNeuralData data = new BiPolarNeuralData(BiPolarUtil.double2bipolar(input));
 		network.setCurrentState(data);
 		network.runUntilStable(maxCycles);
-		double[] result = network.getCurrentState().getData();
-		System.arraycopy(result, 0, output, 0, result.length);
+		return network.getCurrentState().getData();
 	}
 	
 }

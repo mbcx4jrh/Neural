@@ -30,6 +30,7 @@ public class EncogART1 {
 	
 	@Before 
 	public void infiniTestFix() {
+		@SuppressWarnings("unused")
 		EncogART1Network n = new EncogART1Network();
 	}
 

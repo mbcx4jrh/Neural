@@ -53,7 +53,7 @@ public abstract class AbstractNetwork implements Network {
 		
 	}
 
-	public void compute(double[] input, double[] output) {
+	public double[] compute(double[] input) {
 		throw new UnsupportedOperationException("Not implemented in your network");
 	}
 

@@ -57,9 +57,9 @@ public class EncogXORNetwork {
 	private void testXor(Network network) {
 		double[][] input = new double[][] { { 0.0, 0.0 }, { 1.0, 0.0 }, { 0.0, 1.0 }, { 1.0, 1.0 } };
 		double[][] output = new double[][] { { 0.0 }, { 1.0 }, { 1.0 }, { 0.0 } };
-		double[] result = new double[1];
+		double[] result;
 		for (int i = 0; i < 4; i++) {
-			network.compute(input[i], result);
+			result = network.compute(input[i]);
 			System.out.println("v" + i + " input: " + Arrays.toString(input[i]) + " output:" + Arrays.toString(result));
 			assertEqualWithin(0.2, output[i], result);
 		}

@@ -69,7 +69,10 @@ public class EncogBasicNetwork extends AbstractNetwork {
 	
 
 	@Override
-	public void compute(double[] input, double[] output) {
+	public double[] compute(double[] input) {
+		int outputSize = basicNetwork.getOutputCount();
+		double[] output = new double[outputSize];
 		basicNetwork.compute(input, output);
+		return output;
 	}
 }

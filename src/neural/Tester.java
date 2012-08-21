@@ -30,8 +30,8 @@ public abstract class Tester {
 			source = new InlineDataSource(testingDef.getInputData());
 		}
 		for (double[] input: source) {
-			double[] output =new double[input.length];
-			network.compute(input, output);
+
+			double[] output = network.compute(input);
 			releaseResult(input, output);
 		}
 	}

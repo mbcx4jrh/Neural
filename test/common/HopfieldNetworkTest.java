@@ -32,7 +32,6 @@ public class HopfieldNetworkTest {
 		
 		double[][] training = convertPattern(TRAIN);
 		double[][] testing = convertPattern(TEST);
-		double[] output = new double[100];
 		
 		out("Training:");
 		for (int i=0; i<training.length; i++) {
@@ -42,7 +41,7 @@ public class HopfieldNetworkTest {
 		network.train(training, null);
 		
 		for (int i=0; i< testing.length; i++) {
-			network.compute(testing[i], output);
+			double output[] = network.compute(testing[i]);
 			console(testing[i], output);
 			assertEquals(Arrays.toString(training[i]), Arrays.toString(output));
 		} 

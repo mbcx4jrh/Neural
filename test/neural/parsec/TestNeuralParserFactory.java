@@ -2,7 +2,7 @@ package neural.parsec;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import neural.parsec.ast.AsExpression;
+import neural.parsec.ast.IsExpression;
 import neural.parsec.ast.DoubleParameter;
 import neural.parsec.ast.IntegerParameter;
 import neural.parsec.ast.Layer;
@@ -27,6 +27,27 @@ public class TestNeuralParserFactory {
 		Script script = npf.getNeuralParser().parse(" network jim is tiger { parameters { size 45 } }");
 		assertNotNull(script);
 		assertEquals(script.toString(), "Network: jim, type: tiger, params: [size 45], layers: [] | null");
+	}
+	
+	@Test 
+	public void testActivationDefinition() {
+		String in = "activation a1 is sigmoid";
+		String actual = "name:a1 type:sigmoid";
+		
+		String out = npf.activationDefinition().parse(in).toString();
+		
+		assertEquals(actual, out);
+		
+	}
+	
+	@Test
+	public void testActivationExpression() {
+		String in = "activation a1";
+		String actual = "a1";
+		
+		String out = npf.activationExpression().parse(in).toString();
+		
+		assertEquals(actual, out);
 	}
 
 	@Test
@@ -187,7 +208,7 @@ public class TestNeuralParserFactory {
 	public void testLayer() {
 		Layer l = npf.layer().parse("layer { activation sigmoid size 2 biased }");
 		assertNotNull(l);
-		assertEquals("sigmoid", l.getActivation());
+		assertEquals("name:sigmoid type:sigmoid", l.getActivation().toString());
 		assertEquals(2, l.getSize());
 		assertEquals(true, l.isBiased());
 	}
@@ -261,8 +282,8 @@ public class TestNeuralParserFactory {
 	}
 
 	@Test
-	public void testAsExpression() {
-		assertEquals(npf.asExpression().parse("is type1"), new AsExpression("type1"));
+	public void testIsExpression() {
+		assertEquals(npf.asExpression().parse("is type1"), new IsExpression("type1"));
 	}
 
 	@Test

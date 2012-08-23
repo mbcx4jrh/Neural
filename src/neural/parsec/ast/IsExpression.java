@@ -1,10 +1,10 @@
 package neural.parsec.ast;
 
-public class AsExpression {
+public class IsExpression {
 
 	private String type;
 
-	public AsExpression(String type) {
+	public IsExpression(String type) {
 		this.type = type;
 	}
 
@@ -14,9 +14,9 @@ public class AsExpression {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (!(obj instanceof AsExpression))
+		if (!(obj instanceof IsExpression))
 			return false;
-		return ((AsExpression) obj).getType().equals(type);
+		return ((IsExpression) obj).getType().equals(type);
 	}
 
 }

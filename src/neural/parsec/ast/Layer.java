@@ -5,6 +5,7 @@ public class Layer {
 	private String activation;
 	private int size;
 	private boolean biased;
+	private NetworkDef network;
 
 	public boolean isBiased() {
 		return biased;
@@ -18,9 +19,17 @@ public class Layer {
 		else
 			this.biased = biased.booleanValue();
 	}
+	
+	public void setNetwork(NetworkDef network) {
+		this.network = network;
+	}
 
-	public String getActivation() {
-		return activation;
+	public ActivationDefinition getActivation() {
+	
+		if ((network !=null) && (network.getActivationMap().containsKey(activation)))
+			return network.getActivationMap().get(activation);
+		else 
+			return new ActivationDefinition(activation, activation);
 	}
 
 	public int getSize() {

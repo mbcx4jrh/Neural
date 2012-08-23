@@ -13,6 +13,7 @@ public class NetworkDef {
 	private List<Parameter> params2;
 	private Map<String, Parameter> params;
 	private List<Layer> layers;
+	private Map<String, ActivationDefinition> activationMap = new HashMap<String, ActivationDefinition>();
 
 	public NetworkDef(String name, String type, NetworkBlock block) {
 		this.name = name;
@@ -21,6 +22,9 @@ public class NetworkDef {
 			this.params2 = block.getParams();
 			setParams(block.getParams());
 			this.layers = block.getLayers();
+		}
+		for (Layer l: layers) {
+			l.setNetwork(this);
 		}
 	}
 
@@ -55,8 +59,16 @@ public class NetworkDef {
 
 	public boolean hasParam(String string) { 
 		return params.containsKey(string);
-	} 
+	}
 	
+	public void setActivationMap(Map<String, ActivationDefinition> activationMap) {
+		this.activationMap = activationMap;
+	}
+	
+	public Map<String, ActivationDefinition> getActivationMap() {
+		return activationMap;
+	}
+
 	private void setParams(List<Parameter> list) {
 		params = new HashMap<String, Parameter>();
 		for (Parameter p: list) {

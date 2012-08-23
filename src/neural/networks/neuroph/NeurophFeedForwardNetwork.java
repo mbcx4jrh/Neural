@@ -46,7 +46,7 @@ public class NeurophFeedForwardNetwork extends AbstractNetwork {
 		network = new NeuralNetwork();
 
 		//ensure first layer exists and is input
-		if (!def.getLayers().get(0).getActivation().equals("input")) 
+		if (!def.getLayers().get(0).getActivation().getName().equals("input")) 
 			throw new NeuralException("Missing input layer (must be first");
 		
 		// create input layer
@@ -68,7 +68,7 @@ public class NeurophFeedForwardNetwork extends AbstractNetwork {
 			Integer neuronsNum = def.getLayers().get(layerIdx).getSize();
 			// createLayer layer
 			NeuronProperties neuronProperties = new NeuronProperties(
-					TransferFunctionType.valueOf(mapActivation(def.getLayers().get(layerIdx).getActivation())), 
+					TransferFunctionType.valueOf(mapActivation(def.getLayers().get(layerIdx).getActivation().getName())), 
 					def.getLayers().get(layerIdx).isBiased());
 			layer = LayerFactory.createLayer(neuronsNum, neuronProperties);
 

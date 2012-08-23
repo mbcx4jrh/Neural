@@ -3,13 +3,14 @@ package neural.parsec;
 import java.util.ArrayList;
 import java.util.List;
 
-import neural.parsec.ast.AsExpression;
+import neural.parsec.ast.ActivationDefinition;
 import neural.parsec.ast.Data;
 import neural.parsec.ast.DataItem;
 import neural.parsec.ast.DoubleParameter;
 import neural.parsec.ast.ExternalInput;
 import neural.parsec.ast.ExternalOutput;
 import neural.parsec.ast.IntegerParameter;
+import neural.parsec.ast.IsExpression;
 import neural.parsec.ast.Layer;
 import neural.parsec.ast.NetworkBlock;
 import neural.parsec.ast.NetworkDef;
@@ -33,6 +34,7 @@ import org.codehaus.jparsec.Tokens.Fragment;
 import org.codehaus.jparsec.functors.Map;
 import org.codehaus.jparsec.functors.Map2;
 import org.codehaus.jparsec.functors.Map3;
+import org.codehaus.jparsec.functors.Map4;
 
 public class NeuralParserFactory {
 
@@ -48,12 +50,12 @@ public class NeuralParserFactory {
 		});
 	}
 
-	protected Parser<AsExpression> asExpression() {
+	protected Parser<IsExpression> asExpression() {
 		return Scanners.string("is").next(Scanners.WHITESPACES).next(Terminals.Identifier.TOKENIZER)
-				.map(new Map<Fragment, AsExpression>() {
+				.map(new Map<Fragment, IsExpression>() {
 
-					public AsExpression map(Fragment from) {
-						return new AsExpression(from.toString());
+					public IsExpression map(Fragment from) {
+						return new IsExpression(from.toString());
 					}
 
 				});
@@ -84,10 +86,10 @@ public class NeuralParserFactory {
 				Scanners.WHITESPACES.optional().next(Scanners.string("{")),
 				Scanners.WHITESPACES.optional().next(networkBlock()),
 				Scanners.WHITESPACES.optional().next(Scanners.string("}"))),
-				new Map3<NetworkExpression, AsExpression, NetworkBlock, NetworkDef>() {
+				new Map3<NetworkExpression, IsExpression, NetworkBlock, NetworkDef>() {
 
 					@Override
-					public NetworkDef map(NetworkExpression a, AsExpression b, NetworkBlock d) {
+					public NetworkDef map(NetworkExpression a, IsExpression b, NetworkBlock d) {
 						return new NetworkDef(a.getName(), b.getType(), d);
 					}
 
@@ -114,14 +116,15 @@ public class NeuralParserFactory {
 
 		return Scanners.WHITESPACES
 				.optional()
-				.next(Parsers.sequence(networkDef(), 
+				.next(Parsers.sequence(Scanners.WHITESPACES.optional().next(activationDefinition().many()).optional(),
+						               Scanners.WHITESPACES.optional().next(networkDef()), 
 						               Scanners.WHITESPACES.optional().next(training().optional()),
 						               Scanners.WHITESPACES.optional().next(testing().optional()),
-						new Map3<NetworkDef, TrainingDef, TestingDef, Script>() {
+						new Map4<List<ActivationDefinition>, NetworkDef, TrainingDef, TestingDef, Script>() {
 
 							@Override
-							public Script map(NetworkDef a, TrainingDef b, TestingDef c) {
-								return new Script(a, b, c);
+							public Script map(List<ActivationDefinition> a, NetworkDef b, TrainingDef c, TestingDef d) {
+								return new Script(a, b, c, d);
 							}
 
 						})).followedBy(Scanners.WHITESPACES.optional());
@@ -449,5 +452,23 @@ public class NeuralParserFactory {
 		
 	}
 	
+	protected Parser<String> activationExpression() {
+		return Scanners.string("activation")
+				.next(Scanners.WHITESPACES)
+				.next(identifier());
+	}
+	
+	protected Parser<ActivationDefinition> activationDefinition() {
+		return Parsers.sequence(activationExpression(),
+				                Scanners.WHITESPACES.next(asExpression()),
+				                new Map2<String, IsExpression, ActivationDefinition>() {
+
+									@Override
+									public ActivationDefinition map(String a, IsExpression b) {
+										return new ActivationDefinition(a, b.getType());
+									}
+				
+		});
+	}
 	
 }

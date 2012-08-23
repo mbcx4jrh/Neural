@@ -1,5 +1,6 @@
 package neural.parsec.ast;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class NetworkBlock {
@@ -10,6 +11,7 @@ public class NetworkBlock {
 	public NetworkBlock(List<Parameter> params, List<Layer> layers) {
 		this.params = params;
 		this.layers = layers;
+		if (this.layers == null) this.layers = new ArrayList<Layer>();
 	}
 
 	public List<Parameter> getParams() {

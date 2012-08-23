@@ -37,7 +37,7 @@ public class EncogART1Network extends AbstractNetwork {
 
 	private int findLayer(String name, NetworkDef def) {
 		for (Layer layer: def.getLayers()) {
-			if (layer.getActivation().equals(name)) return layer.getSize();
+			if (layer.getActivation().getType().equals(name)) return layer.getSize();
 		}
 		throw new NeuralException("Missing layer ("+name+") in ART1 network");
 	}

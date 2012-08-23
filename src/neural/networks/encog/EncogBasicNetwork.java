@@ -41,10 +41,10 @@ public class EncogBasicNetwork extends AbstractNetwork {
 		for (int i = 0; i < numberOfLayers; i++) {
 
 			layer = def.getLayers().get(i);
-			if (layer.getActivation().equals("input"))
+			if (layer.getActivation().getName().equals("input"))
 				activationFunction = null;
 			else
-				activationFunction = activationFactory.getNewInstance(layer.getActivation());
+				activationFunction = activationFactory.getNewInstance(layer.getActivation().getType());
 
 			basicNetwork.addLayer(new BasicLayer(activationFunction, layer.isBiased(), layer.getSize()));
 			// System.out.println("Adding layer "+i+" "+layer.toString());

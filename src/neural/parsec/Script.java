@@ -1,20 +1,43 @@
 package neural.parsec;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import neural.parsec.ast.ActivationDefinition;
 import neural.parsec.ast.NetworkDef;
 import neural.parsec.ast.TestingDef;
 import neural.parsec.ast.TrainingDef;
+
 
 public class Script {
 
 	private NetworkDef networkDef;
 	private TrainingDef trainingDef;
-	private TestingDef testingDef;
+	private TestingDef testingDef; 
+	private Map<String, ActivationDefinition> activationMap;
+	
 
-	protected Script(NetworkDef networkDef, TrainingDef trainingDef, TestingDef testingDef) {
+	protected Script(List<ActivationDefinition> activationDefinitions,
+			         NetworkDef networkDef, 
+			         TrainingDef trainingDef, 
+			         TestingDef testingDef) {
+		createActivationLookup(activationDefinitions);
 		this.networkDef = networkDef;
 		this.trainingDef = trainingDef;
 		this.testingDef = testingDef;
+		
+		this.networkDef.setActivationMap(activationMap);
 	}
+
+	private void createActivationLookup(List<ActivationDefinition> activationDefinitions) {
+		activationMap = new HashMap<String, ActivationDefinition>();
+		for (ActivationDefinition a: activationDefinitions) {
+			activationMap.put(a.getName(), a);
+		}
+	}
+
+
 
 	public NetworkDef getNetworkDef() {
 		return networkDef;

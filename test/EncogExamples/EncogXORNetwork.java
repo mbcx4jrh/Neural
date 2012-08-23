@@ -70,7 +70,15 @@ public class EncogXORNetwork {
 	public void testUsingScript() throws IOException {
 		trainUsingScript("scripts/xor-1.neural");
 		trainUsingScript("scripts/xor-2.neural");
+	}
+	
+	@Test 
+	public void testInMemoryOutput() throws IOException {
 		testUsingScript("scripts/xor-3.neural");
+	}
+	
+	@Test
+	public void testCSVFileInput() throws IOException {
 		testUsingScript("scripts/xor-4.neural");
 	}
 	
@@ -87,6 +95,12 @@ public class EncogXORNetwork {
 		
 		testXor(network); 
 	}
+	
+	@Test
+	public void testDefinedActivation() throws IOException {
+		testUsingScript("scripts/activation-1-xor.neural");
+	}
+	
 	
 	private void trainUsingScript(String name) throws IOException {
 		String script = FileUtils.readFileToString(new File(name));

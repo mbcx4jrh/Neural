@@ -1,4 +1,5 @@
-activation a1 is sigmoid 
+activation a1 is sigmoid {
+}
 
 network joe is feedforward {
 	layer {

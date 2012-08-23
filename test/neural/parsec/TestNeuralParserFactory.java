@@ -32,12 +32,21 @@ public class TestNeuralParserFactory {
 	@Test 
 	public void testActivationDefinition() {
 		String in = "activation a1 is sigmoid";
-		String actual = "name:a1 type:sigmoid";
+		String actual = "name:a1 type:sigmoid params:[]";
 		
 		String out = npf.activationDefinition().parse(in).toString();
 		
 		assertEquals(actual, out);
+	}
+	
+	@Test
+	public void testActivationParameters() {
+		String in = "activation a2 is backprop {\n   p1 23 \n   p2 32 \n }";
+		String actual = "name:a2 type:backprop params:[p1 23, p2 32]";
 		
+		String out = npf.activationDefinition().parse(in).toString();
+		
+		assertEquals(actual, out);
 	}
 	
 	@Test
@@ -208,7 +217,7 @@ public class TestNeuralParserFactory {
 	public void testLayer() {
 		Layer l = npf.layer().parse("layer { activation sigmoid size 2 biased }");
 		assertNotNull(l);
-		assertEquals("name:sigmoid type:sigmoid", l.getActivation().toString());
+		assertEquals("name:sigmoid type:sigmoid params:[]", l.getActivation().toString());
 		assertEquals(2, l.getSize());
 		assertEquals(true, l.isBiased());
 	}

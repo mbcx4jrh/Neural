@@ -116,7 +116,7 @@ public class NeuralParserFactory {
 
 		return Scanners.WHITESPACES
 				.optional()
-				.next(Parsers.sequence(Scanners.WHITESPACES.optional().next(activationDefinition().many()).optional(),
+				.next(Parsers.sequence(Scanners.WHITESPACES.optional().next(activationDefinition().many()),
 						               Scanners.WHITESPACES.optional().next(networkDef()), 
 						               Scanners.WHITESPACES.optional().next(training().optional()),
 						               Scanners.WHITESPACES.optional().next(testing().optional()),
@@ -461,11 +461,14 @@ public class NeuralParserFactory {
 	protected Parser<ActivationDefinition> activationDefinition() {
 		return Parsers.sequence(activationExpression(),
 				                Scanners.WHITESPACES.next(asExpression()),
-				                new Map2<String, IsExpression, ActivationDefinition>() {
+				                Scanners.WHITESPACES.next(Parsers.between(Scanners.string("{").next(Scanners.WHITESPACES.optional()), 
+				                		                                  parameter().sepBy(Scanners.WHITESPACES), 
+				                		                                  Scanners.WHITESPACES.optional().next(Scanners.string("}")))).optional(),
+				                new Map3<String, IsExpression, List<Parameter>, ActivationDefinition>() {
 
 									@Override
-									public ActivationDefinition map(String a, IsExpression b) {
-										return new ActivationDefinition(a, b.getType());
+									public ActivationDefinition map(String a, IsExpression b, List<Parameter> c) {
+										return new ActivationDefinition(a, b.getType(), c);
 									}
 				
 		});

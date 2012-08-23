@@ -10,7 +10,6 @@ import java.util.Arrays;
 
 import neural.Network;
 import neural.ScriptParser;
-import neural.networks.neuroph.NeurophFeedForwardNetwork;
 import neural.tester.MemoryTester;
 import neural.tester.MemoryTesterStore;
 

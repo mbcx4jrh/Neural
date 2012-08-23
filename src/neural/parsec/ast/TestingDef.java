@@ -5,7 +5,6 @@ import java.util.Arrays;
 public class TestingDef implements DataDefinition {
 
 	private double[][] inputData;
-	private double[][] outputData;
 	private DataLocation output;
 	private DataLocation input;
 
@@ -16,7 +15,6 @@ public class TestingDef implements DataDefinition {
 	}
 	
 	public void setOutputData(double[][] data) {
-		this.outputData = data;
 	}
 	
 	public double[][] getInputData() {

@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.util.Arrays;
 
 import neural.Network;
+import neural.NeuralException;
 import neural.ScriptParser;
 import neural.networks.encog.EncogBasicNetwork;
 import neural.tester.MemoryTester;
@@ -101,6 +102,10 @@ public class EncogXORNetwork {
 		testUsingScript("scripts/activation-1-xor.neural");
 	}
 	
+	@Test(expected=NeuralException.class)
+	public void testInvalidActivationParameters() throws IOException {
+		testUsingScript("scripts/invalid-1-xor.neural");
+	}
 	
 	private void trainUsingScript(String name) throws IOException {
 		String script = FileUtils.readFileToString(new File(name));

@@ -5,6 +5,10 @@ import java.util.List;
 
 public class ActivationDefinition {
 	
+	public List<Parameter> getParameters() {
+		return parameters;
+	}
+
 	private String name;
 	private String type;
 	private List<Parameter> parameters;

@@ -3,11 +3,13 @@ package neural;
 import neural.networks.NetworkFactoryException;
 import neural.parsec.NeuralParserFactory;
 import neural.parsec.Script;
+import neural.parsec.validation.ScriptValidator;
 
 public class ScriptParser {
 
 	private NeuralParserFactory parserFactory;
 	private NetworkFactory networkFactory;
+	private String validationProperties = "properties/validation.properties";
 
 	public ScriptParser() {
 		parserFactory = new NeuralParserFactory();
@@ -34,6 +36,8 @@ public class ScriptParser {
 	public Network parseScript(String script) {
 
 		Script definition = parserFactory.getNeuralParser().parse(script);
+		ScriptValidator validator = new ScriptValidator(validationProperties);
+		validator.validateScript(definition);
 		return networkFactory.getNetwork(definition);
 	}
 

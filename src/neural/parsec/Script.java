@@ -28,6 +28,11 @@ public class Script {
 		this.testingDef = testingDef;
 		
 		this.networkDef.setActivationMap(activationMap);
+		
+	}
+
+	public Map<String, ActivationDefinition> getActivationMap() {
+		return activationMap;
 	}
 
 	private void createActivationLookup(List<ActivationDefinition> activationDefinitions) {

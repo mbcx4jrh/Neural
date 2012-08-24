@@ -1,5 +1,6 @@
 package neural.parsec.validation;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
@@ -27,10 +28,19 @@ public class TestNetworkValidation {
 		
 		validator.validate(params);
 		assertTrue(!validator.isValid());
+		String[] msgs = validator.getIssues();
+		assertEquals(1, msgs.length);
+		assertEquals("Mandantory parameter 'size' is missing", msgs[0]);
 		
 		params.add(new IntegerParameter("size", 10));
 		validator.validate(params);
 		assertTrue(validator.isValid());
+		
+		params.add(new IntegerParameter("notneeded", 42));
+		validator.validate(params);
+		assertTrue(!validator.isValid());
+		assertEquals(1, msgs.length);
+		assertEquals("Mandantory parameter 'size' is missing", msgs[0]);
 	}
 
 }

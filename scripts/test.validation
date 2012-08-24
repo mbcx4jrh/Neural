@@ -1,0 +1,4 @@
+network.hopfield.mandantory size
+network.feedforward.optional threshold
+
+network.blank.mandantory

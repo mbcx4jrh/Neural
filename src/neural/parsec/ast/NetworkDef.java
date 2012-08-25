@@ -8,6 +8,14 @@ import neural.NeuralException;
 
 public class NetworkDef {
 
+	public List<Parameter> getParameters() {
+		return params2;
+	}
+
+	public void setParams(Map<String, Parameter> params) {
+		this.params = params;
+	}
+
 	private String name;
 	private String type;
 	private List<Parameter> params2;

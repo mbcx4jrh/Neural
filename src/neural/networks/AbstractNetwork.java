@@ -1,6 +1,7 @@
 package neural.networks;
 
 import neural.Network;
+import neural.NeuralException;
 import neural.NeuralPropertyFactory;
 import neural.Tester;
 import neural.data.DataSource;
@@ -58,6 +59,8 @@ public abstract class AbstractNetwork implements Network {
 	}
 
 	public void compute() {
+		if (this.getTestingDef() == null) 
+			throw new NeuralException("Cannot use the compute() function unless testing data defined");
 		Tester tester;
 		if (this.getTestingDef().getOutputType() == null) {
 			tester = new ConsoleTester();

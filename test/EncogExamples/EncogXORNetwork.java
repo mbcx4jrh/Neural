@@ -104,7 +104,17 @@ public class EncogXORNetwork {
 	
 	@Test(expected=NeuralException.class)
 	public void testInvalidActivationParameters() throws IOException {
-		testUsingScript("scripts/invalid-1-xor.neural");
+		testUsingScript("scripts/invalid-1-xor.neural"); 
+	}
+	
+	@Test(expected=NeuralException.class)
+	public void testInvalidTestingCall() throws IOException {
+		testUsingScript("scripts/invalid-2-xor.neural");
+	}
+
+	@Test(expected=NeuralException.class)
+	public void testInvalidNetworkParams() throws IOException {
+		testUsingScript("scripts/invalid-3-xor.neural");
 	}
 	
 	private void trainUsingScript(String name) throws IOException {

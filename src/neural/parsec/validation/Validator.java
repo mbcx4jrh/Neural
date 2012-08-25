@@ -20,7 +20,7 @@ public class Validator {
 		for (Parameter p: parameters) {
 			if (!mandantoryNames.contains(p.getName()) && !optionalNames.contains(p.getName())) {
 				valid = false;
-				issues.add("Parameter '"+p.getName()+"' is present but not allowed as option or mandantory");
+				issues.add("Parameter '"+p.getName()+"' is present but not allowed as optional or mandantory");
 			}
 		}
 		for (String m: mandantoryNames) {

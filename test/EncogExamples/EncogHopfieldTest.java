@@ -18,5 +18,4 @@ public class EncogHopfieldTest {
 		tester.setParser(parser);
 		tester.hopfieldTest();
 	} 
-
 }

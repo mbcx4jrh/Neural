@@ -1,7 +1,7 @@
-activation s1 is threshold {
+activation t1 is threshold {
 	high 1.0
-	low 0.5
-	center 0.0
+	center 0.5
+	low 0
 }
 
 network joe is feedforward {
@@ -16,10 +16,14 @@ network joe is feedforward {
 		biased
 	}
 	layer {
-		activation s1
+		activation sigmoid
+		size 5
+		biased
+	}
+	layer {
+		activation sigmoid
 		size 1
 	}
-
 }
 
 training {
@@ -32,5 +36,4 @@ training {
 
 testing {
 	input csvfile "scripts/xor-4-1.csv"
-	
 }

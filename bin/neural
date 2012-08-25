@@ -1,3 +1,3 @@
 NEURAL_HOME=/Users/joe/Projects/Neural
 
-java -cp $NEURAL_HOME/classes:$NEURAL_HOME/lib/encog/encog-core-3.1.0.jar:$NEURAL_HOME/lib/commons-io-2.4.jar:$NEURAL_HOME/lib/jparsec-2.0.jar:$NEURAL_HOME/lib/opencsv-2.3.jar neural.CommandLine $1
+java -cp $NEURAL_HOME/bin/neural.jar:$NEURAL_HOME/lib/encog/encog-core-3.1.0.jar:$NEURAL_HOME/lib/commons-io-2.4.jar:$NEURAL_HOME/lib/jparsec-2.0.jar:$NEURAL_HOME/lib/opencsv-2.3.jar neural.CommandLine $1

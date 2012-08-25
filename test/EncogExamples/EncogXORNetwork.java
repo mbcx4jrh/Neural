@@ -117,6 +117,16 @@ public class EncogXORNetwork {
 		testUsingScript("scripts/invalid-3-xor.neural");
 	}
 	
+	@Test 
+	public void testSigmoidParameters() throws IOException {
+		testUsingScript("scripts/params-sigmoid-1.neural");
+	}
+	
+	@Test
+	public void testStepParameters() throws IOException {
+		testUsingScript("scripts/params-step-1.neural");
+	}
+	
 	private void trainUsingScript(String name) throws IOException {
 		String script = FileUtils.readFileToString(new File(name));
 		ScriptParser parser = new ScriptParser();

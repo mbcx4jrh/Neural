@@ -32,7 +32,7 @@ public class ScriptValidator {
 
 	private void validateActivationFunctions(Map<String, ActivationDefinition> activationMap) {
 		for (ActivationDefinition def: activationMap.values()) {
-			Validator validator = validationFactory.getValidator(def.getType());
+			Validator validator = validationFactory.getValidator("activation."+def.getType());
 			validator.validate(def.getParameters());
 			if (!validator.isValid()) {
 				throw new NeuralException("Invalid activation definition '"+def.getName() 

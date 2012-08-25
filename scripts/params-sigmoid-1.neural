@@ -1,0 +1,32 @@
+activation s1 is sigmoid {
+}
+
+network joe is feedforward {
+	layer {
+		activation input
+		size 2
+		biased
+	}
+	layer {
+		activation s1
+		size 3
+		biased
+	}
+	layer {
+		activation s1
+		size 1
+	}
+}
+
+training {
+	type backpropagation
+	error 0.01%
+	epochs 100000
+	input csvfile "scripts/xor-4-1.csv"
+	output csvfile "scripts/xor-4-2.csv"
+}
+
+testing {
+	input csvfile "scripts/xor-4-1.csv"
+	output memory "xor-3"
+}

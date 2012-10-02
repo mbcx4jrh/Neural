@@ -31,7 +31,14 @@ public class EncogHopfieldNetwork extends AbstractNetwork {
 			network.addPattern(pattern);
 		}
 	}
+	
+	
  
+
+	@Override
+	public void train() {
+		train(this.getTrainingDef().getInputData(), null);
+	}
 
 	@Override
 	public double[] compute(double[] input) {

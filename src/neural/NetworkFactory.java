@@ -7,6 +7,6 @@ public interface NetworkFactory {
 
 	public void init() throws NetworkFactoryException;
 
-	public abstract Network getNetwork(Script definition);
+	public Network getNetwork(Script definition);
 
 }

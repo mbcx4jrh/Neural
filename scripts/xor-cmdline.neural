@@ -1,9 +1,3 @@
-activation t1 is threshold {
-	high 1.0
-	center 0.5
-	low 0
-}
-
 network joe is feedforward {
 	layer {
 		activation input
@@ -11,13 +5,8 @@ network joe is feedforward {
 		biased
 	}
 	layer {
-		activation sigmoid
+		activation sigmoid2
 		size 3
-		biased
-	}
-	layer {
-		activation sigmoid
-		size 5
 		biased
 	}
 	layer {

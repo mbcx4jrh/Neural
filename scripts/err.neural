@@ -1,0 +1,5 @@
+network joe is hopfield {
+	parameters {
+		high 5
+	}
+}

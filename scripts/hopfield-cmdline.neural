@@ -1,0 +1,19 @@
+network h is hopfield {
+	parameters {
+		size 7
+	}
+}
+
+training {
+	input {
+		 1  1  1  1  1  1  1,
+		 1  1  1  1 -1 -1 -1
+	}
+}
+
+testing {
+	input {
+		 1 1 1 -1  1  1  1,
+		-1 1 1  1 -1 -1 -1
+	}	
+}

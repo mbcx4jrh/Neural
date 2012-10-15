@@ -2,9 +2,10 @@ package neural.parsec;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import neural.parsec.ast.IsExpression;
+import neural.parsec.ast.DataDef;
 import neural.parsec.ast.DoubleParameter;
 import neural.parsec.ast.IntegerParameter;
+import neural.parsec.ast.IsExpression;
 import neural.parsec.ast.Layer;
 import neural.parsec.ast.NetworkDef;
 import neural.parsec.ast.NetworkExpression;
@@ -27,6 +28,18 @@ public class TestNeuralParserFactory {
 		Script script = npf.getNeuralParser().parse(" network jim is tiger { parameters { size 45 } }");
 		assertNotNull(script);
 		assertEquals(script.toString(), "Network: jim, type: tiger, params: [size 45], layers: [] | null");
+	}
+	
+	public void testName() {
+		String name = npf.name().parse("name joe");
+		assertNotNull(name);
+		assertEquals(name, "joe");
+	}
+	
+	@Test
+	public void testDataDefinition() {
+		DataDef dataDef = npf.dataDefinition().parse("data { name joe }");
+		assertNotNull(dataDef);
 	}
 	
 	@Test 

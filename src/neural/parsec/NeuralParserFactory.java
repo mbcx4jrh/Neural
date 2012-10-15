@@ -5,6 +5,7 @@ import java.util.List;
 
 import neural.parsec.ast.ActivationDefinition;
 import neural.parsec.ast.Data;
+import neural.parsec.ast.DataDef;
 import neural.parsec.ast.DataItem;
 import neural.parsec.ast.DoubleParameter;
 import neural.parsec.ast.ExternalInput;
@@ -472,6 +473,23 @@ public class NeuralParserFactory {
 									}
 				
 		});
+	}
+	
+	protected Parser<DataDef> dataDefinition() {
+		return Scanners.string("data").next(Scanners.WHITESPACES)
+				 .next(Parsers.between(Scanners.string("{").next(Scanners.WHITESPACES.optional()), 
+																name(),
+																Scanners.WHITESPACES.optional().next(Scanners.string("}"))))
+																.map(new Map<String, DataDef>() {
+																	public DataDef map(String name) {
+																		return new DataDef();
+																	}
+																});
+	}
+	
+	protected Parser<String> name() {
+		return Scanners.string("name").next(Scanners.WHITESPACES)
+				                      .next(identifier());
 	}
 	
 }

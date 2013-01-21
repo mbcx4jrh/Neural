@@ -479,11 +479,12 @@ public class NeuralParserFactory {
 				 .next(Parsers.between(Scanners.string("{").next(Scanners.WHITESPACES.optional()), 
 											Parsers.sequence(name(), 
 													         Scanners.WHITESPACES.optional().next(inputSource()), 
-													         new Map2<String, ExternalInput, DataDef>() {
+													         Scanners.WHITESPACES.optional().next(normalise().optional()),
+													         new Map3<String, ExternalInput, NormaliseDef, DataDef>() {
 
 												@Override
-												public DataDef map(String name, ExternalInput source) {
-													return new DataDef(name, source);
+												public DataDef map(String name, ExternalInput source, NormaliseDef normDef) {
+													return new DataDef(name, source, normDef);
 												}
 												
 											}),

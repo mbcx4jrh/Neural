@@ -53,7 +53,11 @@ public class TestNeuralParserFactory {
 	
 	@Test
 	public void testNormalisation() {
-		DataDef dataDef = npf.dataDefinition().parse("data { name j input xxy \"abc\" normalise { \n min 0 max 1 }");
+		DataDef dataDef = npf.dataDefinition().parse("data { name j input xxy \"abc\" normalise { \n min -0.3 max 0.4 } }");
+		assertNotNull(dataDef);
+		assertNotNull(dataDef.getNormaliseDef());
+		assertEquals(-0.3d, dataDef.getNormaliseDef().getMin(), 0);
+		assertEquals(0.4d, dataDef.getNormaliseDef().getMax(), 0);
 	}
 	
 	@Test

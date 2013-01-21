@@ -16,8 +16,8 @@ network joe is feedforward {
 }
 
 data {
-	name "normalised-xor-in"
-	source csvfile "scripts-norm.csv"
+	name normalised_xor
+	input csvfile "scripts/xor-norm.csv"
 	normalise {
 		max 1
 		min 0

@@ -9,6 +9,7 @@ import neural.parsec.ast.IsExpression;
 import neural.parsec.ast.Layer;
 import neural.parsec.ast.NetworkDef;
 import neural.parsec.ast.NetworkExpression;
+import neural.parsec.ast.NormaliseDef;
 
 import org.codehaus.jparsec.error.ParserException;
 import org.junit.Before;
@@ -30,6 +31,7 @@ public class TestNeuralParserFactory {
 		assertEquals(script.toString(), "Network: jim, type: tiger, params: [size 45], layers: [] | null");
 	}
 	
+	@Test
 	public void testName() {
 		String name = npf.name().parse("name joe");
 		assertNotNull(name);
@@ -37,9 +39,29 @@ public class TestNeuralParserFactory {
 	}
 	
 	@Test
+	public void testSource() {
+		
+	}
+	
+	@Test
 	public void testDataDefinition() {
-		DataDef dataDef = npf.dataDefinition().parse("data { name joe }");
+		DataDef dataDef = npf.dataDefinition().parse("data { name joe\n input csvfile \"abc 123\" }");
 		assertNotNull(dataDef);
+		assertEquals(dataDef.getName(), "joe");
+		assertEquals(dataDef.getInput().toString(), "type:csvfile id:abc 123");
+	}
+	
+	@Test
+	public void testNormalisation() {
+		DataDef dataDef = npf.dataDefinition().parse("data { name j input xxy \"abc\" normalise { \n min 0 max 1 }");
+	}
+	
+	@Test
+	public void testNormaliseBlock() { 
+		NormaliseDef normDef = npf.normalise().parse("normalise { min 0 max 4 }");
+		assertNotNull(normDef); 
+		assertEquals(4, normDef.getMax(), 0);
+		assertEquals(0, normDef.getMin(), 0);
 	}
 	
 	@Test 
@@ -69,7 +91,7 @@ public class TestNeuralParserFactory {
 		
 		String out = npf.activationExpression().parse(in).toString();
 		
-		assertEquals(actual, out);
+		assertEquals(actual, out); 
 	}
 
 	@Test

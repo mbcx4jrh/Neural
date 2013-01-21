@@ -16,6 +16,7 @@ import neural.parsec.ast.Layer;
 import neural.parsec.ast.NetworkBlock;
 import neural.parsec.ast.NetworkDef;
 import neural.parsec.ast.NetworkExpression;
+import neural.parsec.ast.NormaliseDef;
 import neural.parsec.ast.Parameter;
 import neural.parsec.ast.TestingDef;
 import neural.parsec.ast.TestingOutput;
@@ -38,8 +39,6 @@ import org.codehaus.jparsec.functors.Map3;
 import org.codehaus.jparsec.functors.Map4;
 
 public class NeuralParserFactory {
-
-	static final String example = "network joe is hopfield {\n" + "  size 8\n" + "}";
 
 	protected Parser<Integer> whitespaceInteger() {
 		return Scanners.WHITESPACES.next(Scanners.INTEGER).map(new Map<String, Integer>() {
@@ -478,18 +477,41 @@ public class NeuralParserFactory {
 	protected Parser<DataDef> dataDefinition() {
 		return Scanners.string("data").next(Scanners.WHITESPACES)
 				 .next(Parsers.between(Scanners.string("{").next(Scanners.WHITESPACES.optional()), 
-																name(),
-																Scanners.WHITESPACES.optional().next(Scanners.string("}"))))
-																.map(new Map<String, DataDef>() {
-																	public DataDef map(String name) {
-																		return new DataDef();
-																	}
-																});
+											Parsers.sequence(name(), 
+													         Scanners.WHITESPACES.optional().next(inputSource()), 
+													         new Map2<String, ExternalInput, DataDef>() {
+
+												@Override
+												public DataDef map(String name, ExternalInput source) {
+													return new DataDef(name, source);
+												}
+												
+											}),
+											Scanners.WHITESPACES.optional().next(Scanners.string("}"))));
 	}
 	
 	protected Parser<String> name() {
 		return Scanners.string("name").next(Scanners.WHITESPACES)
 				                      .next(identifier());
+	}
+	
+	protected Parser<NormaliseDef> normalise() {
+		return Parsers.between(Scanners.string("normalise {").next(Scanners.WHITESPACES.optional()), doubleParameter()
+				.sepBy(Scanners.WHITESPACES), Scanners.WHITESPACES.optional().next(Scanners.string("}")))
+				                           .map(new Map<List<DoubleParameter>, NormaliseDef>() {
+
+						@Override
+						public NormaliseDef map(List<DoubleParameter> from) {
+							double min = 0, max = 1;
+							for (DoubleParameter p: from) {
+								if (p.getName().equals("min")) min = p.getValue();
+								if (p.getName().equals("max")) max = p.getValue();
+							}
+							
+							return new NormaliseDef(min,max);
+						}
+
+				       });
 	}
 	
 }
